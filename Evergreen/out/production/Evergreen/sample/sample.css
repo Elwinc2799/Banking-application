@@ -1,0 +1,28 @@
+.custom-text-field {
+    -fx-background-color:transparent;
+    -fx-text-fill: #ffffff;
+}
+
+.custom-text-field-2 {
+    -fx-background-color:transparent;
+    -fx-text-fill: black;
+}
+
+.button {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+    -fx-font-family:"Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.radio-button > .radio {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0px;
+    -fx-padding: 0.0em; /* 4 8 4 8 */
+}
+
+.radio-button:selected > .radio > .dot {
+    -fx-background-color: transparent;
+}
