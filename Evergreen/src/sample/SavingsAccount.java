@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 
 import java.sql.*;
@@ -60,8 +61,9 @@ public class SavingsAccount extends Account {
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
-                statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_UPDATE_STATUS = 'Y'" +
-                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
+                new Thread(updateSavingsStatus).start();
+                new Thread(updateExpenditureTask).start();
+                new Thread(updateExpenditureRecorderTask).start();
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
@@ -79,30 +81,43 @@ public class SavingsAccount extends Account {
         }
     }
 
-    public void changeLimit(double amount) {
-        this.dailyLimit = amount;
+    Task<Void> updateSavingsStatus = new Task<>() {
+        @Override
+        protected Void call() {
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Statement statement = connect.createStatement();
 
-        try {
-            Class.forName("oracle.jdbc.OracleDriver");
-            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
-            Statement statement = connect.createStatement();
+                statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_UPDATE_STATUS = 'Y'" +
+                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
 
-            statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + amount +
-                    " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
-        } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
-    }
+            return null;
+        }
+    };
 
-    public void savingsAccountPayment(double amount) {
-        savingsPaymentValidation(amount);
-        balance -= amount;
-        setMonthExpenditure(getMonthExpenditure() + amount);
-    }
+    Task<Void> updateExpenditureTask = new Task<>() {
+        @Override
+        protected Void call() {
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Statement statement = connect.createStatement();
 
-    public void updateExpenditure() {
-        Calendar calendar = Calendar.getInstance();
+                statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_EXPENDITURE = " + 0 +
+                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
 
-        if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+            return null;
+        }
+    };
+
+    Task<Void> updateExpenditureRecorderTask = new Task<>() {
+        @Override
+        protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
@@ -124,6 +139,28 @@ public class SavingsAccount extends Account {
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+            return null;
         }
+    };
+
+    public void changeLimit(double amount) {
+        this.dailyLimit = amount;
+
+        try {
+            Class.forName("oracle.jdbc.OracleDriver");
+            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+            Statement statement = connect.createStatement();
+
+            statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + amount +
+                    " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
+
+        } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+    }
+
+    public void savingsAccountPayment(double amount) {
+        savingsPaymentValidation(amount);
+        balance -= amount;
+        setMonthExpenditure(getMonthExpenditure() + amount);
     }
 }
