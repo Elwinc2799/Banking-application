@@ -144,6 +144,7 @@ public class SavingsAccount extends Account {
         }
     };
 
+    // bug fixes
     public void changeLimit(double amount) {
         this.dailyLimit = amount;
 
