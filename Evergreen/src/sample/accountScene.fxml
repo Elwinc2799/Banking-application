@@ -29,7 +29,7 @@
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
-                                <Image url="file:/C:/Users/Eric/Pictures/Bank%20Project/src/sample/Resources/cloud-2-48.png" />
+                                <Image url="@Resources/cloud-2-48.png" />
                             </source>
                         </ImageInput>
                     </effect>
@@ -38,7 +38,7 @@
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
-                                <Image url="file:/C:/Users/Eric/Pictures/Bank%20Project/src/sample/Resources/pdf-2-48.png" />
+                                <Image url="@Resources/pdf-2-48.png" />
                             </source>
                         </ImageInput>
                     </effect>
@@ -47,7 +47,7 @@
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
-                                <Image url="file:/C:/Users/Eric/Pictures/Bank%20Project/src/sample/Resources/favorite-4-48.png" />
+                                <Image url="@Resources/favorite-4-48.png" />
                             </source>
                         </ImageInput>
                     </effect>
@@ -56,7 +56,7 @@
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
-                                <Image url="file:/C:/Users/Eric/Pictures/Bank%20Project/src/sample/Resources/dollar-2-48.png" />
+                                <Image url="@Resources/dollar-2-48.png" />
                             </source>
                         </ImageInput>
                     </effect>
@@ -65,7 +65,7 @@
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
-                                <Image url="file:/C:/Users/Eric/Pictures/Bank%20Project/src/sample/Resources/chart-2-48.png" />
+                                <Image url="@Resources/chart-2-48.png" />
                             </source>
                         </ImageInput>
                     </effect>
@@ -74,7 +74,7 @@
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
-                                <Image url="file:/C:/Users/Eric/Pictures/Bank%20Project/src/sample/Resources/globe-5-48.png" />
+                                <Image url="@Resources/globe-5-48.png" />
                             </source>
                         </ImageInput>
                     </effect>
