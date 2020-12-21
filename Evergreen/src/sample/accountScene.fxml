@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.ImageInput?>
@@ -11,17 +14,17 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AccountController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AccountController">
     <children>
         <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
             <children>
-                <ImageView fitHeight="760.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="700.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@Resources/IceBerg.png" />
+                        <Image url="@Resources/Background.png" />
                     </image>
                 </ImageView>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00000066" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1000.0" />
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="509.0" layoutX="96.0" layoutY="108.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="442.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="80.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="509.0" layoutX="111.0" layoutY="108.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="427.0" />
                 <Button layoutX="5.0" layoutY="22.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
@@ -31,7 +34,7 @@
                         </ImageInput>
                     </effect>
                 </Button>
-                <Button layoutX="5.0" layoutY="112.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                <Button layoutX="5.0" layoutY="112.0" mnemonicParsing="false" onAction="#transactionHistoryButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
@@ -40,7 +43,7 @@
                         </ImageInput>
                     </effect>
                 </Button>
-                <Button layoutX="5.0" layoutY="202.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                <Button layoutX="5.0" layoutY="202.0" mnemonicParsing="false" onAction="#transferButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
@@ -49,7 +52,7 @@
                         </ImageInput>
                     </effect>
                 </Button>
-                <Button layoutX="5.0" layoutY="292.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                <Button layoutX="5.0" layoutY="292.0" mnemonicParsing="false" onAction="#loanButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
@@ -58,7 +61,7 @@
                         </ImageInput>
                     </effect>
                 </Button>
-                <Button layoutX="5.0" layoutY="382.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                <Button layoutX="5.0" layoutY="382.0" mnemonicParsing="false" onAction="#dashBoardButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
@@ -67,7 +70,7 @@
                         </ImageInput>
                     </effect>
                 </Button>
-                <Button layoutX="5.0" layoutY="472.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                <Button layoutX="5.0" layoutY="472.0" mnemonicParsing="false" onAction="#aboutUsButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
                             <source>
@@ -184,25 +187,35 @@
                         <Font name="DengXian Light" size="18.0" />
                     </font>
                 </Label>
-                <Label layoutX="292.0" layoutY="278.0" text="Last 7 days" textFill="WHITE">
+                <Label layoutX="292.0" layoutY="278.0" text="Last 7 months" textFill="WHITE">
                     <font>
                         <Font name="DengXian Bold" size="18.0" />
                     </font>
                 </Label>
-                <Line endX="-100.00001525878906" endY="434.20001220703125" layoutX="180.0" layoutY="205.0" startX="-100.00001525878906" startY="-173.8000030517578" stroke="WHITE" />
                 <Label layoutX="625.0" layoutY="128.0" text="My Cards" textFill="WHITE">
                     <font>
                         <Font name="Candara Light" size="30.0" />
                     </font>
                 </Label>
-                <Button layoutX="624.0" layoutY="414.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="296.0" stylesheets="@sample.css" />
-                <Button layoutX="625.0" layoutY="206.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="296.0" stylesheets="@sample.css" />
+                <Button layoutX="624.0" layoutY="414.0" mnemonicParsing="false" onAction="#debitCardButtonPressed" prefHeight="186.0" prefWidth="296.0" stylesheets="@sample.css" />
+                <Button layoutX="625.0" layoutY="206.0" mnemonicParsing="false" onAction="#creditCardButtonPressed" prefHeight="186.0" prefWidth="296.0" stylesheets="@sample.css" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="64.0" layoutX="755.0" layoutY="18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="216.0" />
                 <Label fx:id="dateLabel" layoutX="780.0" layoutY="31.0" text="January, 17th" textFill="WHITE">
                     <font>
                         <Font name="Candara Light" size="30.0" />
                     </font>
                 </Label>
+                <LineChart fx:id="balanceChart" layoutX="102.0" layoutY="276.0" prefHeight="230.0" prefWidth="410.0" stylesheets="@sample.css">
+                    <xAxis>
+                        <CategoryAxis fx:id="monthAxis" side="BOTTOM">
+                            <tickLabelFont>
+                                <Font name="System Bold" size="7.0" />
+                            </tickLabelFont></CategoryAxis>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="balanceAxis" side="LEFT" />
+                    </yAxis>
+                </LineChart>
             </children>
         </AnchorPane>
     </children>
