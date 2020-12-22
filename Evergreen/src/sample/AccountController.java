@@ -15,7 +15,7 @@ public class AccountController implements Initializable {
     @FXML
     private Label creditNumLabel, debitNumLabel, creditDateLabel, debitDateLabel;
 
-   @Override
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SavingsAccount savingsAccount = new SavingsAccount();
 
