@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="EvergreenLib">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Desktop/lib/EvergreenLib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$USER_HOME$/Desktop/lib/EvergreenLib" recursive="false" />
+  </library>
+</component>
