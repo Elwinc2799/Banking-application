@@ -1,28 +1,29 @@
 package sample;
 
+import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
+
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
 public class CreditCard extends Card {
 
-    public int fixedMonthlyLimit;
-    public int monthlyLimit = fixedMonthlyLimit;
     public int overDraftCounter;
     public int latePaymentCounter;
-    public int lastPaidMonth;
 
     public double outstandingBalance;
+    public double expenditure;
+    public double minimumPayment = getOutstandingBalance() * 0.05;
     public double annualRates = 1.2;
+    public double[] balanceRecorder;
     public double[][] additionalRates = { { 12, 13, 15 },
-                                            { 5, 7, 10 }
+            { 5, 7, 10 }
     };
 
-    public String creditScore;
-
-    public int getFixedMonthlyLimit() { return fixedMonthlyLimit; }
-
-    public void setFixedMonthlyLimit(int fixedMonthlyLimit) { this.fixedMonthlyLimit = fixedMonthlyLimit; }
-
-    public int getMonthlyLimit() { return monthlyLimit; }
+    public LocalDate cardLastPaidDate;
+    public boolean outstandingBalanceStatusUpdated;
 
     public int getLatePaymentCounter() { return latePaymentCounter; }
 
@@ -36,91 +37,192 @@ public class CreditCard extends Card {
 
     public void setOutstandingBalance(double outstandingBalance) { this.outstandingBalance = outstandingBalance; }
 
+    public double getExpenditure() { return expenditure; }
+
+    public void setExpenditure(double expenditure) { this.expenditure = expenditure; }
+
+    public double getMinimumPayment() { return minimumPayment; }
+
     public double getAnnualRates() { return annualRates; }
 
-    public int getLastPaidMonth() { return lastPaidMonth; }
+    public LocalDate getCardLastPaidDate() { return cardLastPaidDate; }
 
-    public void setLastPaidMonth(int lastPaidMonth) { this.lastPaidMonth = lastPaidMonth; }
+    public void setCardLastPaidDate(LocalDate cardLastPaidDate) { this.cardLastPaidDate = cardLastPaidDate; }
 
-    public String getCreditScore() { return creditScore; }
+    public boolean isOutstandingBalanceStatusUpdated() { return outstandingBalanceStatusUpdated; }
+
+    public void setOutstandingBalanceStatusUpdated(boolean outstandingBalanceStatusUpdated) { this.outstandingBalanceStatusUpdated = outstandingBalanceStatusUpdated; }
+
+    public double getBalanceRecorder(int index) { return balanceRecorder[index]; }
+
+    public void setBalanceRecorder(double[] balanceRecorder) { this.balanceRecorder = balanceRecorder; }
 
     public void updateOutstandingBalance() {
+        updateLatePaymentCounter();
         int lateCategory = 0;
         int overdraftCategory;
         int counter = getLatePaymentCounter();
+        LocalDate dateBefore = getCardLastPaidDate().plusMonths(1);
+        LocalDate dateAfter = LocalDate.now();
 
-        switch (counter) {
-            case 1: case 2:
-            case 3: lateCategory = 0;
-                break;
+        if (!dateBefore.getMonth().equals(dateAfter.getMonth()) && !isOutstandingBalanceStatusUpdated()) {
+            if (counter >= 4 && counter < 8)
+                lateCategory = 1;
+            else if (counter >= 8 && counter < 12)
+                lateCategory = 2;
 
-            case 4: case 5: case 6:
-            case 7: lateCategory = 1;
-                break;
+            if (getOutstandingBalance() - getFixedMonthlyLimit() > 50000)
+                overdraftCategory = 2;
+            else if (getOutstandingBalance() - getFixedMonthlyLimit() >= 25000 && getOutstandingBalance() - getFixedMonthlyLimit() < 50000)
+                overdraftCategory = 1;
+            else
+                overdraftCategory = 0;
 
-            case 8: case 9: case 10:
-            case 11: lateCategory = 2;
-                break;
+            outstandingBalance += outstandingBalance * (getAnnualRates() / 1200);
 
-            default: break;
+            int day = (int) ChronoUnit.DAYS.between(dateBefore, dateAfter);
+
+            if (day > 0) {
+                outstandingBalance += (counter > 0) ? (outstandingBalance * (day * (additionalRates[0][lateCategory] / 36500))) : 0;
+                outstandingBalance += (getOutstandingBalance() > 0) ? (outstandingBalance * (day * (additionalRates[1][overdraftCategory] / 36500))) : 0;
+            }
+
+            outstandingBalance = (double) Math.round(outstandingBalance * 100) / 100;
+            setOutstandingBalanceStatusUpdated(true);
+            new Thread(updateStatus).start();
+
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Statement statement = connect.createStatement();
+
+                statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
+                        " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+        }
+    }
+
+    Task<Void> updateStatus = new Task<>() {
+        @Override
+        protected Void call() {
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Statement statement = connect.createStatement();
+
+                statement.executeQuery("UPDATE CREDITCARD SET CARD_BALANCE_PAID = 'Y'" +
+                        " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+            return null;
+        }
+    };
+
+    public boolean creditRepayment(double amount) {
+        if (amount < getMinimumPayment()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Amount is less than the minimum payment (5%).");
+            alert.showAndWait();
+            return false;
         }
 
-        if (getOutstandingBalance() - monthlyLimit > 50000)
-            overdraftCategory = 2;
-        else if (getOutstandingBalance() - monthlyLimit >= 25000 && getOutstandingBalance() - monthlyLimit < 50000)
-            overdraftCategory = 1;
-        else
-            overdraftCategory = 0;
-
-        outstandingBalance += outstandingBalance * (getAnnualRates() / 12);
-
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DATE);
-
-        outstandingBalance += (counter > 0) ? (outstandingBalance * (day * (additionalRates[0][lateCategory] / 365))) : 0;
-        outstandingBalance += (getOutstandingBalance() > 0) ? (outstandingBalance * (day * (additionalRates[1][overdraftCategory] / 365))) : 0;
-
-        outstandingBalance = (double) Math.round(outstandingBalance * 100) / 100;
-    }
-
-    public void creditPayment(double amount) {
-        Calendar calendar = Calendar.getInstance();
-        int month = (calendar.get(Calendar.MONTH) + 1);
-
+        LocalDate newPaidMonth = LocalDate.now();
         outstandingBalance -= amount;
-        setLastPaidMonth(month);
+        setCardLastPaidDate(newPaidMonth);
+        new Thread(updateDateTask).start();
+
+        return true;
     }
+
+    Task<Void> updateDateTask = new Task<>() {
+        @Override
+        protected Void call() {
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                PreparedStatement preparedStatement = connect.prepareStatement
+                        ("UPDATE CREDITCARD SET CARD_LAST_REPAYMENT_DATE = ? WHERE USERNAME = ?" );
+                preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+                preparedStatement.setString(2, ReadFile.DataStorage.getUsername());
+                preparedStatement.execute();
+
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+            return null;
+        }
+    };
+
+    Task<Void> updateExpenditureTask = new Task<>() {
+        @Override
+        protected Void call() {
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Statement statement = connect.createStatement();
+
+                statement.executeQuery("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +
+                        " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
+
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+            return null;
+        }
+    };
+
+    Task<Void> updateExpenditureRecorderTask = new Task<>() {
+        @Override
+        protected Void call() {
+            if (Calendar.DAY_OF_MONTH == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
+                try {
+                    Class.forName("oracle.jdbc.OracleDriver");
+                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                    Statement statement = connect.createStatement();
+                    double[] tempBalance = ReadFile.DataStorage.creditCard.balanceRecorder.clone();
+
+                    for (int i = 7; i > 0; i--)
+                        tempBalance[i] = tempBalance[i - 1];
+
+                    tempBalance[0] = getExpenditure();
+
+                    statement.executeQuery("UPDATE CREDITCARD_EXPENSES SET " +
+                            "ONE_MONTH_AGO = " + tempBalance[0] +
+                            ", TWO_MONTH_AGO = " + tempBalance[1] +
+                            ", THREE_MONTH_AGO = " + tempBalance[2] +
+                            ", FOUR_MONTH_AGO = " + tempBalance[3] +
+                            ", FIVE_MONTH_AGO = " + tempBalance[4] +
+                            ", SIX_MONTH_AGO = " + tempBalance[5] +
+                            ", SEVEN_MONTH_AGO = " + tempBalance[6] +
+                            " WHERE CARD_ID = '" + ReadFile.DataStorage.creditCard.getCardID() + "'");
+
+                } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+                new Thread(updateExpenditureTask).start();
+            }
+            return null;
+        }
+    };
 
     public void updateLatePaymentCounter() {
-        Calendar calendar = Calendar.getInstance();
-        int month = (calendar.get(Calendar.MONTH) + 1);
+        LocalDate dateBefore = getCardLastPaidDate().plusMonths(1);
+        LocalDate dateAfter = LocalDate.now();
 
-        latePaymentCounter = getLastPaidMonth() - month;
+        setLatePaymentCounter((int) ChronoUnit.MONTHS.between(dateBefore, dateAfter));
     }
 
-    public void creditUsage(int amount) {
+    public void creditUsage(double amount) {
         outstandingBalance += amount;
-        monthlyLimit -= amount;
+        expenditure += amount;
 
-        updateOverdraftCounter();
+        setOverDraftCounter(getOverDraftCounter() + ((getExpenditure() > getFixedMonthlyLimit()) ? 1 : 0));
     }
 
-    public void updateOverdraftCounter() {
-        overDraftCounter += (getMonthlyLimit() < 0) ? 1 : 0;
-    }
+    public boolean creditCardUsageValidation(double amount) {
+        if (expenditure + amount > getFixedMonthlyLimit()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("You have exceed your monthly transaction limit");
+            alert.showAndWait();
+            return false;
+        }
 
-    public double updateCreditScore() {
-        double creditScoreValue = ((30 * (overDraftCounter + latePaymentCounter) / 12) + (0.7 * outstandingBalance / getFixedMonthlyLimit())) * 10;
-
-        if (creditScoreValue > 80)
-            creditScore = "Bad";
-        else if (creditScoreValue >= 50 && creditScoreValue < 80)
-            creditScore = "Fair";
-        else if (creditScoreValue >= 15 && creditScoreValue < 50)
-            creditScore = "Good";
-        else
-            creditScore = "Exceptional";
-
-        return (double) Math.round(creditScoreValue * 100) / 100;
+        return true;
     }
 }
