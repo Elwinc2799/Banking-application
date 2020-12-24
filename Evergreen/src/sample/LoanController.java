@@ -238,7 +238,7 @@ public class LoanController implements Initializable {
     @FXML
     public void onlineBankingPushed() {
         if (!ReadFile.DataStorage.savingsAccount.savingsPaymentValidation(ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
-                ReadFile.DataStorage.businessLoan.getMonthlyRepayment()))
+            ReadFile.DataStorage.businessLoan.getMonthlyRepayment()))
             return;
 
         TransferController instance = new TransferController();
@@ -368,7 +368,7 @@ public class LoanController implements Initializable {
                 return;
 
             if (cardNumField.getText().equals(ReadFile.DataStorage.creditCard.getCardID()) && expDateField.getText().equals(ReadFile.DataStorage.creditCard.getExpiryDate()) &&
-                    cvvField.getText().equals(ReadFile.DataStorage.creditCard.getCvv()) && otpField.getText().equals(instance.getOTP())) {
+            cvvField.getText().equals(ReadFile.DataStorage.creditCard.getCvv()) && otpField.getText().equals(instance.getOTP())) {
                 ReadFile.DataStorage.creditCard.creditUsage(ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
                         ReadFile.DataStorage.businessLoan.getMonthlyRepayment());
                 new Thread(Loan.updateHistoryTask).start();
