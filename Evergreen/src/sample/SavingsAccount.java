@@ -62,8 +62,6 @@ public class SavingsAccount extends Account {
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
                 new Thread(updateSavingsStatus).start();
-                new Thread(updateExpenditureTask).start();
-                new Thread(updateExpenditureRecorderTask).start();
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
@@ -118,33 +116,36 @@ public class SavingsAccount extends Account {
     Task<Void> updateExpenditureRecorderTask = new Task<>() {
         @Override
         protected Void call() {
-            try {
-                Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
-                Statement statement = connect.createStatement();
-                double[] tempBalance = ReadFile.DataStorage.savingsAccount.balanceRecorder.clone();
+            if (Calendar.DAY_OF_MONTH == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
+                try {
+                    Class.forName("oracle.jdbc.OracleDriver");
+                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                    Statement statement = connect.createStatement();
+                    double[] tempBalance = ReadFile.DataStorage.savingsAccount.balanceRecorder.clone();
 
-                System.arraycopy(tempBalance, 0, tempBalance, 1, 5);
+                    for (int i = 7; i > 0; i--)
+                        tempBalance[i] = tempBalance[i - 1];
 
-                tempBalance[0] = getMonthExpenditure();
+                    tempBalance[0] = getMonthExpenditure();
 
-                statement.executeQuery("UPDATE SAVINGS_EXPENSE SET " +
-                        "ONE_MONTH_AGO = " + tempBalance[0] +
-                        "TWO_MONTH_AGO = " + tempBalance[1] +
-                        "THREE_MONTH_AGO = " + tempBalance[2] +
-                        "FOUR_MONTH_AGO = " + tempBalance[3] +
-                        "FIVE_MONTH_AGO = " + tempBalance[4] +
-                        "SIX_MONTH_AGO = " + tempBalance[5] +
-                        "SEVEN_MONTH_AGO = " + tempBalance[6] +
-                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
+                    statement.executeQuery("UPDATE SAVINGS_EXPENSE SET " +
+                            "ONE_MONTH_AGO = " + tempBalance[0] +
+                            ", TWO_MONTH_AGO = " + tempBalance[1] +
+                            ", THREE_MONTH_AGO = " + tempBalance[2] +
+                            ", FOUR_MONTH_AGO = " + tempBalance[3] +
+                            ", FIVE_MONTH_AGO = " + tempBalance[4] +
+                            ", SIX_MONTH_AGO = " + tempBalance[5] +
+                            ", SEVEN_MONTH_AGO = " + tempBalance[6] +
+                            " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
 
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+                } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
+                new Thread(updateExpenditureTask).start();
+            }
             return null;
         }
     };
 
-    // bug fixes
     public void changeLimit(double amount) {
         this.dailyLimit = amount;
 
