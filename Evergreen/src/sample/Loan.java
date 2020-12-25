@@ -77,7 +77,7 @@ public class Loan {
 
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
             Statement statement = connect.createStatement();
 
             statement.executeQuery("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
@@ -95,7 +95,7 @@ public class Loan {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 PreparedStatement preparedStatement = connect.prepareStatement
                         ("UPDATE LOAN SET LOAN_LAST_PAID_DATE = ? WHERE USERNAME = ?" );
                 preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
@@ -113,7 +113,7 @@ public class Loan {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 PreparedStatement preparedStatement = connect.prepareStatement
                         ("UPDATE LOAN_REPAYMENT_HISTORY SET LOAN_REPAYMENT_DATE = ?, LOAN_REPAYMENT_AMOUNT = ? WHERE LOAN_ID = ?" );
                 preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
@@ -133,7 +133,7 @@ public class Loan {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE LOAN SET LOAN_UPDATE_STATUS = 'Y'" +
@@ -165,7 +165,7 @@ public class Loan {
 
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +

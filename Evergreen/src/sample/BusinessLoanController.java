@@ -1,84 +1,87 @@
 package sample;
 
-import javafx.event.ActionEvent;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.scene.control.Label;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.ResourceBundle;
-
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-
 public class BusinessLoanController {
+
     @FXML
     private StackPane root;
 
     @FXML
     private TextField name;
+
     @FXML
     private TextField ICno;
+
     @FXML
     private TextField businessname;
+
     @FXML
     private TextField email;
+
     @FXML
     private TextField address1;
+
     @FXML
     private TextField address2;
+
     @FXML
     private TextField address3;
+
     @FXML
     private TextField phoneno;
 
     @FXML
     private TextField businessType;
+
     @FXML
     private TextField companyEmail;
+
     @FXML
     private TextField companyAddress1;
+
     @FXML
     private TextField companyAddress2;
+
     @FXML
     private TextField companyAddress3;
 
     @FXML
-    private Label replyB;
+    private TextField bankName;
 
     @FXML
-    private TextField bankName;
-    @FXML
     private TextField accType;
+
     @FXML
     private TextField accNum;
 
     @FXML
     private TextField loanAmount;
+
     @FXML
     private TextField loanPurpose;
+
     @FXML
     private TextField items;
+
     @FXML
     private TextField price;
 
@@ -263,16 +266,9 @@ public class BusinessLoanController {
             document.add(signatureTable);
 
             document.close();
-            replyB.setText("Application PDF created successfully");
-            //    pane.getChildren().addAll(reply);
             writer.close();
-        } catch (DocumentException | FileNotFoundException e)
-        {
-            replyB.setText("Application PDF failed to create");
-            //    pane.getChildren().add(reply);
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        catch (DocumentException | FileNotFoundException e) { e.printStackTrace(); }
+        catch (IOException e) { e.printStackTrace(); }
     }
 }

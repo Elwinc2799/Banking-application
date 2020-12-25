@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.concurrent.Task;
+import org.controlsfx.control.Notifications;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -17,8 +18,8 @@ import java.util.Properties;
 public class DepositAccount extends Account {
 
     public double[][] interestRate = { { 1.85, 1.9, 2.1, 2.2 },
-            { 1.9, 1.95, 2.15, 2.25 },
-            { 2.0, 2.1, 2.2, 2.3 }
+                                        { 1.9, 1.95, 2.15, 2.25 },
+                                        { 2.0, 2.1, 2.2, 2.3 }
     };
 
     public int depositType;
@@ -40,7 +41,7 @@ public class DepositAccount extends Account {
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH);
 
-        if ((month % 3 == 0 || month == 12) && !isBalanceUpdateStatus() && calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+        if (month % 3 == 0 && !isBalanceUpdateStatus() && calendar.get(Calendar.DAY_OF_MONTH) == 1) {
             switch (month - ReadFile.DataStorage.savingsAccount.getAccountDateOpen().getMonthValue()) {
                 case 3: balance *= Math.pow((1 + (getInterestRate(0, getDepositType()) / 400)), (4 * 3 / 12));
                     break;
@@ -63,13 +64,12 @@ public class DepositAccount extends Account {
 
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.depositAccount.getBalance() +
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.depositAccount.getAccountNum() + "'");
-                statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'Y'" +
-                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.depositAccount.getAccountNum() + "'");
+                new Thread(updateDepositStatus).start();
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
@@ -77,7 +77,7 @@ public class DepositAccount extends Account {
         if (calendar.get(Calendar.DAY_OF_MONTH) > 27) {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'N'" +
@@ -86,7 +86,6 @@ public class DepositAccount extends Account {
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
     }
-    //
 
     public boolean renewal() {
         LocalDate renewalDate = LocalDate.now();
@@ -130,12 +129,30 @@ public class DepositAccount extends Account {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(ReadFile.DataStorage.savingsAccount.getEmail(),false));
                 message.setSubject("Automated Message Transfer Authentication");
                 message.setText("Dear " + ReadFile.DataStorage.savingsAccount.getName() + ",\n\nThis is an automated generated email to remind you of your deposits." +
-                        " Your deposits account has been terminated and you can collect the amount in it. You can choose for it to remain in the account but you will " +
-                        "not receive any additional interest compounded into your account.\n\nPlease reach out to us at (+604) 653 4758.");
+                        " Your deposits account has been terminated and you can collect the amount in it." +
+                        " You can choose for it to remain in the account but you will not receive any additional interest compounded into your account." +
+                        "\n\nIf you did not request this OTP, please reach out to us at (+604) 653 4758.");
 
                 message.setSentDate(new Date());
                 Transport.send(message);
             } catch (MessagingException e){ e.printStackTrace(); }
+
+            return null;
+        }
+    };
+
+    Task<Void> updateDepositStatus = new Task<>() {
+        @Override
+        protected Void call() {
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
+                Statement statement = connect.createStatement();
+
+                statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'Y'" +
+                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.depositAccount.getAccountNum() + "'");
+
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
             return null;
         }

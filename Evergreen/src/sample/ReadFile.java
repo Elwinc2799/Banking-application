@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
 
 
 public class ReadFile {
-
+    public static String accPassword = "2799!!epokemon";
     public static HashMap<String, String> passwordMap = new HashMap<>();
     static Semaphore semConsumer = new Semaphore(0);
     static Semaphore semProducer = new Semaphore(1);
@@ -52,7 +52,7 @@ public class ReadFile {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", accPassword);
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM LOGIN");
