@@ -56,7 +56,7 @@ public class SavingsAccount extends Account {
 
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
@@ -69,7 +69,7 @@ public class SavingsAccount extends Account {
         if (calendar.get(Calendar.DAY_OF_MONTH) > 27) {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_UPDATE_STATUS = 'N'" +
@@ -84,7 +84,7 @@ public class SavingsAccount extends Account {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_UPDATE_STATUS = 'Y'" +
@@ -101,7 +101,7 @@ public class SavingsAccount extends Account {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_EXPENDITURE = " + 0 +
@@ -119,12 +119,12 @@ public class SavingsAccount extends Account {
             if (Calendar.DAY_OF_MONTH == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
                 try {
                     Class.forName("oracle.jdbc.OracleDriver");
-                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                     Statement statement = connect.createStatement();
                     double[] tempBalance = ReadFile.DataStorage.savingsAccount.balanceRecorder.clone();
 
-                    for (int i = 7; i > 0; i--)
-                        tempBalance[i] = tempBalance[i - 1];
+                   for (int i = 7; i > 0; i--)
+                       tempBalance[i] = tempBalance[i - 1];
 
                     tempBalance[0] = getMonthExpenditure();
 
@@ -151,7 +151,7 @@ public class SavingsAccount extends Account {
 
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
             Statement statement = connect.createStatement();
 
             statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + amount +

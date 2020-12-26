@@ -19,7 +19,7 @@ public class CreditCard extends Card {
     public double annualRates = 1.2;
     public double[] balanceRecorder;
     public double[][] additionalRates = { { 12, 13, 15 },
-            { 5, 7, 10 }
+                                            { 5, 7, 10 }
     };
 
     public LocalDate cardLastPaidDate;
@@ -93,7 +93,7 @@ public class CreditCard extends Card {
 
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
@@ -107,7 +107,7 @@ public class CreditCard extends Card {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE CREDITCARD SET CARD_BALANCE_PAID = 'Y'" +
@@ -139,7 +139,7 @@ public class CreditCard extends Card {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 PreparedStatement preparedStatement = connect.prepareStatement
                         ("UPDATE CREDITCARD SET CARD_LAST_REPAYMENT_DATE = ? WHERE USERNAME = ?" );
                 preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
@@ -157,7 +157,7 @@ public class CreditCard extends Card {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +
@@ -175,7 +175,7 @@ public class CreditCard extends Card {
             if (Calendar.DAY_OF_MONTH == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
                 try {
                     Class.forName("oracle.jdbc.OracleDriver");
-                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                     Statement statement = connect.createStatement();
                     double[] tempBalance = ReadFile.DataStorage.creditCard.balanceRecorder.clone();
 

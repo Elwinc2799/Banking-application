@@ -84,7 +84,7 @@ public class DebitCardController implements Initializable {
 
         ArrayList<TransactionHistory> generalList = TransactionHistoryController.searchIn(ReadFile.DataStorage.transactionHistoryArrayList,
                 transactionHistory -> (transactionHistory.getTransactionDate().equals(start) || transactionHistory.getTransactionDate().equals(end) ||
-                        (transactionHistory.getTransactionDate().isAfter(start)) && transactionHistory.getTransactionDate().isBefore(end)));
+                (transactionHistory.getTransactionDate().isAfter(start)) && transactionHistory.getTransactionDate().isBefore(end)));
 
         if (generalList.size() > 0) {
             statusLabel.setText("Active");
@@ -151,7 +151,7 @@ public class DebitCardController implements Initializable {
             if (otpField.getText().equals(instance.getOTP()) && ReadFile.DataStorage.debitCard.isValid(textField.getText())) {
                 try {
                     Class.forName("oracle.jdbc.OracleDriver");
-                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
+                    Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
                     Statement statement = connect.createStatement();
 
                     statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + Double.parseDouble(textField.getText()) +
