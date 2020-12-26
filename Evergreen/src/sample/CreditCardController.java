@@ -100,7 +100,7 @@ public class CreditCardController implements Initializable {
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
+                Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
@@ -184,7 +184,7 @@ public class CreditCardController implements Initializable {
 
                         try {
                             Class.forName("oracle.jdbc.OracleDriver");
-                            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
+                            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
                             Statement statement = connect.createStatement();
 
                             statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + ReadFile.DataStorage.creditCard.getOutstandingBalance() +
@@ -210,15 +210,15 @@ public class CreditCardController implements Initializable {
     public void refreshButtonPushed() {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.accPassword);
+            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", "ericcheah575");
             Statement statement = connect.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM CREDITCARD_EXPENSES WHERE CARD_ID = '" + ReadFile.DataStorage.creditCard.getCardID() + "'");
             while (resultSet.next()) {
                 double[] tempBalanceRecorder = new double[7];
 
-                for (int i = 0; i < 7; i++)
-                    tempBalanceRecorder[i] = resultSet.getDouble(i + 2);
+                for (int i = 0, j = 6; i < 7; i++, j--)
+                    tempBalanceRecorder[j] = resultSet.getDouble(i + 2);
 
                 ReadFile.DataStorage.creditCard.setBalanceRecorder(tempBalanceRecorder);
             }
