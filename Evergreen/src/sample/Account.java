@@ -1,8 +1,8 @@
 package sample;
 
-public abstract class Account {
+import java.time.LocalDate;
 
-    public int dateOpen;
+public abstract class Account {
 
     public String accountNum;
     public String name;
@@ -10,9 +10,9 @@ public abstract class Account {
 
     public double balance;
 
-    public int getDateOpen() { return dateOpen; }
+    public boolean balanceUpdateStatus;
 
-    public void setDateOpen(int dateOpen) { this.dateOpen = dateOpen; }
+    public LocalDate accountDateOpen;
 
     public String getAccountNum() { return accountNum; }
 
@@ -30,9 +30,15 @@ public abstract class Account {
 
     public double getBalance() { return balance; }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
+    public void setBalance(double balance) { this.balance = balance; }
+
+    public LocalDate getAccountDateOpen() { return accountDateOpen; }
+
+    public void setAccountDateOpen(LocalDate accountDateOpen) { this.accountDateOpen = accountDateOpen; }
+
+    public boolean isBalanceUpdateStatus() { return balanceUpdateStatus; }
+
+    public void setBalanceUpdateStatus(boolean balanceUpdateStatus) { this.balanceUpdateStatus = balanceUpdateStatus; }
 
     public abstract void updateBalance();
 }
