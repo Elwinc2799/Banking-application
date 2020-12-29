@@ -1,8 +1,10 @@
-package sample;
+package sample.Semaphore;
+
+import sample.ReadFile;
 
 public class Producer implements Runnable {
 
-    Producer() {
+    public Producer() {
         new Thread(this, "Producer").start();
     }
 
