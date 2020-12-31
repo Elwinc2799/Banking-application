@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.ImageInput?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Loan.LoanController">
+   <children>
+      <AnchorPane onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="700.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Resources/Background.png" />
+               </image>
+            </ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+            <Button layoutX="5.0" layoutY="22.0" mnemonicParsing="false" onAction="#accountButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+               <effect>
+                  <ImageInput x="10.0" y="10.0">
+                     <source>
+                        <Image url="@Resources/cloud-2-48.png" />
+                     </source>
+                  </ImageInput>
+               </effect>
+            </Button>
+            <Button layoutX="5.0" layoutY="112.0" mnemonicParsing="false" onAction="#transactionHistoryButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+               <effect>
+                  <ImageInput x="10.0" y="10.0">
+                     <source>
+                        <Image url="@Resources/pdf-2-48.png" />
+                     </source>
+                  </ImageInput>
+               </effect>
+            </Button>
+            <Button layoutX="5.0" layoutY="202.0" mnemonicParsing="false" onAction="#transferButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+               <effect>
+                  <ImageInput x="10.0" y="10.0">
+                     <source>
+                        <Image url="@Resources/favorite-4-48.png" />
+                     </source>
+                  </ImageInput>
+               </effect>
+            </Button>
+            <Button layoutX="5.0" layoutY="292.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+               <effect>
+                  <ImageInput x="10.0" y="10.0">
+                     <source>
+                        <Image url="@Resources/dollar-2-48.png" />
+                     </source>
+                  </ImageInput>
+               </effect>
+            </Button>
+            <Button layoutX="5.0" layoutY="382.0" mnemonicParsing="false" onAction="#dashBoardButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+               <effect>
+                  <ImageInput x="10.0" y="10.0">
+                     <source>
+                        <Image url="@Resources/chart-2-48.png" />
+                     </source>
+                  </ImageInput>
+               </effect>
+            </Button>
+            <Button layoutX="5.0" layoutY="472.0" mnemonicParsing="false" onAction="#aboutUsButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+               <effect>
+                  <ImageInput x="10.0" y="10.0">
+                     <source>
+                        <Image url="@Resources/globe-5-48.png" />
+                     </source>
+                  </ImageInput>
+               </effect>
+            </Button>
+            <Label layoutX="119.0" layoutY="38.0" text="Loan" textFill="WHITE">
+               <font>
+                  <Font name="Candara Light" size="30.0" />
+               </font>
+            </Label>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="146.0" layoutX="119.0" layoutY="128.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="494.0" />
+            <Label fx:id="loanTypeLabel" layoutX="151.0" layoutY="147.0" text="Personal Loan" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="outstandingBalanceLabel" layoutX="229.0" layoutY="168.0" text="3500000" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="36.0" />
+               </font>
+            </Label>
+            <Label layoutX="151.0" layoutY="168.0" text="MYR" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="36.0" />
+               </font>
+            </Label>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="343.0" layoutX="119.0" layoutY="308.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="325.0" />
+            <Label fx:id="currentPaymentLabel" layoutX="168.0" layoutY="345.0" prefHeight="42.0" prefWidth="169.0" text="JANUARY, 17" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="152.0" layoutY="327.0" text="Payment Due" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="149.0" layoutY="429.0" text="Next Payment" textFill="GREY">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="overdueLabel" layoutX="168.0" layoutY="378.0" text="Overdue for 3 days" textFill="#fa6161">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="nextPaymentLabel" layoutX="168.0" layoutY="444.0" prefHeight="50.0" prefWidth="251.0" text="FEBRUARY, 17" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="500.0" layoutY="327.0" text="Payment History:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="395.0" layoutY="175.0" text="/  MYR" textFill="GREY">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="initialBalanceLabel" layoutX="475.0" layoutY="175.0" text="10000" textFill="GREY">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="149.0" layoutY="505.0" text="Final Payment (Approximate)" textFill="GREY">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="finalPaymentLabel" layoutX="168.0" layoutY="520.0" prefHeight="43.0" prefWidth="234.0" text="SEPTEMBER, 17" textFill="#21dada">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="338.0" layoutY="211.0" text="MYR" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="149.0" layoutY="211.0" text="Monthly Repayment" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="monthlyRepaymentLabel" layoutX="390.0" layoutY="211.0" text="MYR" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft Yi Baiti" size="24.0" />
+               </font>
+            </Label>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="146.0" layoutX="733.0" layoutY="128.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="234.0" />
+            <Label fx:id="loanTypeLabel1" layoutX="760.0" layoutY="136.0" text="Payment" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="30.0" fitWidth="38.0" layoutX="758.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Resources/icons8-around-the-globe-64.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="758.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Resources/icons8-bank-cards-64.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="loanTypeLabel11" layoutX="799.0" layoutY="178.0" text="Online Baking" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="loanTypeLabel111" layoutX="800.0" layoutY="226.0" text="Visa / Mastercard" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="creditCardButton" layoutX="758.0" layoutY="225.0" mnemonicParsing="false" onAction="#creditCardPushed" prefHeight="23.0" prefWidth="170.0" stylesheets="@../sample.css" />
+            <Button fx:id="onlineBankingButton" layoutX="758.0" layoutY="177.0" mnemonicParsing="false" onAction="#onlineBankingPushed" prefHeight="23.0" prefWidth="170.0" stylesheets="@../sample.css" />
+            <TableView fx:id="tableView" layoutX="500.0" layoutY="369.0" prefHeight="246.0" prefWidth="446.0" stylesheets="@../transparent.css">
+              <columns>
+                <TableColumn fx:id="transactionDate" prefWidth="220.800048828125" text="Repayment Date" />
+                <TableColumn fx:id="transactionAmount" prefWidth="224.7999267578125" text="Transaction Amount" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
