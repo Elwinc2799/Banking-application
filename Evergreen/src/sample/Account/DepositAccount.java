@@ -16,8 +16,8 @@ import java.util.Properties;
 public class DepositAccount extends Account {
 
     public double[][] interestRate = { { 1.85, 1.9, 2.1, 2.2 },
-                                        { 1.9, 1.95, 2.15, 2.25 },
-                                        { 2.0, 2.1, 2.2, 2.3 }
+            { 1.9, 1.95, 2.15, 2.25 },
+            { 2.0, 2.1, 2.2, 2.3 }
     };
 
     public int depositType;
@@ -94,7 +94,7 @@ public class DepositAccount extends Account {
         return true;
     }
 
-    Task<Void> sendRenewal = new Task<>() {
+    Task<Void> sendRenewal = new Task<Void>() {
         @Override
         protected Void call() {
             final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
@@ -127,7 +127,7 @@ public class DepositAccount extends Account {
                 message.setText("Dear " + ReadFile.DataStorage.savingsAccount.getName() + ",\n\nThis is an automated generated email to remind you of your deposits." +
                         " Your deposits account has been terminated and you can collect the amount in it." +
                         " You can choose for it to remain in the account but you will not receive any additional interest compounded into your account." +
-                        "\n\nIf you did not request this OTP, please reach out to us at (+604) 653 4758.");
+                        "\n\nPlease reach out to us at (+604) 653 4758 for more information.");
 
                 message.setSentDate(new Date());
                 Transport.send(message);
@@ -137,7 +137,7 @@ public class DepositAccount extends Account {
         }
     };
 
-    Task<Void> updateDepositStatus = new Task<>() {
+    Task<Void> updateDepositStatus = new Task<Void>() {
         @Override
         protected Void call() {
             try {

@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import sample.ReadFile;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class SavingsAccount extends Account {
@@ -46,10 +47,7 @@ public class SavingsAccount extends Account {
     }
 
     public void updateBalance() {
-        Calendar calendar = Calendar.getInstance();
-        int month = (calendar.get(Calendar.MONTH));
-
-        if (month % 3 == 0 && calendar.get(Calendar.DAY_OF_MONTH) == 1 && !isBalanceUpdateStatus()) {
+        if (LocalDate.now().getMonthValue() % 3 == 0 && LocalDate.now().getDayOfMonth() == 1 && !isBalanceUpdateStatus()) {
             balance *= Math.pow((1 + (getInterestRate()) / 400), (4 * 3 / 12));
 
             balance = (double) Math.round(balance * 100) / 100;
@@ -66,7 +64,7 @@ public class SavingsAccount extends Account {
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
 
-        if (calendar.get(Calendar.DAY_OF_MONTH) > 27) {
+        if (LocalDate.now().getDayOfMonth() > 28) {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Statement statement = ReadFile.connect.createStatement();
@@ -78,7 +76,7 @@ public class SavingsAccount extends Account {
         }
     }
 
-    Task<Void> updateSavingsStatus = new Task<>() {
+    Task<Void> updateSavingsStatus = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -93,35 +91,6 @@ public class SavingsAccount extends Account {
             return null;
         }
     };
-
-    Task<Void> updateExpenditureTask = new Task<>() {
-        @Override
-        protected Void call() {
-            try {
-                Class.forName("oracle.jdbc.OracleDriver");
-                Statement statement = ReadFile.connect.createStatement();
-
-                statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_EXPENDITURE = " + 0 +
-                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
-
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
-
-            return null;
-        }
-    };
-
-    public void changeLimit(double amount) {
-        this.dailyLimit = amount;
-
-        try {
-            Class.forName("oracle.jdbc.OracleDriver");
-            Statement statement = ReadFile.connect.createStatement();
-
-            statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + amount +
-                    " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
-
-        } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
-    }
 
     public void savingsAccountPayment(double amount) {
         savingsPaymentValidation(amount);
