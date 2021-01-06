@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -155,7 +156,6 @@
                </font>
             </Label>
             <ChoiceBox fx:id="typeChoiceBox" layoutX="240.0" layoutY="265.0" prefHeight="26.0" prefWidth="230.0" />
-            <Button layoutX="399.0" layoutY="337.0" mnemonicParsing="false" onAction="#proceedButtonPushed" prefHeight="23.0" prefWidth="70.0" styleClass="lion" stylesheets="@../transparent.css" text="Proceed" />
             <PieChart fx:id="pieChart" layoutX="592.0" layoutY="172.0" prefHeight="231.0" prefWidth="370.0" styleClass="chart-pie-label" stylesheets="@../transparent.css" />
             <Label layoutX="130.0" layoutY="222.0" text="End Date" textFill="WHITE">
                <font>
@@ -172,6 +172,7 @@
                   <TableColumn fx:id="amountColumn" prefWidth="164.0" style="-fx-alignment: CENTER;" text="Transaction Amount" />
               </columns>
             </TableView>
+            <JFXButton layoutX="399.0" layoutY="349.0" onAction="#proceedButtonPushed" prefHeight="26.0" prefWidth="70.0" ripplerFill="#aca8a8" styleClass="lion" stylesheets="@../transparent.css" text="Proceed" />
             </children>
         </AnchorPane>
     </children>

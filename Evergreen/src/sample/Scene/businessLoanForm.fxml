@@ -21,7 +21,7 @@
                         <Image url="@Resources/Background.png" />
                     </image>
                 </ImageView>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="80.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="80.0" />
                 <Button layoutX="5.0" layoutY="22.0" mnemonicParsing="false" onAction="#accountButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
@@ -202,7 +202,6 @@
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font>
                 </TextField>
-                <Button layoutX="777.0" layoutY="564.0" mnemonicParsing="false" onAction="#generateBFormPushed" styleClass="lion" stylesheets="@../transparent.css" text="Generate PDF form" />
                 <TextField fx:id="loanPurpose" layoutX="283.0" layoutY="510.0" prefHeight="23.0" prefWidth="198.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
@@ -213,27 +212,27 @@
                         <Font name="DengXian Light" size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="address1" layoutX="283.0" layoutY="286.0" prefHeight="26.0" prefWidth="198.0" promptText="Line 1" styleClass="custom-text-field" stylesheets="@../sample.css">
+                <TextField fx:id="address1" layoutX="283.0" layoutY="286.0" prefHeight="26.0" prefWidth="198.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></TextField>
-                <TextField fx:id="address2" layoutX="283.0" layoutY="318.0" prefHeight="26.0" prefWidth="198.0" promptText="Line 2" styleClass="custom-text-field" stylesheets="@../sample.css">
+                <TextField fx:id="address2" layoutX="283.0" layoutY="318.0" prefHeight="26.0" prefWidth="198.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></TextField>
-                <TextField fx:id="address3" layoutX="283.0" layoutY="350.0" prefHeight="26.0" prefWidth="198.0" promptText="Line 3" styleClass="custom-text-field" stylesheets="@../sample.css">
+                <TextField fx:id="address3" layoutX="283.0" layoutY="350.0" prefHeight="26.0" prefWidth="198.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></TextField>
-                <TextField fx:id="companyAddress1" layoutX="653.0" layoutY="195.0" prefHeight="26.0" prefWidth="242.0" promptText="Line 1" styleClass="custom-text-field" stylesheets="@../sample.css">
+                <TextField fx:id="companyAddress1" layoutX="653.0" layoutY="195.0" prefHeight="26.0" prefWidth="242.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></TextField>
-                <TextField fx:id="companyAddress2" layoutX="653.0" layoutY="227.0" prefHeight="26.0" prefWidth="242.0" promptText="Line 2" styleClass="custom-text-field" stylesheets="@../sample.css">
+                <TextField fx:id="companyAddress2" layoutX="653.0" layoutY="227.0" prefHeight="26.0" prefWidth="242.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></TextField>
-                <TextField fx:id="companyAddress3" layoutX="653.0" layoutY="260.0" prefHeight="26.0" prefWidth="242.0" promptText="Line 2" styleClass="custom-text-field" stylesheets="@../sample.css">
+                <TextField fx:id="companyAddress3" layoutX="653.0" layoutY="260.0" prefHeight="26.0" prefWidth="242.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></TextField>
@@ -255,36 +254,37 @@
                         <Font name="DengXian Light" size="14.0" />
                     </font>
                 </Label>
-            <Label layoutX="133.0" layoutY="101.0" prefHeight="22.0" prefWidth="177.0" text="Personal Information" textFill="WHITE">
-               <font>
-                  <Font name="DengXian Light" size="18.0" />
-               </font>
-            </Label>
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="157.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="186.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="217.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="246.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="276.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="309.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="341.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="373.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="420.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="447.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="474.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="504.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="531.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="558.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="586.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="755.0" layoutY="157.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="755.0" layoutY="186.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Label layoutX="523.0" layoutY="101.0" prefHeight="22.0" prefWidth="177.0" text="Business Information" textFill="WHITE">
-               <font>
-                  <Font name="DengXian Light" size="18.0" />
-               </font>
-            </Label>
-            <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="754.0" layoutY="218.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="754.0" layoutY="251.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
-            <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="754.0" layoutY="284.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Label layoutX="133.0" layoutY="101.0" prefHeight="22.0" prefWidth="177.0" text="Personal Information" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="157.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="186.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="217.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="246.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="276.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="309.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="341.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="373.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="420.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="447.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="474.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="504.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="531.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="558.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="97.4000244140625" endY="0.1999969482421875" layoutX="384.0" layoutY="586.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="755.0" layoutY="157.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="755.0" layoutY="186.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Label layoutX="523.0" layoutY="101.0" prefHeight="22.0" prefWidth="177.0" text="Business Information" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="754.0" layoutY="218.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="754.0" layoutY="251.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <Line endX="138.60003662109375" endY="0.1999969482421875" layoutX="754.0" layoutY="284.0" startX="-93.5999755859375" startY="0.1999969482421875" stroke="WHITE" />
+                <StackPane fx:id="panebutton" layoutX="739.0" layoutY="556.0" prefHeight="70.0" prefWidth="156.0" />
             </children>
         </AnchorPane>
     </children>

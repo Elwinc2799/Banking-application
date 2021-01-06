@@ -5,29 +5,43 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
+import sample.Compare.CustomComparator;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TransactionHistoryController implements Initializable {
+
+    double x = 0;
+    double y = 0;
+
+    @FXML
+    void dragged(MouseEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+    @FXML
+    void pressed(MouseEvent event) {
+        x = event.getSceneX();
+        y = event.getSceneY();
+    }
 
     @FXML
     private StackPane root;
@@ -71,10 +85,6 @@ public class TransactionHistoryController implements Initializable {
     @FXML
     private PieChart pieChart;
 
-    private ArrayList<TransactionHistory> generalList = new ArrayList<>();
-    private ArrayList<TransactionHistory> depositList = new ArrayList<>();
-    private ArrayList<TransactionHistory> paymentList = new ArrayList<>();
-
     ObservableList<String> list = FXCollections.observableArrayList("General", "Deposits", "Payment");
 
     @Override
@@ -82,27 +92,27 @@ public class TransactionHistoryController implements Initializable {
         typeChoiceBox.setItems(list);
         typeChoiceBox.setValue("General");
 
-        transactionDateColumn.setCellValueFactory(new PropertyValueFactory<TransactionHistory, LocalDate>("transactionDate"));
-        recipientColumn.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("paymentRecipient"));
-        transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("transactionType"));
-        paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("paymentType"));
-        amountColumn.setCellValueFactory(new PropertyValueFactory<TransactionHistory, Double>("amount"));
+        transactionDateColumn.setCellValueFactory(new PropertyValueFactory<>("transactionDate"));
+        recipientColumn.setCellValueFactory(new PropertyValueFactory<>("paymentRecipient"));
+        transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
+        paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
     }
 
     @FXML
-    public void accountButtonPushed() { loadNextScene("accountScene.fxml"); }
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
     @FXML
-    public void transferButtonPushed() { loadNextScene("transferScene.fxml"); }
+    public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
     @FXML
-    public void loanButtonPushed() { loadNextScene((ReadFile.DataStorage.loan) ? "loanScene.fxml" : "noLoanScene.fxml"); }
+    public void loanButtonPushed() { loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml"); }
 
     @FXML
-    public void dashBoardButtonPushed() { loadNextScene("currencyExchangeScene.fxml"); }
+    public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
     @FXML
-    public void aboutUsButtonPushed() { loadNextScene("aboutUsScene.fxml"); }
+    public void aboutUsButtonPushed() { loadNextScene("/sample/Scene/aboutUsScene.fxml"); }
 
     @FXML
     public void proceedButtonPushed() {
@@ -112,7 +122,7 @@ public class TransactionHistoryController implements Initializable {
         LocalDate start = beforeDatePicker.getValue();
         LocalDate end = afterDatePicker.getValue();
 
-        generalList = searchIn(ReadFile.DataStorage.transactionHistoryArrayList, transactionHistory -> (transactionHistory.getTransactionDate().equals(start) || transactionHistory.getTransactionDate().equals(end) ||
+        ArrayList<TransactionHistory> generalList = searchIn(ReadFile.DataStorage.transactionHistoryArrayList, transactionHistory -> (transactionHistory.getTransactionDate().equals(start) || transactionHistory.getTransactionDate().equals(end) ||
                 (transactionHistory.getTransactionDate().isAfter(start)) && transactionHistory.getTransactionDate().isBefore(end)));
 
         generalList.sort(new CustomComparator());
@@ -125,35 +135,35 @@ public class TransactionHistoryController implements Initializable {
 
                 switch (category) {
                     case "Food and Beverages":
-                        foodAndBeverages++;
+                        foodAndBeverages += transactionHistory.getAmount();
                         break;
 
                     case "Health":
-                        health++;
+                        health += transactionHistory.getAmount() ;
                         break;
 
                     case "Entertainment":
-                        entertainment++;
+                        entertainment += transactionHistory.getAmount();
                         break;
 
                     case "Lifestyle":
-                        lifestyle++;
+                        lifestyle += transactionHistory.getAmount();
                         break;
 
                     case "Education":
-                        education++;
+                        education += transactionHistory.getAmount();
                         break;
 
                     case "Utilities":
-                        utilities++;
+                        utilities += transactionHistory.getAmount();
                         break;
 
                     case "Clothes":
-                        clothes++;
+                        clothes += transactionHistory.getAmount();
                         break;
 
                     case "Transport":
-                        transport++;
+                        transport += transactionHistory.getAmount();
                         break;
 
                     default:
@@ -188,12 +198,12 @@ public class TransactionHistoryController implements Initializable {
                 break;
 
             case "Deposits":
-                depositList = searchIn(generalList, transactionHistory -> transactionHistory.getTransactionType().equals("Deposits"));
+                ArrayList<TransactionHistory> depositList = searchIn(generalList, transactionHistory -> transactionHistory.getTransactionType().equals("Deposits"));
                 tableView.setItems(getTransactionHistory(depositList));
                 break;
 
             case "Payment":
-                paymentList = searchIn(generalList, transactionHistory -> !(transactionHistory.getTransactionType().equals("Deposits")));
+                ArrayList<TransactionHistory> paymentList = searchIn(generalList, transactionHistory -> !(transactionHistory.getTransactionType().equals("Deposits")));
                 tableView.setItems(getTransactionHistory(paymentList));
                 break;
 
@@ -212,7 +222,7 @@ public class TransactionHistoryController implements Initializable {
         return transactionHistoryArrayList;
     }
 
-    interface Matcher<TransactionHistory> {
+    public interface Matcher<TransactionHistory> {
         boolean matches(TransactionHistory transactionHistory);
     }
 
@@ -224,15 +234,14 @@ public class TransactionHistoryController implements Initializable {
             Stage curStage = (Stage) root.getScene().getWindow();
             curStage.setScene(newScene);
         } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransactionHistoryController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public ObservableList<TransactionHistory> getTransactionHistory(ArrayList<TransactionHistory> arrayList) {
         ObservableList<TransactionHistory> transactionHistories = FXCollections.observableArrayList();
 
-        for (int i = 0; i < arrayList.size(); i++)
-            transactionHistories.add(arrayList.get(i));
+        transactionHistories.addAll(arrayList);
 
         return transactionHistories;
     }

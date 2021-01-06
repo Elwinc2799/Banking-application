@@ -102,7 +102,7 @@ public class CreditCard extends Card {
         }
     }
 
-    Task<Void> updateStatus = new Task<>() {
+    Task<Void> updateStatus = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -133,7 +133,7 @@ public class CreditCard extends Card {
         return true;
     }
 
-    Task<Void> updateDateTask = new Task<>() {
+    Task<Void> updateDateTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -150,7 +150,7 @@ public class CreditCard extends Card {
         }
     };
 
-    Task<Void> updateExpenditureTask = new Task<>() {
+    Task<Void> updateExpenditureTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {

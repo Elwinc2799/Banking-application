@@ -1,6 +1,14 @@
 package sample;
 
 import javafx.concurrent.Task;
+import sample.Account.DepositAccount;
+import sample.Account.SavingsAccount;
+import sample.Card.CreditCard;
+import sample.Card.DebitCard;
+import sample.Loan.BusinessLoan;
+import sample.Loan.PersonalLoan;
+import sample.Semaphore.Consumer;
+import sample.Semaphore.Producer;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -8,13 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
-
 public class ReadFile {
-    public static String accPassword = "2799!!epokemon";
+
     public static HashMap<String, String> passwordMap = new HashMap<>();
+    public static String password = "2799!!epokemon";
     static Semaphore semConsumer = new Semaphore(0);
     static Semaphore semProducer = new Semaphore(1);
-    static Connection connect;
+    public static Connection connect;
     static Statement statement;
 
     public static void get() {
@@ -39,7 +47,7 @@ public class ReadFile {
         semConsumer.release();
     }
 
-    static Task<Void> task = new Task<>() {
+    static Task<Void> task = new Task<Void>() {
         @Override
         protected Void call() {
             CurrencyWebScrapping.webScrapping();
@@ -47,12 +55,12 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> passwordValidationTask = new Task<>() {
+    static Task<Void> passwordValidationTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
-                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", accPassword);
+                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", password);
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM LOGIN");
@@ -68,7 +76,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> savingsAccountInfoTask = new Task<>() {
+    static Task<Void> savingsAccountInfoTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -97,22 +105,71 @@ public class ReadFile {
                 while (resultSet.next()) {
                     double[] tempBalanceRecorder = new double[7];
 
-                    for (int i = 0, j = 6; i < 7; i++, j--)
-                        tempBalanceRecorder[j] = resultSet.getDouble(i + 2);
+                    for (int i = 2, j = 0; i < 9; i++, j++)
+                        tempBalanceRecorder[j] = resultSet.getDouble(i);
 
                     DataStorage.savingsAccount.setBalanceRecorder(tempBalanceRecorder);
                 }
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
-            new Thread(DataStorage.savingsAccount.updateExpenditureRecorderTask).start();
+            new Thread(updateExpenditureRecorderTask).start();
             DataStorage.savingsAccount.updateBalance();
 
             return null;
         }
     };
 
-    static Task<Void> depositsAccountInfoTask = new Task<>() {
+    static Task<Void> updateExpenditureRecorderTask = new Task<Void>() {
+        @Override
+        protected Void call() {
+            if (LocalDate.now().getDayOfMonth() == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
+                try {
+                    Class.forName("oracle.jdbc.OracleDriver");
+                    Statement statement = connect.createStatement();
+                    double[] tempBalance = ReadFile.DataStorage.savingsAccount.balanceRecorder.clone();
+
+                    for (int i = 6; i > 0; i--)
+                        tempBalance[i] = tempBalance[i - 1];
+
+                    tempBalance[0] = DataStorage.savingsAccount.getMonthExpenditure();
+
+                    statement.executeQuery("UPDATE SAVINGS_EXPENSE SET " +
+                            "ONE_MONTH_AGO = " + tempBalance[0] +
+                            ", TWO_MONTH_AGO = " + tempBalance[1] +
+                            ", THREE_MONTH_AGO = " + tempBalance[2] +
+                            ", FOUR_MONTH_AGO = " + tempBalance[3] +
+                            ", FIVE_MONTH_AGO = " + tempBalance[4] +
+                            ", SIX_MONTH_AGO = " + tempBalance[5] +
+                            ", SEVEN_MONTH_AGO = " + tempBalance[6] +
+                            " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
+                    DataStorage.savingsAccount.setBalanceRecorder(tempBalance);
+
+                } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+                new Thread(updateExpenditureTask).start();
+            }
+            return null;
+        }
+    };
+
+    static Task<Void> updateExpenditureTask = new Task<Void>() {
+        @Override
+        protected Void call() {
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                Statement statement = connect.createStatement();
+
+                statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_EXPENDITURE = " + 0 +
+                        " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
+
+            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+            return null;
+        }
+    };
+
+    static Task<Void> depositsAccountInfoTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -138,7 +195,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> creditCardInfoTask = new Task<>() {
+    static Task<Void> creditCardInfoTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -165,7 +222,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> loanInfoTask = new Task<>() {
+    static Task<Void> loanInfoTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -224,7 +281,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> transactionHistoryInfoTask = new Task<>() {
+    static Task<Void> transactionHistoryInfoTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -250,14 +307,16 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> loanRepaymentHistoryTask = new Task<>() {
+    static Task<Void> loanRepaymentHistoryTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 statement = connect.createStatement();
 
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM LOAN_REPAYMENT_HISTORY WHERE LOAN_ID = '" + DataStorage.loanID + "'");
+                String loanID = (DataStorage.isPersonalLoan) ? DataStorage.personalLoan.getLoanID() : DataStorage.businessLoan.getLoanID();
+
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM LOAN_REPAYMENT_HISTORY WHERE LOAN_ID = '" +  loanID+ "'");
                 while (resultSet.next()) {
                     TransactionHistory transactionHistory = new TransactionHistory();
 
@@ -300,15 +359,47 @@ public class ReadFile {
             while (resultSet.next()) {
                 double[] tempBalanceRecorder = new double[7];
 
-                for (int i = 0, j = 6; i < 7; i++, j--)
-                    tempBalanceRecorder[j] = resultSet.getDouble(i + 2);
+                for (int i = 2, j = 0; i < 9; i++, j++)
+                    tempBalanceRecorder[j] = resultSet.getDouble(i);
 
                 DataStorage.creditCard.setBalanceRecorder(tempBalanceRecorder);
             }
         } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
-        new Thread(DataStorage.creditCard.updateExpenditureRecorderTask).start();
+        new Thread(updateCreditExpenditureRecorderTask).start();
     }
+
+    static Task<Void> updateCreditExpenditureRecorderTask = new Task<Void>() {
+        @Override
+        protected Void call() {
+            if (LocalDate.now().getDayOfMonth() == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
+                try {
+                    Class.forName("oracle.jdbc.OracleDriver");
+                    Statement statement = connect.createStatement();
+                    double[] tempBalance = ReadFile.DataStorage.creditCard.balanceRecorder.clone();
+
+                    for (int i = 6; i > 0; i--)
+                        tempBalance[i] = tempBalance[i - 1];
+
+                    tempBalance[0] = DataStorage.creditCard.getExpenditure();
+
+                    statement.executeQuery("UPDATE CREDITCARD_EXPENSES SET " +
+                            "ONE_MONTH_AGO = " + tempBalance[0] +
+                            ", TWO_MONTH_AGO = " + tempBalance[1] +
+                            ", THREE_MONTH_AGO = " + tempBalance[2] +
+                            ", FOUR_MONTH_AGO = " + tempBalance[3] +
+                            ", FIVE_MONTH_AGO = " + tempBalance[4] +
+                            ", SIX_MONTH_AGO = " + tempBalance[5] +
+                            ", SEVEN_MONTH_AGO = " + tempBalance[6] +
+                            " WHERE CARD_ID = '" + ReadFile.DataStorage.creditCard.getCardID() + "'");
+
+                    DataStorage.creditCard.setBalanceRecorder(tempBalance);
+                } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+                new Thread(updateExpenditureTask).start();
+            }
+            return null;
+        }
+    };
 
     public static class DataStorage {
 

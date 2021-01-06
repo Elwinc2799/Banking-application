@@ -4,11 +4,14 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,9 +23,11 @@ import sample.TransferController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormatSymbols;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,14 +61,30 @@ public class CreditCardController implements Initializable {
     @FXML
     private Button creditCardImage;
 
+    double x = 0;
+    double y = 0;
+
+    @FXML
+    void dragged(MouseEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+    @FXML
+    void pressed(MouseEvent event) {
+        x = event.getSceneX();
+        y = event.getSceneY();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Calendar calendar = Calendar.getInstance();
-        //        calendar.set(2021, Calendar.NOVEMBER,1);
         String[] month = new String[7];
+        LocalDate now = LocalDate.now();
 
-        for (int i = 0, j = 7; i < 7; i++, j--)
-            month[i] = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH) - j];
+        for (int i = 0, j = 8; i < 7; i++, j--)
+            month[i] = new DateFormatSymbols().getMonths()[now.minusMonths(j).getMonthValue()];
 
         cardNumberLabel.setText(ReadFile.DataStorage.creditCard.getCardID());
         expiryDateLabel.setText(ReadFile.DataStorage.creditCard.getExpiryDate());
@@ -82,14 +103,14 @@ public class CreditCardController implements Initializable {
         try {
             XYChart.Series series = new XYChart.Series();
 
-            for (int i = 0; i < 7; i++)
-                series.getData().add(new XYChart.Data(month[i], ReadFile.DataStorage.creditCard.getBalanceRecorder(i)));
+            for (int i = 0, j = 6; i < 7; i++, j--)
+                series.getData().add(new XYChart.Data(month[i], ReadFile.DataStorage.creditCard.getBalanceRecorder(j)));
 
             expenseChart.getData().addAll(series);
         } catch (Exception ignored) { }
     }
 
-    Task<Void> updateBalanceTask = new Task<>() {
+    Task<Void> updateBalanceTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -116,13 +137,15 @@ public class CreditCardController implements Initializable {
         outstandingBalance.setTranslateY(20);
         Button makePayment = new Button();
         makePayment.setText("Make payment");
-        makePayment.setTranslateX(50);
-        makePayment.setTranslateY(35);
+        makePayment.setTranslateX(60);
+        makePayment.setTranslateY(40);
 
         final VBox[] vBox = {new VBox(creditCardOutstandingBalance, outstandingBalance, makePayment)};
         vBox[0].setPrefWidth(175);
         vBox[0].setPrefHeight(110);
         PopOver popOver = new PopOver(vBox[0]);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setTitle("Credit details:");
 
         popOver.show(creditCardImage);
 
@@ -148,7 +171,7 @@ public class CreditCardController implements Initializable {
             TextField amountField = new TextField();
             otpField.setPromptText("OTP");
             otpField.setTranslateX(10);
-            otpField.setTranslateY(25);
+            otpField.setTranslateY(20);
             otpField.setMaxWidth(150);
             otpField.setFocusTraversable(false);
             amountField.setPromptText("Amount");
@@ -167,6 +190,8 @@ public class CreditCardController implements Initializable {
             vBox[0].setPrefHeight(200);
 
             PopOver popOvers = new PopOver(vBox[0]);
+            popOvers.setHeaderAlwaysVisible(true);
+            popOvers.setTitle("Please enter valid info");
             popOvers.show(creditCardImage);
 
             proceedPayment.setOnAction(actionEvent1 -> {
@@ -215,29 +240,29 @@ public class CreditCardController implements Initializable {
             }
         } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
-        loadNextScene("/sample/creditCardScene.fxml");
+        loadNextScene("/sample/Scene/creditCardScene.fxml");
     }
 
     @FXML
-    public void accountButtonPushed() { loadNextScene("/sample/accountScene.fxml"); }
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/transactionHistoryScene.fxml"); }
+    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
 
     @FXML
-    public void transferButtonPushed() { loadNextScene("/sample/transferScene.fxml"); }
+    public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
     @FXML
     public void loanButtonPushed() {
-        loadNextScene((ReadFile.DataStorage.loan) ? "/sample/loanScene.fxml" : "/sample/noLoanScene.fxml");
+        loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
     }
 
     @FXML
-    public void dashBoardButtonPushed() { loadNextScene("/sample/currencyExchangeScene.fxml"); }
+    public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
     @FXML
     public void aboutUsButtonPushed() {
-        loadNextScene("/sample/aboutUsScene.fxml");
+        loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
     private void loadNextScene(String fxml) {

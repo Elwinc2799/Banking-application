@@ -6,10 +6,12 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -33,6 +35,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoanController implements Initializable {
+
+    double x = 0;
+    double y = 0;
+
+    @FXML
+    void dragged(MouseEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+    @FXML
+    void pressed(MouseEvent event) {
+        x = event.getSceneX();
+        y = event.getSceneY();
+    }
 
     @FXML
     private StackPane root;
@@ -147,6 +166,8 @@ public class LoanController implements Initializable {
             vBox.setPrefHeight(100);
             vBox.setPrefWidth(250);
             PopOver popOver = new PopOver(vBox);
+            popOver.setHeaderAlwaysVisible(true);
+            popOver.setTitle("Business Loan");
 
             loanTypeLabel.setOnMouseEntered(mouseEvent -> popOver.show(loanTypeLabel));
 
@@ -225,6 +246,8 @@ public class LoanController implements Initializable {
         vBox.setPrefWidth(200);
 
         PopOver popOver = new PopOver(vBox);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setTitle("Loan Payment");
         popOver.show(onlineBankingButton);
 
         nextButton.setOnAction(actionEvent -> {
@@ -256,7 +279,7 @@ public class LoanController implements Initializable {
         });
     }
 
-    static Task<Void> updateHistoryTask = new Task<>() {
+    static Task<Void> updateHistoryTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -339,6 +362,8 @@ public class LoanController implements Initializable {
         vBox.setPrefWidth(200);
 
         PopOver popOver = new PopOver(vBox);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setTitle("Loan Payment");
         popOver.show(creditCardButton);
 
         nextButton.setOnAction(actionEvent -> {

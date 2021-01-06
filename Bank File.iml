@@ -8,11 +8,5 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="controlsFx" level="project" />
-    <orderEntry type="library" name="oracle" level="project" />
-    <orderEntry type="library" name="itext" level="project" />
-    <orderEntry type="library" name="java mail api" level="project" />
-    <orderEntry type="library" name="jsoup" level="project" />
-    <orderEntry type="library" name="animateFX1" level="project" />
   </component>
 </module>

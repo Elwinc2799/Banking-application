@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -24,7 +25,7 @@
                </image>
             </ImageView>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="80.0" />
-                <Rectangle fx:id="test" arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="509.0" layoutX="111.0" layoutY="108.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="427.0" />
+                <Rectangle fx:id="test" arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="509.0" layoutX="111.0" layoutY="108.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="440.0" />
                 <Button layoutX="5.0" layoutY="22.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
                     <effect>
                         <ImageInput x="10.0" y="10.0">
@@ -197,15 +198,13 @@
                         <Font name="Candara Light" size="30.0" />
                     </font>
                 </Label>
-                <Button layoutX="624.0" layoutY="414.0" mnemonicParsing="false" onAction="#debitCardButtonPressed" prefHeight="186.0" prefWidth="296.0" stylesheets="@../sample.css" />
-                <Button layoutX="625.0" layoutY="206.0" mnemonicParsing="false" onAction="#creditCardButtonPressed" prefHeight="186.0" prefWidth="296.0" stylesheets="@../sample.css" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="64.0" layoutX="755.0" layoutY="18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="216.0" />
                 <Label fx:id="dateLabel" layoutX="780.0" layoutY="31.0" text="January, 17th" textFill="WHITE">
                     <font>
                         <Font name="Candara Light" size="30.0" />
                     </font>
                 </Label>
-            <LineChart fx:id="balanceChart" layoutX="85.0" layoutY="276.0" prefHeight="234.0" prefWidth="461.0" stylesheets="@../sample.css">
+            <LineChart fx:id="balanceChart" layoutX="88.0" layoutY="275.0" prefHeight="234.0" prefWidth="458.0" stylesheets="@../sample.css">
               <xAxis>
                 <CategoryAxis fx:id="monthAxis" side="BOTTOM">
                      <tickLabelFont>
@@ -216,6 +215,8 @@
                 <NumberAxis fx:id="balanceAxis" side="LEFT" />
               </yAxis>
             </LineChart>
+            <JFXButton layoutX="625.0" layoutY="206.0" onAction="#creditCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
+            <JFXButton layoutX="625.0" layoutY="412.0" onAction="#debitCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
             </children>
         </AnchorPane>
     </children>

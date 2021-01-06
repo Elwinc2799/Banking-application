@@ -64,9 +64,23 @@
     -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-background-radius: 0px;
-    -fx-padding: 0.0em; /* 4 8 4 8 */
+    -fx-padding: 0.0em;
+}
+
+.radio-button:selected {
+    -fx-border-color: #15171c;
+    -fx-border-radius: 130px;
+    -fx-padding: 0 0 0 20;
 }
 
 .radio-button:selected > .radio > .dot {
     -fx-background-color: transparent;
 }
+
+.popover > .border {
+    -fx-stroke: linear-gradient(to bottom, rgba(0,0,0, .3), rgba(0, 0, 0, .7));
+    -fx-stroke-width: 0.5;
+    -fx-fill: rgba(30 , 30, 30, .95);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,.2), 10.0, 0.5, 2.0, 2.0);
+}
+

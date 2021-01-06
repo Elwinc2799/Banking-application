@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-public class CurrencyWebScraping {
+public class CurrencyWebScrapping {
 
     public static void webScrapping() {
         final String url = "https://www.maybank2u.com.my/maybank2u/malaysia/en/personal/rates/forex_rates.page";

@@ -3,16 +3,16 @@ package sample.Card;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -31,12 +31,28 @@ import java.sql.Statement;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DebitCardController implements Initializable {
+
+    double x = 0;
+    double y = 0;
+
+    @FXML
+    void dragged(MouseEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+    @FXML
+    void pressed(MouseEvent event) {
+        x = event.getSceneX();
+        y = event.getSceneY();
+    }
 
     @FXML
     private StackPane root;
@@ -60,12 +76,6 @@ public class DebitCardController implements Initializable {
     private LineChart<?, ?> balanceChart;
 
     @FXML
-    private CategoryAxis monthAxis;
-
-    @FXML
-    private NumberAxis balanceAxis;
-
-    @FXML
     private Button changeLimitButton;
 
     TextField textField = new TextField();
@@ -74,8 +84,14 @@ public class DebitCardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         XYChart.Series series = new XYChart.Series();
         String[] month = new String[7];
-        Calendar calendar = Calendar.getInstance();
-   //     calendar.set(2021, Calendar.SEPTEMBER,1);
+        LocalDate now = LocalDate.now();
+
+        for (int i = 0, j = 8; i < 7; i++, j--) {
+            month[i] = new DateFormatSymbols().getMonths()[now.minusMonths(j).getMonthValue()];
+
+            if (month[i].equals("February") && month[i - 2].equals("December"))
+                month[i - 1] = "January";
+        }
 
         cardNumberLabel.setText(ReadFile.DataStorage.debitCard.getCardID());
         expiryDateLabel.setText(ReadFile.DataStorage.debitCard.getExpiryDate());
@@ -97,11 +113,8 @@ public class DebitCardController implements Initializable {
             statusLabel.setTextFill(Color.web("#CD5C5C"));
         }
 
-        for (int i = 0, j = 7; i < 7; i++, j--)
-            month[i] = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH) - j];
-
-        for (int i = 0; i < 7; i++)
-            series.getData().add(new XYChart.Data(month[i], ReadFile.DataStorage.savingsAccount.getBalanceRecorder(i)));
+        for (int i = 0, j = 6; i < 7; i++, j--)
+            series.getData().add(new XYChart.Data(month[i], ReadFile.DataStorage.savingsAccount.getBalanceRecorder(j)));
 
         balanceChart.getData().addAll(series);
     }
@@ -148,6 +161,8 @@ public class DebitCardController implements Initializable {
         vBox.setPrefHeight(200);
 
         PopOver popOver = new PopOver(vBox);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setTitle("Limit change");
         popOver.show(changeLimitButton);
 
         nextButton.setOnAction(actionEvent -> {
@@ -174,24 +189,24 @@ public class DebitCardController implements Initializable {
     }
 
     @FXML
-    public void accountButtonPushed() { loadNextScene("/sample/accountScene.fxml"); }
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/transactionHistoryScene.fxml"); }
+    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
 
     @FXML
-    public void transferButtonPushed() { loadNextScene("/sample/transferScene.fxml"); }
+    public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
     @FXML
     public void loanButtonPushed() {
-        loadNextScene((ReadFile.DataStorage.loan) ? "/sample/loanScene.fxml" : "/sample/noLoanScene.fxml");
+        loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
     }
 
     @FXML
-    public void dashBoardButtonPushed() { loadNextScene("/sample/currencyExchangeScene.fxml"); }
+    public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
     @FXML
-    public void aboutUsButtonPushed() { loadNextScene("/sample/aboutUsScene.fxml"); }
+    public void aboutUsButtonPushed() { loadNextScene("/sample/Scene/aboutUsScene.fxml"); }
 
     private void loadNextScene(String fxml) {
         try {

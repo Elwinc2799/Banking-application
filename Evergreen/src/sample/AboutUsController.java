@@ -2,9 +2,11 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -16,6 +18,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AboutUsController {
+
+    double x = 0;
+    double y = 0;
+
+    @FXML
+    void dragged(MouseEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+    @FXML
+    void pressed(MouseEvent event) {
+        x = event.getSceneX();
+        y = event.getSceneY();
+    }
 
     @FXML
     private StackPane root;
@@ -31,31 +50,29 @@ public class AboutUsController {
 
     @FXML
     public void accountButtonPushed() {
-        loadNextScene("accountScene.fxml");
+        loadNextScene("/sample/Scene/accountScene.fxml");
     }
 
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("transactionHistoryScene.fxml"); }
+    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
 
     @FXML
-    public void transferButtonPushed() { loadNextScene("transferScene.fxml"); }
+    public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
     @FXML
     public void loanButtonPushed() {
-        loadNextScene((ReadFile.DataStorage.loan) ? "loanScene.fxml" : "noLoanScene.fxml");
+        loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
     }
 
     @FXML
-    public void dashBoardButtonPushed() { loadNextScene("currencyExchangeScene.fxml"); }
+    public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
     @FXML
     public void ericPushed() {
         eric.setOnAction(actionEvent -> {
             try {
                 Desktop.getDesktop().browse(new URL("https://www.facebook.com/eric.cheah575/").toURI());
-            } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException | URISyntaxException e) { e.printStackTrace(); }
         });
     }
 
@@ -64,9 +81,7 @@ public class AboutUsController {
         teikSean.setOnAction(actionEvent -> {
             try {
                 Desktop.getDesktop().browse(new URL("https://www.facebook.com/teiksean.tan").toURI());
-            } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException | URISyntaxException e) { e.printStackTrace(); }
         });
     }
 
@@ -75,9 +90,7 @@ public class AboutUsController {
         elwin.setOnAction(actionEvent -> {
             try {
                 Desktop.getDesktop().browse(new URL("https://www.facebook.com/elwin.chiong").toURI());
-            } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException | URISyntaxException e) { e.printStackTrace(); }
         });
     }
 
@@ -89,7 +102,7 @@ public class AboutUsController {
             Stage curStage = (Stage) root.getScene().getWindow();
             curStage.setScene(newScene);
         } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AboutUsController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

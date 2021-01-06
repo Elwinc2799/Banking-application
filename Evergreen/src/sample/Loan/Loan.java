@@ -1,7 +1,16 @@
 package sample.Loan;
 
+import javafx.animation.*;
 import javafx.concurrent.Task;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
+import javafx.util.Duration;
 import sample.ReadFile;
 
 import java.sql.*;
@@ -90,7 +99,7 @@ public class Loan {
         return true;
     }
 
-    Task<Void> updateDateTask = new Task<>() {
+    Task<Void> updateDateTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
@@ -107,7 +116,7 @@ public class Loan {
         }
     };
 
-    Task<Void> updateStatusTask = new Task<>() {
+    Task<Void> updateStatusTask = new Task<Void>() {
         @Override
         protected Void call() {
             try {
