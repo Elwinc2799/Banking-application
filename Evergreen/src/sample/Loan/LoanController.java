@@ -110,7 +110,7 @@ public class LoanController implements Initializable {
 
             ReadFile.DataStorage.personalLoan.updateOverdueDays();
             if (ReadFile.DataStorage.personalLoan.getOverdueDays() > 0)
-                overdueLabel.setText("Overdue for " + (ReadFile.DataStorage.personalLoan.getOverdueDays()) + " days");
+                overdueLabel.setText("Overdue for " + (ReadFile.DataStorage.personalLoan.getOverdueDays()) + " day(s)");
             else {
                 overdueLabel.setText("Payment is paid");
                 overdueLabel.setTextFill(Color.web("#21dada"));
@@ -129,7 +129,7 @@ public class LoanController implements Initializable {
 
             ReadFile.DataStorage.businessLoan.updateOverdueDays();
             if (ReadFile.DataStorage.businessLoan.getOverdueDays() > 0)
-                overdueLabel.setText("Overdue for " + (ReadFile.DataStorage.businessLoan.getOverdueDays()) + " days");
+                overdueLabel.setText("Overdue for " + (ReadFile.DataStorage.businessLoan.getOverdueDays()) + " day(s)");
             else {
                 overdueLabel.setText("Payment is paid");
                 overdueLabel.setTextFill(Color.web("#21dada"));

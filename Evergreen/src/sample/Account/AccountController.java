@@ -1,6 +1,8 @@
 package sample.Account;
 
 import animatefx.animation.FadeIn;
+import com.jfoenix.controls.JFXButton;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sample.ReadFile;
 
 import java.io.IOException;
@@ -63,11 +66,25 @@ public class AccountController extends Thread implements Initializable {
         Calendar calendar = Calendar.getInstance();
         String[] month = new String[7];
         LocalDate now = LocalDate.now();
+        String dateSuffix;
+
+        switch (now.getDayOfMonth()) {
+            case 1: case 21: case 31: dateSuffix = "st";
+            break;
+
+            case 2: case 22: dateSuffix = "nd";
+            break;
+
+            case 3: case 23: dateSuffix = "rd";
+            break;
+
+            default: dateSuffix = "th";
+        }
 
         for (int i = 0, j = 8; i < 7; i++, j--)
             month[i] = new DateFormatSymbols().getMonths()[now.minusMonths(j).getMonthValue()];
 
-        dateLabel.setText(new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)] + ", " + calendar.get(Calendar.DATE));
+        dateLabel.setText(new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)] + ", " + calendar.get(Calendar.DATE) + dateSuffix);
         nameLabel.setText(ReadFile.DataStorage.savingsAccount.getName());
         emailLabel.setText(ReadFile.DataStorage.savingsAccount.getEmail());
 
@@ -91,12 +108,16 @@ public class AccountController extends Thread implements Initializable {
 
     @FXML
     private void creditCardButtonPressed() {
-        loadNextScene("/sample/Scene/creditCardScene.fxml");
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.15));
+        pause.setOnFinished(event -> loadNextScene("/sample/Scene/creditCardScene.fxml"));
+        pause.play();
     }
 
     @FXML
     private void debitCardButtonPressed() {
-        loadNextScene("/sample/Scene/debitCardScene.fxml");
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.15));
+        pause.setOnFinished(event -> loadNextScene("/sample/Scene/debitCardScene.fxml"));
+        pause.play();
     }
 
     @FXML

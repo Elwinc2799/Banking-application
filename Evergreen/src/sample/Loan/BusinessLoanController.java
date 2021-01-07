@@ -4,27 +4,19 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import javafx.animation.*;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import sample.LoadingAnimation;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -38,9 +30,6 @@ public class BusinessLoanController implements Initializable {
 
     double x = 0;
     double y = 0;
-    private Rectangle rectangle;
-    private Text text;
-    private boolean isRunning;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

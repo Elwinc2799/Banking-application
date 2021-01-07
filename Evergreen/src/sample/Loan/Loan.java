@@ -1,22 +1,16 @@
 package sample.Loan;
 
-import javafx.animation.*;
 import javafx.concurrent.Task;
-import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextBoundsType;
-import javafx.util.Duration;
 import sample.ReadFile;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 public class Loan {
 
@@ -198,7 +192,7 @@ public class Loan {
     }
 
     public void updateOverdueDays() {
-        LocalDate dateBefore = lastDatePaid.plusMonths(1);
+        LocalDate dateBefore = lastDatePaid.with(lastDayOfMonth());
         LocalDate dateAfter = LocalDate.now();
 
         setOverdueCounter((int) ChronoUnit.MONTHS.between(dateBefore, dateAfter));

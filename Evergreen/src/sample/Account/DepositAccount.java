@@ -16,8 +16,8 @@ import java.util.Properties;
 public class DepositAccount extends Account {
 
     public double[][] interestRate = { { 1.85, 1.9, 2.1, 2.2 },
-            { 1.9, 1.95, 2.15, 2.25 },
-            { 2.0, 2.1, 2.2, 2.3 }
+                                        { 1.9, 1.95, 2.15, 2.25 },
+                                        { 2.0, 2.1, 2.2, 2.3 }
     };
 
     public int depositType;

@@ -18,9 +18,9 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="700.0" layoutX="525.0" stroke="WHITE" strokeType="INSIDE" width="475.0" />
-    <ImageView fitHeight="710.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fitHeight="700.0" fitWidth="525.0" pickOnBounds="true" preserveRatio="true">
         <image>
-            <Image url="@Resources/LoginBackground.png" />
+            <Image url="@Resources/BackgroundLogin.png" />
         </image>
     </ImageView>
     <Label layoutX="637.0" layoutY="241.0" text="Sign In To Your Account">
@@ -39,7 +39,7 @@
          <String fx:value="text-field" />
       </styleClass>
     </TextField>
-    <PasswordField fx:id="passwordField" focusTraversable="false" layoutX="634.0" layoutY="350.0" promptText="Password" styleClass="custom-text-field-2" stylesheets="@../sample.css">
+    <PasswordField fx:id="passwordField" focusTraversable="false" layoutX="634.0" layoutY="350.0" prefHeight="27.0" prefWidth="273.0" promptText="Password" styleClass="custom-text-field-2" stylesheets="@../sample.css">
         <font>
             <Font name="Arial Rounded MT Bold" size="14.0" />
         </font>

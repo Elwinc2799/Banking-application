@@ -1,6 +1,5 @@
 package sample;
 
-import com.jfoenix.controls.JFXButton;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,13 +23,14 @@ import org.controlsfx.control.PopOver;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
 
@@ -55,11 +55,11 @@ public class LoginController implements Initializable {
     double y = 0;
 
     Color[] colors = {
-            new Color(0.2, 0.5, 0.8, 1.0).saturate().brighter().brighter(),
-            new Color(0.3, 0.2, 0.7, 1.0).saturate().brighter().brighter(),
+            new Color(1.0, 0.2, 1.0, 1.0).saturate().brighter().brighter(),
+            new Color(0.75, 0.25, 1.0, 1.0).saturate().brighter().brighter(),
+            new Color(0.93, 0.98, 1.0, 1.0).saturate().brighter().brighter(),
             new Color(0.8, 0.3, 0.9, 1.0).saturate().brighter().brighter(),
-            new Color(0.4, 0.3, 0.9, 1.0).saturate().brighter().brighter(),
-            new Color(0.2, 0.5, 0.7, 1.0).saturate().brighter().brighter()
+            new Color(0.5, 0.8, 0.9, 0.2).saturate().brighter().brighter()
     };
 
     @FXML
@@ -78,27 +78,38 @@ public class LoginController implements Initializable {
 
     @FXML
     public void login() {
-        /*boolean validated = false;
+        boolean accountValidation = false;
+        boolean passwordValidation = false;
 
         for (Map.Entry<String, String> row : ReadFile.passwordMap.entrySet()) {
             String key = row.getKey();
 
-            if (key.equals(userName.getText().toLowerCase(Locale.ROOT))) && row.getValue().equals(passwordField.getText())) {
-                ReadFile.importData();
-                makeFadeOut();
-                ReadFile.passwordMap.clear();
-                validated = true;
+            if (key.equals(userName.getText().toLowerCase(Locale.ROOT))) {
+                accountValidation = true;
+
+                if (row.getValue().equals(passwordField.getText())) {
+                    ReadFile.DataStorage.setUsername(userName.getText().toLowerCase(Locale.ROOT));
+                    ReadFile.importData();
+                    ReadFile.passwordMap.clear();
+
+                    PauseTransition pause = new PauseTransition(Duration.seconds(0.15));
+                    pause.setOnFinished(event -> makeFadeOut());
+                    pause.play();
+                    passwordValidation = true;
+                }
             }
         }
 
-        if (!validated)
-            validation(); */
+        if (!accountValidation || !passwordValidation) {
+            VBox vBox = new VBox();
+            vBox.setPrefHeight(10);
+            vBox.setPrefWidth(200);
 
-        ReadFile.DataStorage.setUsername(userName.getText().toLowerCase(Locale.ROOT));
-        ReadFile.importData();
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.2));
-        pause.setOnFinished(event -> makeFadeOut());
-        pause.play();
+            PopOver popOver = new PopOver(vBox);
+            popOver.setHeaderAlwaysVisible(true);
+            popOver.setTitle(accountValidation ? "Wrong password" : "Wrong username");
+            popOver.show(accountValidation ? passwordField : userName);
+        }
     }
 
     @FXML
@@ -131,16 +142,11 @@ public class LoginController implements Initializable {
         popOvers.setTitle("Please enter your email");
         popOvers.show(forgotPasswordButton);
 
-        ((Parent) popOvers.getSkin().getNode()).getStylesheets().add(getClass().getResource("sample.css").toExternalForm());
-
-
         generateOTP.setOnAction(actionEvent -> {
             if (!checkEmail()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("You do not have account in this bank.");
                 alert.showAndWait();
-                alert.setOnShown(dialogEvent -> root.setEffect(new BoxBlur(10, 10, 3)));
-                alert.setOnHidden(dialogEvent -> root.setEffect(null));
                 return;
             }
 
@@ -195,7 +201,7 @@ public class LoginController implements Initializable {
             popOver.show(forgotPasswordButton);
 
             nextButton.setOnAction(actionEvent1 -> {
-                if (instance.getOTP().equals(otpField.getText()) && newPasswordField.getText().equals(confirmPasswordField.getText())) {
+                if (isValidPassword(newPasswordField.getText()) && instance.getOTP().equals(otpField.getText()) && newPasswordField.getText().equals(confirmPasswordField.getText())) {
                     try {
                         Class.forName("oracle.jdbc.OracleDriver");
                         Statement statement = ReadFile.connect.createStatement();
@@ -209,36 +215,36 @@ public class LoginController implements Initializable {
                     alert.showAndWait();
                 }
                 else {
-                    root.setEffect(new BoxBlur(10, 10, 3));
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Invalid OTP or password does not match.");
+                    alert.setContentText(isValidPassword(newPasswordField.getText()) ?
+                            "Invalid OTP or password does not match." :
+                            "Password must contain at least a digit, lowercase alphabet, uppercase alphabet and a special character.");
                     alert.showAndWait();
-                    alert.setOnHidden(dialogEvent -> root.setEffect(null));
                 }
             });
-
         });
 
         popOvers.setOnHidden(windowEvent -> root.setEffect(null));
     }
 
+    public boolean isValidPassword(String password) {
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\\\S+$).{8,20}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
     public boolean checkEmail() {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
+            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.password);
             Statement statement = ReadFile.connect.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM LOGIN WHERE EXISTS EMAIL = '" + emailField.getText() + "'");
-            String test = resultSet.getString(1);
-            return test.length() == 0;
+            return !(resultSet.getString(1).length() == 0);
         } catch (SQLException | ClassNotFoundException ignored) { }
 
-        return false;
-    }
-
-    public void validation() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Invalid email or password");
-        alert.showAndWait();
+        return true;
     }
 
     private void makeFadeOut() {
@@ -306,12 +312,12 @@ public class LoginController implements Initializable {
                 new KeyFrame(
                         Duration.seconds(5 + Math.random() * 5),
                         new KeyValue(node.opacityProperty(), Math.random()),
-                        new KeyValue(node.radiusProperty(), Math.random() * 5)
+                        new KeyValue(node.radiusProperty(), Math.random() * 3)
                 ),
                 new KeyFrame(
                         Duration.seconds(10 + Math.random() * 20),
                         new KeyValue(node.radiusProperty(), 0),
-                        new KeyValue(node.centerXProperty(), Math.random() * 475),
+                        new KeyValue(node.centerXProperty(), Math.random() * 525),
                         new KeyValue(node.centerYProperty(), Math.random() * 700),
                         new KeyValue(node.opacityProperty(), 0)
                 )
