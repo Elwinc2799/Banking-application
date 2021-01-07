@@ -168,7 +168,7 @@ public class DebitCardController implements Initializable {
         nextButton.setOnAction(actionEvent -> {
             if (otpField.getText().equals(instance.getOTP()) && ReadFile.DataStorage.debitCard.isValid(textField.getText())) {
                 try {
-                    Class.forName("oracle.jdbc.OracleDriver");
+                    Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = ReadFile.connect.createStatement();
 
                     statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + Double.parseDouble(textField.getText()) +

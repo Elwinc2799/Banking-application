@@ -7,7 +7,6 @@ import sample.ReadFile;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 
 public class CreditCard extends Card {
 
@@ -93,7 +92,7 @@ public class CreditCard extends Card {
             new Thread(updateStatus).start();
 
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
@@ -106,7 +105,7 @@ public class CreditCard extends Card {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE CREDITCARD SET CARD_BALANCE_PAID = 'Y'" +
@@ -137,7 +136,7 @@ public class CreditCard extends Card {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 PreparedStatement preparedStatement = ReadFile.connect.prepareStatement
                         ("UPDATE CREDITCARD SET CARD_LAST_REPAYMENT_DATE = ? WHERE USERNAME = ?" );
                 preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
@@ -154,7 +153,7 @@ public class CreditCard extends Card {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +

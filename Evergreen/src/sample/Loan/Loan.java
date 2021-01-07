@@ -80,7 +80,7 @@ public class Loan {
         setLastDatePaid(newDate);
 
         try {
-            Class.forName("oracle.jdbc.OracleDriver");
+            Class.forName("com.mysql.jdbc.Driver");
             Statement statement = ReadFile.connect.createStatement();
 
             statement.executeQuery("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
@@ -97,7 +97,7 @@ public class Loan {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 PreparedStatement preparedStatement = ReadFile.connect.prepareStatement
                         ("UPDATE LOAN SET LOAN_LAST_PAID_DATE = ? WHERE USERNAME = ?" );
                 preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
@@ -114,7 +114,7 @@ public class Loan {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE LOAN SET LOAN_UPDATE_STATUS = 'Y'" +
@@ -145,7 +145,7 @@ public class Loan {
                 outstandingBalance += (counter > 0) ? (outstandingBalance * (months * (interestRate[1][overdueCategory]) / 1200)) : 0;
 
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +

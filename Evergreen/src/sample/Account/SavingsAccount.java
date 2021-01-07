@@ -6,7 +6,6 @@ import sample.ReadFile;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 public class SavingsAccount extends Account {
 
@@ -54,7 +53,7 @@ public class SavingsAccount extends Account {
             setBalanceUpdateStatus(true);
 
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
@@ -66,7 +65,7 @@ public class SavingsAccount extends Account {
 
         if (LocalDate.now().getDayOfMonth() > 28) {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_UPDATE_STATUS = 'N'" +
@@ -80,7 +79,7 @@ public class SavingsAccount extends Account {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_UPDATE_STATUS = 'Y'" +

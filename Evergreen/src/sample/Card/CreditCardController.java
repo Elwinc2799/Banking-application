@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -114,7 +113,7 @@ public class CreditCardController implements Initializable {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
@@ -201,7 +200,7 @@ public class CreditCardController implements Initializable {
                         new Thread(updateBalanceTask).start();
 
                         try {
-                            Class.forName("oracle.jdbc.OracleDriver");
+                            Class.forName("com.mysql.jdbc.Driver");
                             Statement statement = ReadFile.connect.createStatement();
 
                             statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + ReadFile.DataStorage.creditCard.getOutstandingBalance() +
@@ -226,7 +225,7 @@ public class CreditCardController implements Initializable {
     @FXML
     public void refreshButtonPushed() {
         try {
-            Class.forName("oracle.jdbc.OracleDriver");
+            Class.forName("com.mysql.jdbc.Driver");
             Statement statement = ReadFile.connect.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM CREDITCARD_EXPENSES WHERE CARD_ID = '" + ReadFile.DataStorage.creditCard.getCardID() + "'");

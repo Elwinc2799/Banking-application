@@ -9,9 +9,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -67,17 +64,7 @@
         </font>
     </Label>
    <Button fx:id="forgotPasswordButton" layoutX="803.0" layoutY="429.0" mnemonicParsing="false" onAction="#forgetPasswordPushed" stylesheets="@../sample.css" text="Forget Password" textFill="#5a879a" underline="true" />
-   <Circle fx:id="circle" fill="#1f93ff00" layoutX="955.0" layoutY="38.0" radius="15.0" strokeLineCap="BUTT" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 9.5;">
-      <stroke>
-         <LinearGradient endX="1.0" endY="1.0">
-            <stops>
-               <Stop color="#13547a" />
-               <Stop color="#80d0c7" offset="1.0" />
-            </stops>
-         </LinearGradient>
-      </stroke>
-   </Circle>
-   <JFXButton layoutX="629.0" layoutY="425.0" onAction="#login" prefHeight="30.0" prefWidth="131.0" ripplerFill="#4b67cd" styleClass="round-gray" stylesheets="@../transparent.css" text="Login">
+   <JFXButton layoutX="629.0" layoutY="425.0" onMouseReleased="#login" prefHeight="30.0" prefWidth="131.0" ripplerFill="#4b67cd" styleClass="round-gray" stylesheets="@../transparent.css" text="Login">
       <font>
          <Font name="System Bold" size="14.0" />
       </font>

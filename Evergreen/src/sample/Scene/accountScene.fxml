@@ -215,8 +215,8 @@
                 <NumberAxis fx:id="balanceAxis" side="LEFT" />
               </yAxis>
             </LineChart>
-            <JFXButton layoutX="625.0" layoutY="206.0" onAction="#creditCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
-            <JFXButton layoutX="625.0" layoutY="412.0" onAction="#debitCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
+            <JFXButton layoutX="625.0" layoutY="206.0" onMouseReleased="#creditCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
+            <JFXButton layoutX="625.0" layoutY="412.0" onMouseReleased="#debitCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
             </children>
         </AnchorPane>
     </children>

@@ -61,7 +61,7 @@ public class DepositAccount extends Account {
             setBalanceUpdateStatus(true);
 
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.depositAccount.getBalance() +
@@ -73,7 +73,7 @@ public class DepositAccount extends Account {
 
         if (calendar.get(Calendar.DAY_OF_MONTH) > 27) {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'N'" +
@@ -141,7 +141,7 @@ public class DepositAccount extends Account {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
                 statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'Y'" +

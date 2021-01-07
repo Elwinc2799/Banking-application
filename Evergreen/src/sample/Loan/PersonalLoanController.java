@@ -16,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.LoadingAnimation;
-import sample.Validation;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -138,8 +137,10 @@ public class PersonalLoanController implements Initializable {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
-            Validation validation = new Validation();
-            validation.intValidation(ICnoP.getText(),phonenoP.getText(),noOfDependantsP.getText(),homeTelNoP.getText(),accNum.getText(),loanAmount.getText());
+
+            //    if (!isValidSum(loanAmount.getText()) || isValidSum(priceP.getText()) || isValidSum(incomeP.getText())) {
+            //        return null;
+            //    }
 
             try {
                 String filename = nameP.getText()+".pdf";

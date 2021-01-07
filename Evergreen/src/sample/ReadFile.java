@@ -19,7 +19,7 @@ import java.util.concurrent.Semaphore;
 public class ReadFile {
 
     public static HashMap<String, String> passwordMap = new HashMap<>();
-    public static String password = "2799!!epokemon";
+    public static String password = "CAT201javaProject!@#";
     static Semaphore semConsumer = new Semaphore(0);
     static Semaphore semProducer = new Semaphore(1);
     public static Connection connect;
@@ -59,8 +59,8 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
-                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", password);
+                Class.forName("com.mysql.jdbc.Driver");
+                connect = DriverManager.getConnection("jdbc:mysql://35.185.186.119:3306/centralEvergreen?autoReconnect=true&useSSL=false", "root", password);
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM LOGIN");
@@ -80,7 +80,7 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM ACCOUNT WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() +"'");
@@ -98,7 +98,7 @@ public class ReadFile {
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM SAVINGS_EXPENSE WHERE ACCOUNT_ID = '" + DataStorage.savingsAccount.getAccountNum() + "'");
@@ -125,7 +125,7 @@ public class ReadFile {
         protected Void call() {
             if (LocalDate.now().getDayOfMonth() == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
                 try {
-                    Class.forName("oracle.jdbc.OracleDriver");
+                    Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = connect.createStatement();
                     double[] tempBalance = ReadFile.DataStorage.savingsAccount.balanceRecorder.clone();
 
@@ -157,7 +157,7 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = connect.createStatement();
 
                 statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_EXPENDITURE = " + 0 +
@@ -173,7 +173,7 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM DEPOSITS WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
@@ -199,7 +199,7 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM CREDITCARD  WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
@@ -226,7 +226,7 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM LOAN WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
@@ -265,7 +265,7 @@ public class ReadFile {
 
             if (!DataStorage.isPersonalLoan) {
                 try {
-                    Class.forName("oracle.jdbc.OracleDriver");
+                    Class.forName("com.mysql.jdbc.Driver");
                     statement = connect.createStatement();
                     ResultSet resultSet = statement.executeQuery("SELECT * FROM BUSINESS_COLLATERAL WHERE LOAN_ID = '" + DataStorage.businessLoan.loanID + "'");
 
@@ -285,7 +285,7 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM TRANSACTION_HISTORY WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
@@ -311,7 +311,7 @@ public class ReadFile {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
                 String loanID = (DataStorage.isPersonalLoan) ? DataStorage.personalLoan.getLoanID() : DataStorage.businessLoan.getLoanID();
@@ -338,7 +338,7 @@ public class ReadFile {
         new Thread(task).start();
 
         try {
-            Class.forName("oracle.jdbc.OracleDriver");
+            Class.forName("com.mysql.jdbc.Driver");
             statement = connect.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM DEBITCARD WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
@@ -352,7 +352,7 @@ public class ReadFile {
         } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
         try {
-            Class.forName("oracle.jdbc.OracleDriver");
+            Class.forName("com.mysql.jdbc.Driver");
             statement = connect.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM CREDITCARD_EXPENSES WHERE CARD_ID = '" + DataStorage.creditCard.getCardID() + "'");
@@ -374,7 +374,7 @@ public class ReadFile {
         protected Void call() {
             if (LocalDate.now().getDayOfMonth() == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
                 try {
-                    Class.forName("oracle.jdbc.OracleDriver");
+                    Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = connect.createStatement();
                     double[] tempBalance = ReadFile.DataStorage.creditCard.balanceRecorder.clone();
 

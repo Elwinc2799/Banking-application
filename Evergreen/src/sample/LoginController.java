@@ -23,7 +23,9 @@ import org.controlsfx.control.PopOver;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -45,9 +47,6 @@ public class LoginController implements Initializable {
 
     @FXML
     private Button forgotPasswordButton;
-
-    @FXML
-    private Circle circle;
 
     TextField emailField = new TextField();
     PasswordField newPasswordField = new PasswordField();
@@ -203,7 +202,7 @@ public class LoginController implements Initializable {
             nextButton.setOnAction(actionEvent1 -> {
                 if (isValidPassword(newPasswordField.getText()) && instance.getOTP().equals(otpField.getText()) && newPasswordField.getText().equals(confirmPasswordField.getText())) {
                     try {
-                        Class.forName("oracle.jdbc.OracleDriver");
+                        Class.forName("com.mysql.jdbc.Driver");
                         Statement statement = ReadFile.connect.createStatement();
 
                         statement.executeQuery("UPDATE LOGIN SET PASSWORD = '" + newPasswordField.getText() +
@@ -236,8 +235,7 @@ public class LoginController implements Initializable {
 
     public boolean checkEmail() {
         try {
-            Class.forName("oracle.jdbc.OracleDriver");
-            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "SYSTEM", ReadFile.password);
+            Class.forName("com.mysql.jdbc.Driver");
             Statement statement = ReadFile.connect.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM LOGIN WHERE EXISTS EMAIL = '" + emailField.getText() + "'");
@@ -270,16 +268,6 @@ public class LoginController implements Initializable {
         }
     }
 
-    private void setRotate(Circle circle, boolean reverse, int angle, int duration) {
-        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(duration), circle);
-        rotateTransition.setAutoReverse(reverse);
-        rotateTransition.setByAngle(angle);
-        rotateTransition.setDelay(Duration.seconds(0));
-        rotateTransition.setRate(3);
-        rotateTransition.setCycleCount(40);
-        rotateTransition.play();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Pane container = new Pane();
@@ -289,8 +277,13 @@ public class LoginController implements Initializable {
         for (int i = 0; i < 400; i++)
             spawnNode(container);
 
-        setRotate(circle, true, 360, 10);
         new Thread(ReadFile.passwordValidationTask).start();
+
+        userName.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().toString().equals("TAB")) {
+                passwordField.setFocusTraversable(true);
+            }
+        });
     }
 
     private void spawnNode(Pane container) {

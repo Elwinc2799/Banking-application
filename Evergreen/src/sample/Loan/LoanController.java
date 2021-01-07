@@ -262,7 +262,7 @@ public class LoanController implements Initializable {
                         ReadFile.DataStorage.businessLoan.getMonthlyRepayment()));
 
                 try {
-                    Class.forName("oracle.jdbc.OracleDriver");
+                    Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = ReadFile.connect.createStatement();
 
                     statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
@@ -283,7 +283,7 @@ public class LoanController implements Initializable {
         @Override
         protected Void call() {
             try {
-                Class.forName("oracle.jdbc.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 PreparedStatement preparedStatement = ReadFile.connect.prepareStatement
                         ("UPDATE LOAN_REPAYMENT_HISTORY SET LOAN_REPAYMENT_DATE = ?, LOAN_REPAYMENT_AMOUNT = ? WHERE LOAN_ID = ?" );
                 preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
@@ -379,7 +379,7 @@ public class LoanController implements Initializable {
                         ReadFile.DataStorage.businessLoan.getMonthlyRepayment()));
 
                 try {
-                    Class.forName("oracle.jdbc.OracleDriver");
+                    Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = ReadFile.connect.createStatement();
 
                     statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + ReadFile.DataStorage.creditCard.getOutstandingBalance() +
