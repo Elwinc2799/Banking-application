@@ -1,10 +1,8 @@
 package sample;
 
-import javafx.scene.control.Alert;
-
 public class Validation {
 
-    public void intValidation( String text, String phonenoPText, String noOfDependantsPText, String homeTelNoPText, String accNumText, String loanAmountText ){
+    public boolean intValidation( String text, String phonenoPText, String noOfDependantsPText, String homeTelNoPText, String accNumText, String loanAmountText ){
         try {
             Integer.parseInt(text);
             Integer.parseInt(phonenoPText);
@@ -12,11 +10,9 @@ public class Validation {
             Integer.parseInt(homeTelNoPText);
             Integer.parseInt(accNumText);
             Integer.parseInt(loanAmountText);
+            return true;
         } catch(NumberFormatException e){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Integer input wrongly");
-            alert.showAndWait();
-            return;
+            return false;
         }
     }
 }

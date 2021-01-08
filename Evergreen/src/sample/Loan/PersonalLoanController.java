@@ -11,11 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.LoadingAnimation;
+import sample.Validation;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -137,10 +139,13 @@ public class PersonalLoanController implements Initializable {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
-
-            //    if (!isValidSum(loanAmount.getText()) || isValidSum(priceP.getText()) || isValidSum(incomeP.getText())) {
-            //        return null;
-            //    }
+            Validation validation = new Validation();
+            if (!validation.intValidation(ICnoP.getText(), phonenoP.getText(), noOfDependantsP.getText(), homeTelNoP.getText(), accNum.getText(), loanAmount.getText())){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Integer input wrongly");
+                alert.showAndWait();
+                return null;
+            };
 
             try {
                 String filename = nameP.getText()+".pdf";
@@ -245,6 +250,14 @@ public class PersonalLoanController implements Initializable {
                 float[] columnWidths4 = {1f, 1f, 1f};
                 t4.setWidths(columnWidths4);
 
+                PdfPTable t6 = new PdfPTable(1);
+                t6.setWidthPercentage(100);
+                t6.setSpacingBefore(10f);
+                t6.setSpacingAfter(10f);
+
+                float[] columnWidths6 = {1f};
+                t6.setWidths(columnWidths6);
+
                 PdfPCell t4c1 = new PdfPCell(new Paragraph("Loan Amount: \n" + loanAmount.getText() + "\n", content));
                 t4c1.setPaddingLeft(10);
                 t4c1.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -257,15 +270,16 @@ public class PersonalLoanController implements Initializable {
                 t4c3.setPaddingLeft(10);
                 t4c3.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-                PdfPCell t4c4 = new PdfPCell(new Paragraph("Purpose of Loan: \n" + loanPurposeP.getText() + "\n", content));
-                t4c4.setPaddingLeft(10);
-                t4c4.setHorizontalAlignment(Element.ALIGN_LEFT);
+                PdfPCell t6c1 = new PdfPCell(new Paragraph("Purpose of Loan: \n" + loanPurposeP.getText() + "\n", content));
+                t6c1.setPaddingLeft(10);
+                t6c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 
                 t4.addCell(t4c1);
                 t4.addCell(t4c2);
                 t4.addCell(t4c3);
-                t4.addCell(t4c4);
+                t6.addCell(t6c1);
                 document.add(t4);
+                document.add(t6);
 
                 document.add(new Paragraph("DECLARATION", title));
                 Paragraph dec = new Paragraph("I hereby certify that the information contained herein is complete and accurate." +
