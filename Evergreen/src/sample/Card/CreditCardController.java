@@ -63,6 +63,7 @@ public class CreditCardController implements Initializable {
     double x = 0;
     double y = 0;
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -82,9 +83,11 @@ public class CreditCardController implements Initializable {
         String[] month = new String[7];
         LocalDate now = LocalDate.now();
 
+        //get and store the last 7 month into month array
         for (int i = 0, j = 8; i < 7; i++, j--)
             month[i] = new DateFormatSymbols().getMonths()[now.minusMonths(j).getMonthValue()];
 
+        //set the text to the respective label
         cardNumberLabel.setText(ReadFile.DataStorage.creditCard.getCardID());
         expiryDateLabel.setText(ReadFile.DataStorage.creditCard.getExpiryDate());
         cvvLabel.setText(ReadFile.DataStorage.creditCard.getCvv());
@@ -99,6 +102,7 @@ public class CreditCardController implements Initializable {
             statusLabel.setTextFill(Color.web("#21DADA"));
         }
 
+        //create a XYChart to show the balance to the respective month
         try {
             XYChart.Series series = new XYChart.Series();
 
@@ -109,6 +113,7 @@ public class CreditCardController implements Initializable {
         } catch (Exception ignored) { }
     }
 
+    //update the balance to the account in database
     Task<Void> updateBalanceTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -124,6 +129,7 @@ public class CreditCardController implements Initializable {
         }
     };
 
+    //action when credit card icon pressed
     @FXML
     public void creditDetailsPushed() {
         Label creditCardOutstandingBalance = new Label("Outstanding Balance");
@@ -148,6 +154,7 @@ public class CreditCardController implements Initializable {
 
         popOver.show(creditCardImage);
 
+        //send OTP when make payment button pressed
         makePayment.setOnAction(actionEvent -> {
             vBox[0].getChildren().clear();
             TransferController instance = new TransferController();
@@ -193,12 +200,14 @@ public class CreditCardController implements Initializable {
             popOvers.setTitle("Please enter valid info");
             popOvers.show(creditCardImage);
 
+            //proceed the payment if the OTP entered by user match the OTP sent by the application
             proceedPayment.setOnAction(actionEvent1 -> {
                 if (otpField.getText().equals(instance.getOTP()) && ReadFile.DataStorage.creditCard.isValid(amountField.getText())) {
                     if (ReadFile.DataStorage.creditCard.creditRepayment(Double.parseDouble(amountField.getText()))) {
                         ReadFile.DataStorage.savingsAccount.savingsAccountPayment(Double.parseDouble(amountField.getText()));
                         new Thread(updateBalanceTask).start();
 
+                        //update the database in credit card
                         try {
                             Class.forName("com.mysql.jdbc.Driver");
                             Statement statement = ReadFile.connect.createStatement();
@@ -222,12 +231,14 @@ public class CreditCardController implements Initializable {
         });
     }
 
+    //action when refresh button pushed
     @FXML
     public void refreshButtonPushed() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Statement statement = ReadFile.connect.createStatement();
 
+            //read and store the data from credit card expenses to array
             ResultSet resultSet = statement.executeQuery("SELECT * FROM CREDITCARD_EXPENSES WHERE CARD_ID = '" + ReadFile.DataStorage.creditCard.getCardID() + "'");
             while (resultSet.next()) {
                 double[] tempBalanceRecorder = new double[7];
@@ -242,28 +253,37 @@ public class CreditCardController implements Initializable {
         loadNextScene("/sample/Scene/creditCardScene.fxml");
     }
 
+    //load to account scene when account button pressed
     @FXML
     public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to transaction history scene when transaction history button button pressed
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
 
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to loan scene if the users' account has loan taken or load to no loan scene if the user does not have a loan when loan button pressed
     @FXML
     public void loanButtonPushed() {
         loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
     }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
     public void aboutUsButtonPushed() {
         loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;
