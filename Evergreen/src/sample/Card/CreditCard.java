@@ -19,7 +19,7 @@ public class CreditCard extends Card {
     public double annualRates = 1.2;
     public double[] balanceRecorder;
     public double[][] additionalRates = { { 12, 13, 15 },
-                                            { 5, 7, 10 }
+            { 5, 7, 10 }
     };
 
     public LocalDate cardLastPaidDate;
@@ -62,7 +62,7 @@ public class CreditCard extends Card {
         int lateCategory = 0;
         int overdraftCategory;
         int counter = getLatePaymentCounter();
-        LocalDate dateBefore = getCardLastPaidDate().plusMonths(1);
+        LocalDate dateBefore = getCardLastPaidDate();
         LocalDate dateAfter = LocalDate.now();
 
         if (!dateBefore.getMonth().equals(dateAfter.getMonth()) && !isOutstandingBalanceStatusUpdated()) {
@@ -95,7 +95,7 @@ public class CreditCard extends Card {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
+                statement.executeUpdate("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
@@ -108,7 +108,7 @@ public class CreditCard extends Card {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE CREDITCARD SET CARD_BALANCE_PAID = 'Y'" +
+                statement.executeUpdate("UPDATE CREDITCARD SET CARD_BALANCE_PAID = 'Y'" +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
@@ -156,7 +156,7 @@ public class CreditCard extends Card {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +
+                statement.executeUpdate("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }

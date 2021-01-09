@@ -14,11 +14,13 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
 public class ReadFile {
 
-    public static HashMap<String, String> passwordMap = new HashMap<>();
+    public static Map<String, String> passwordMap = new ConcurrentHashMap<>();
     public static String password = "CAT201javaProject!@#";
     static Semaphore semConsumer = new Semaphore(0);
     static Semaphore semProducer = new Semaphore(1);
@@ -47,7 +49,7 @@ public class ReadFile {
         semConsumer.release();
     }
 
-    static Task<Void> task = new Task<Void>() {
+    static Task<Void> task = new Task<>() {
         @Override
         protected Void call() {
             CurrencyWebScrapping.webScrapping();
@@ -55,7 +57,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> passwordValidationTask = new Task<Void>() {
+    static Task<Void> passwordValidationTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -70,20 +72,22 @@ public class ReadFile {
 
                     passwordMap.put(username, userPassword);
                 }
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
     };
 
-    static Task<Void> savingsAccountInfoTask = new Task<Void>() {
+    static Task<Void> savingsAccountInfoTask = new Task<>() {
         @Override
         protected Void call() {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 statement = connect.createStatement();
 
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM ACCOUNT WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() +"'");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM ACCOUNT WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
                 while (resultSet.next()) {
                     DataStorage.savingsAccount.setAccountNum(Long.toString(resultSet.getLong(2)));
                     DataStorage.savingsAccount.setName(resultSet.getString(3));
@@ -95,7 +99,9 @@ public class ReadFile {
                     DataStorage.savingsAccount.setMonthExpenditure(resultSet.getDouble(10));
                 }
 
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -111,7 +117,9 @@ public class ReadFile {
                     DataStorage.savingsAccount.setBalanceRecorder(tempBalanceRecorder);
                 }
 
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             new Thread(updateExpenditureRecorderTask).start();
             DataStorage.savingsAccount.updateBalance();
@@ -120,7 +128,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> updateExpenditureRecorderTask = new Task<Void>() {
+    static Task<Void> updateExpenditureRecorderTask = new Task<>() {
         @Override
         protected Void call() {
             if (LocalDate.now().getDayOfMonth() == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
@@ -134,7 +142,7 @@ public class ReadFile {
 
                     tempBalance[0] = DataStorage.savingsAccount.getMonthExpenditure();
 
-                    statement.executeQuery("UPDATE SAVINGS_EXPENSE SET " +
+                    statement.executeUpdate("UPDATE SAVINGS_EXPENSE SET " +
                             "ONE_MONTH_AGO = " + tempBalance[0] +
                             ", TWO_MONTH_AGO = " + tempBalance[1] +
                             ", THREE_MONTH_AGO = " + tempBalance[2] +
@@ -145,7 +153,9 @@ public class ReadFile {
                             " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
                     DataStorage.savingsAccount.setBalanceRecorder(tempBalance);
 
-                } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 new Thread(updateExpenditureTask).start();
             }
@@ -153,14 +163,14 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> updateExpenditureTask = new Task<Void>() {
+    static Task<Void> updateExpenditureTask = new Task<>() {
         @Override
         protected Void call() {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = connect.createStatement();
 
-                statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_EXPENDITURE = " + 0 +
+                statement.executeUpdate("UPDATE ACCOUNT SET ACCOUNT_EXPENDITURE = " + 0 +
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
@@ -169,7 +179,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> depositsAccountInfoTask = new Task<Void>() {
+    static Task<Void> depositsAccountInfoTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -195,7 +205,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> creditCardInfoTask = new Task<Void>() {
+    static Task<Void> creditCardInfoTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -211,10 +221,14 @@ public class ReadFile {
                     DataStorage.creditCard.setFixedMonthlyLimit(resultSet.getDouble(5));
                     DataStorage.creditCard.setOutstandingBalance(resultSet.getDouble(6));
                     DataStorage.creditCard.setExpenditure(resultSet.getDouble(7));
-                    DataStorage.creditCard.setOutstandingBalanceStatusUpdated(resultSet.getString(8).equals("Y"));
+                    LocalDate lastRepaymentDate = resultSet.getDate(8).toLocalDate();
+                    DataStorage.creditCard.setCardLastPaidDate(lastRepaymentDate);
+                    DataStorage.creditCard.setOutstandingBalanceStatusUpdated(resultSet.getString(9).equals("Y"));
                 }
 
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             DataStorage.creditCard.updateOutstandingBalance();
 
@@ -222,7 +236,7 @@ public class ReadFile {
         }
     };
 
-    static Task<Void> loanInfoTask = new Task<Void>() {
+    static Task<Void> loanInfoTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -259,7 +273,9 @@ public class ReadFile {
                     }
                 }
 
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             new Thread(loanRepaymentHistoryTask).start();
 
@@ -274,14 +290,16 @@ public class ReadFile {
                         DataStorage.businessLoan.setCollateralAmount(resultSet.getDouble(3));
                     }
 
-                } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
 
             return null;
         }
     };
 
-    static Task<Void> transactionHistoryInfoTask = new Task<Void>() {
+    static Task<Void> transactionHistoryInfoTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -301,13 +319,15 @@ public class ReadFile {
                     DataStorage.transactionHistoryArrayList.add(transactionHistory);
                 }
 
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
     };
 
-    static Task<Void> loanRepaymentHistoryTask = new Task<Void>() {
+    static Task<Void> loanRepaymentHistoryTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -316,7 +336,7 @@ public class ReadFile {
 
                 String loanID = (DataStorage.isPersonalLoan) ? DataStorage.personalLoan.getLoanID() : DataStorage.businessLoan.getLoanID();
 
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM LOAN_REPAYMENT_HISTORY WHERE LOAN_ID = '" +  loanID+ "'");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM LOAN_REPAYMENT_HISTORY WHERE LOAN_ID = '" + loanID + "'");
                 while (resultSet.next()) {
                     TransactionHistory transactionHistory = new TransactionHistory();
 
@@ -326,7 +346,9 @@ public class ReadFile {
                     DataStorage.loanRepaymentHistoryArrayList.add(transactionHistory);
                 }
 
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
@@ -369,7 +391,7 @@ public class ReadFile {
         new Thread(updateCreditExpenditureRecorderTask).start();
     }
 
-    static Task<Void> updateCreditExpenditureRecorderTask = new Task<Void>() {
+    static Task<Void> updateCreditExpenditureRecorderTask = new Task<>() {
         @Override
         protected Void call() {
             if (LocalDate.now().getDayOfMonth() == 1 && !ReadFile.DataStorage.savingsAccount.isBalanceUpdateStatus()) {
@@ -383,7 +405,7 @@ public class ReadFile {
 
                     tempBalance[0] = DataStorage.creditCard.getExpenditure();
 
-                    statement.executeQuery("UPDATE CREDITCARD_EXPENSES SET " +
+                    statement.executeUpdate("UPDATE CREDITCARD_EXPENSES SET " +
                             "ONE_MONTH_AGO = " + tempBalance[0] +
                             ", TWO_MONTH_AGO = " + tempBalance[1] +
                             ", THREE_MONTH_AGO = " + tempBalance[2] +
@@ -394,7 +416,9 @@ public class ReadFile {
                             " WHERE CARD_ID = '" + ReadFile.DataStorage.creditCard.getCardID() + "'");
 
                     DataStorage.creditCard.setBalanceRecorder(tempBalance);
-                } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 new Thread(updateExpenditureTask).start();
             }
             return null;
