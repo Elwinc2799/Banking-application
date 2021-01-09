@@ -39,6 +39,7 @@ public class PersonalLoanController implements Initializable {
         panebutton.getChildren().addAll(loadingAnimation.createRectangle(generatePpdf), loadingAnimation.createText(generatePpdf));
     }
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -99,23 +100,31 @@ public class PersonalLoanController implements Initializable {
     private TextField loanPurposeP;
     @FXML
     private StackPane panebutton;
+    //load to transaction history scene when transaction history button button pressed
+    @FXML
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
+
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to account scene when account button pressed
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml");}
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
     public void aboutUsButtonPushed() {
         loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
-    @FXML
-    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml");}
-
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;
@@ -128,7 +137,8 @@ public class PersonalLoanController implements Initializable {
         }
     }
 
-    private Task<Void> generatePpdf = new Task<Void>() {
+    //generate a PDF form when execute
+    private final Task<Void> generatePpdf = new Task<>() {
         @Override
         public Void call() {
             Font formTitle = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, Font.BOLD);
@@ -139,14 +149,16 @@ public class PersonalLoanController implements Initializable {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
+            //validation for the information filled
             Validation validation = new Validation();
             if (!validation.intValidation(ICnoP.getText(), phonenoP.getText(), noOfDependantsP.getText(), homeTelNoP.getText(), accNum.getText(), loanAmount.getText())){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Integer input wrongly");
                 alert.showAndWait();
                 return null;
-            };
+            }
 
+            //create a pdf file with all the information filled in the form previously
             try {
                 String filename = nameP.getText()+".pdf";
                 PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( filename,true));
@@ -165,11 +177,12 @@ public class PersonalLoanController implements Initializable {
                 document.add(new Paragraph("Address: " + addressP1.getText() + ", " + addressP2.getText() + ", " + addressP3.getText(), content));
 
                 document.add(new Paragraph("FAMILY INFORMATION", title));
-                PdfPTable t1 = new PdfPTable(2);
-                t1.setWidthPercentage(100);
-                t1.setSpacingBefore(10f);
-                t1.setSpacingAfter(10f);
+                PdfPTable t1 = new PdfPTable(2); //2 column
+                t1.setWidthPercentage(100);// width 100%
+                t1.setSpacingBefore(10f);//space before table
+                t1.setSpacingAfter(10f);//sapce after table
 
+                //set column width
                 float[] columnWidths1 = {1f, 1f};
                 t1.setWidths(columnWidths1);
                 PdfPCell t1c1 = new PdfPCell(new Paragraph("No of Dependants: \n" + noOfDependantsP.getText() + "\n", content));
@@ -323,15 +336,4 @@ public class PersonalLoanController implements Initializable {
             return null;
         }
     };
-
-    public boolean isValidSum(String amount) {
-        if (amount == null)
-            return false;
-
-        try {
-            double d = Double.parseDouble(amount);
-        } catch (NumberFormatException nfe) { return false; }
-
-        return true;
-    }
 }

@@ -39,6 +39,7 @@ public class LoanController implements Initializable {
     double x = 0;
     double y = 0;
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -175,23 +176,31 @@ public class LoanController implements Initializable {
         }
     }
 
+    //load to transaction history scene when transaction history button button pressed
     @FXML
-    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
 
-    @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
-
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to account scene when account button pressed
+    @FXML
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
+
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
     public void aboutUsButtonPushed() {
         loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;
@@ -212,15 +221,17 @@ public class LoanController implements Initializable {
         return transactionHistories;
     }
 
+    //if online banking button pressed
     @FXML
     public void onlineBankingPushed() {
         if (!ReadFile.DataStorage.savingsAccount.savingsPaymentValidation(ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
-            ReadFile.DataStorage.businessLoan.getMonthlyRepayment()))
+                ReadFile.DataStorage.businessLoan.getMonthlyRepayment()))
             return;
 
         if (isMonthlyDebtPaid())
             return;
 
+        //create and sentOTP to the user
         TransferController instance = new TransferController();
         new Thread(instance.sendOTPTask).start();
 
@@ -250,10 +261,12 @@ public class LoanController implements Initializable {
         popOver.setTitle("Loan Payment");
         popOver.show(onlineBankingButton);
 
+        //action when next button is pressed
         nextButton.setOnAction(actionEvent -> {
             if (!paidAlready())
                 return;
 
+            //if the OTP insert by user is same to the OTP sent by the application
             if (otpField.getText().equals(instance.getOTP())) {
                 ReadFile.DataStorage.savingsAccount.savingsAccountPayment(ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
                         ReadFile.DataStorage.businessLoan.getMonthlyRepayment());
@@ -261,14 +274,16 @@ public class LoanController implements Initializable {
                 addInList(LocalDate.now(), (ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
                         ReadFile.DataStorage.businessLoan.getMonthlyRepayment()));
 
+                //update the information into the database
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = ReadFile.connect.createStatement();
 
-                    statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
+                    statement.executeUpdate("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
                             " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
                 } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
+                //prompt an alert to notify the user that monthly loan successfully paid
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("You have successfully paid your monthly debt.");
                 alert.showAndWait();
@@ -279,7 +294,8 @@ public class LoanController implements Initializable {
         });
     }
 
-    static Task<Void> updateHistoryTask = new Task<Void>() {
+    //update the history task in database
+    static Task<Void> updateHistoryTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -298,6 +314,7 @@ public class LoanController implements Initializable {
         }
     };
 
+    //the function when credit card button pressed
     @FXML
     public void creditCardPushed() {
         if (!ReadFile.DataStorage.creditCard.creditCardUsageValidation(ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
@@ -307,6 +324,7 @@ public class LoanController implements Initializable {
         if (isMonthlyDebtPaid())
             return;
 
+        //create and send an OTP to the user
         TransferController instance = new TransferController();
         new Thread(instance.sendOTPTask).start();
 
@@ -327,6 +345,7 @@ public class LoanController implements Initializable {
         otp.setTranslateY(100);
         otp.setFont(new Font("Arial", 14));
 
+        //set textField with size
         TextField cardNumField = new TextField();
         TextField expDateField = new TextField();
         TextField cvvField = new TextField();
@@ -352,6 +371,7 @@ public class LoanController implements Initializable {
         otpField.setMaxWidth(150);
         otpField.setFocusTraversable(false);
 
+        //create Next button with size
         Button nextButton = new Button();
         nextButton.setText("Next");
         nextButton.setTranslateX(125);
@@ -366,23 +386,26 @@ public class LoanController implements Initializable {
         popOver.setTitle("Loan Payment");
         popOver.show(creditCardButton);
 
+        //action when next button is pressed
         nextButton.setOnAction(actionEvent -> {
             if (!paidAlready())
                 return;
 
+            //if the card ID, card expired date, card CVV and OTP matches to the database
             if (cardNumField.getText().equals(ReadFile.DataStorage.creditCard.getCardID()) && expDateField.getText().equals(ReadFile.DataStorage.creditCard.getExpiryDate()) &&
-            cvvField.getText().equals(ReadFile.DataStorage.creditCard.getCvv()) && otpField.getText().equals(instance.getOTP())) {
+                    cvvField.getText().equals(ReadFile.DataStorage.creditCard.getCvv()) && otpField.getText().equals(instance.getOTP())) {
                 ReadFile.DataStorage.creditCard.creditUsage(ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
                         ReadFile.DataStorage.businessLoan.getMonthlyRepayment());
                 new Thread(updateHistoryTask).start();
                 addInList(LocalDate.now(), (ReadFile.DataStorage.isPersonalLoan ? ReadFile.DataStorage.personalLoan.getMonthlyRepayment() :
                         ReadFile.DataStorage.businessLoan.getMonthlyRepayment()));
 
+                //update the information in the database
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = ReadFile.connect.createStatement();
 
-                    statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + ReadFile.DataStorage.creditCard.getOutstandingBalance() +
+                    statement.executeUpdate("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + ReadFile.DataStorage.creditCard.getOutstandingBalance() +
                             " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
                 } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
@@ -395,6 +418,7 @@ public class LoanController implements Initializable {
         });
     }
 
+    //boolean function to prompt an alert to notify the user if they had paid their monthly debt
     public boolean isMonthlyDebtPaid() {
         if (ReadFile.DataStorage.isPersonalLoan ?
                 ReadFile.DataStorage.personalLoan.getLastDatePaid().getMonth().equals(LocalDate.now().getMonth()) :
@@ -408,6 +432,7 @@ public class LoanController implements Initializable {
         return false;
     }
 
+    //function to add new loan repayment history data to array list
     public void addInList(LocalDate date, double amount) {
         TransactionHistory instance = new TransactionHistory();
         instance.setTransactionDate(date);
@@ -416,6 +441,7 @@ public class LoanController implements Initializable {
         ReadFile.DataStorage.loanRepaymentHistoryArrayList.add(instance);
     }
 
+    //boolean function to get Y or N from datastorage
     public boolean paidAlready() {
         if (ReadFile.DataStorage.isPersonalLoan)
             return ReadFile.DataStorage.personalLoan.loanPayment(ReadFile.DataStorage.personalLoan.getMonthlyRepayment());

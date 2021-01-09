@@ -20,6 +20,7 @@ public class NoLoanController{
     double x = 0;
     double y = 0;
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -37,23 +38,31 @@ public class NoLoanController{
     @FXML
     private StackPane root;
 
+    //load to transaction history scene when transaction history button button pressed
+    @FXML
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
+
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to account scene when account button pressed
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml");}
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
     public void aboutUsButtonPushed() {
         loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
-    @FXML
-    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml");}
-
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;
@@ -66,9 +75,11 @@ public class NoLoanController{
         }
     }
 
+    //load to business loan scene when business loan button pressed
     @FXML
     public void businessLoanButtonPushed() { loadNextScene("/sample/Scene/businessLoanForm.fxml");}
 
+    //load to personal loan scene when personal loan button pressed
     @FXML
     public void personalLoanButtonPushed() { loadNextScene("/sample/Scene/personalLoanForm.fxml");}
 }
