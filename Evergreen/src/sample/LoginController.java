@@ -26,6 +26,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -53,6 +54,7 @@ public class LoginController implements Initializable {
     double x = 0;
     double y = 0;
 
+    //colour for the circle animation
     Color[] colors = {
             new Color(1.0, 0.2, 1.0, 1.0).saturate().brighter().brighter(),
             new Color(0.75, 0.25, 1.0, 1.0).saturate().brighter().brighter(),
@@ -61,6 +63,7 @@ public class LoginController implements Initializable {
             new Color(0.5, 0.8, 0.9, 0.2).saturate().brighter().brighter()
     };
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -75,21 +78,25 @@ public class LoginController implements Initializable {
         y = event.getSceneY();
     }
 
+    //get user's account username and password and verify the inputs with the database
     @FXML
     public void login() {
         boolean accountValidation = false;
         boolean passwordValidation = false;
 
-        for (Map.Entry<String, String> row : ReadFile.passwordMap.entrySet()) {
-            String key = row.getKey();
+        for (Iterator<String> keys = ReadFile.passwordMap.keySet().iterator(); keys.hasNext(); ) {
+            String key = keys.next();
 
             if (key.equals(userName.getText().toLowerCase(Locale.ROOT))) {
                 accountValidation = true;
+                String password = ReadFile.passwordMap.get(key);
 
-                if (row.getValue().equals(passwordField.getText())) {
+                if (password.equals(passwordField.getText())) {
                     ReadFile.DataStorage.setUsername(userName.getText().toLowerCase(Locale.ROOT));
+                    ReadFile.passwordMap.remove(key);
                     ReadFile.importData();
                     ReadFile.passwordMap.clear();
+
 
                     PauseTransition pause = new PauseTransition(Duration.seconds(0.15));
                     pause.setOnFinished(event -> makeFadeOut());
@@ -99,6 +106,7 @@ public class LoginController implements Initializable {
             }
         }
 
+        //prompt message if user's account cannot be found in the database or the password does not match the account username
         if (!accountValidation || !passwordValidation) {
             VBox vBox = new VBox();
             vBox.setPrefHeight(10);
@@ -111,6 +119,7 @@ public class LoginController implements Initializable {
         }
     }
 
+    //action when forgot button pushed
     @FXML
     public void forgetPasswordPushed() {
         root.setEffect(new BoxBlur(10, 10, 3));
@@ -127,6 +136,7 @@ public class LoginController implements Initializable {
         emailField.setFocusTraversable(false);
         emailField.setFont(new Font("Arial", 12));
 
+        //generate an OTP
         Button generateOTP = new Button();
         generateOTP.setText("Generate OTP");
         generateOTP.setTranslateX(125);
@@ -136,11 +146,13 @@ public class LoginController implements Initializable {
         vBox[0].setPrefHeight(150);
         vBox[0].setPrefWidth(250);
 
+        //Get user's email
         PopOver popOvers = new PopOver(vBox[0]);
         popOvers.setHeaderAlwaysVisible(true);
         popOvers.setTitle("Please enter your email");
         popOvers.show(forgotPasswordButton);
 
+        //prompt message if the email is not found in the database
         generateOTP.setOnAction(actionEvent -> {
             if (!checkEmail()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -149,11 +161,13 @@ public class LoginController implements Initializable {
                 return;
             }
 
+            //send the OTP to the user by email and at the output
             vBox[0].getChildren().clear();
             TransferController instance = new TransferController();
             ReadFile.DataStorage.savingsAccount.setEmail(emailField.getText());
             new Thread(instance.sendOTPTask).start();
 
+            //Get the OTP, neww password and confirm password
             Label OTP = new Label("OTP");
             Label newPassword = new Label("New password");
             Label confirmPassword = new Label("Confirm password");
@@ -185,6 +199,7 @@ public class LoginController implements Initializable {
             confirmPasswordField.setFocusTraversable(false);
             confirmPasswordField.setPromptText("Confirm Password");
 
+            //next button to proceed
             Button nextButton = new Button();
             nextButton.setText("Next");
             nextButton.setTranslateX(155);
@@ -194,18 +209,22 @@ public class LoginController implements Initializable {
             vBox[0].setPrefHeight(250);
             vBox[0].setPrefWidth(250);
 
+            //prompt message to notify user to insert their OTP and new password
             PopOver popOver = new PopOver(vBox[0]);
             popOvers.setHeaderAlwaysVisible(true);
             popOvers.setTitle("Please enter the OTP and your new password");
             popOver.show(forgotPasswordButton);
 
+            //action when next button is pressed
             nextButton.setOnAction(actionEvent1 -> {
+                //if the password is valid, the OTP inputed match the OTP sent by the application and the new password matches the confirm password.
                 if (isValidPassword(newPasswordField.getText()) && instance.getOTP().equals(otpField.getText()) && newPasswordField.getText().equals(confirmPasswordField.getText())) {
+                    //update the information to the database
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
                         Statement statement = ReadFile.connect.createStatement();
 
-                        statement.executeQuery("UPDATE LOGIN SET PASSWORD = '" + newPasswordField.getText() +
+                        statement.executeUpdate("UPDATE LOGIN SET PASSWORD = '" + newPasswordField.getText() +
                                 "' WHERE EMAIL = '" + emailField.getText() + "'");
                     } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
@@ -226,6 +245,7 @@ public class LoginController implements Initializable {
         popOvers.setOnHidden(windowEvent -> root.setEffect(null));
     }
 
+    //validation for password
     public boolean isValidPassword(String password) {
         String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\\\S+$).{8,20}$";
         Pattern pattern = Pattern.compile(regex);
@@ -233,6 +253,7 @@ public class LoginController implements Initializable {
         return matcher.matches();
     }
 
+    //boolean function to check whether the email is found in database
     public boolean checkEmail() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -245,6 +266,7 @@ public class LoginController implements Initializable {
         return true;
     }
 
+    //fake out animation
     private void makeFadeOut() {
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration((Duration.millis(1500)));
@@ -256,6 +278,7 @@ public class LoginController implements Initializable {
         fadeTransition.play();
     }
 
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene() {
         try {
             Parent secondView;
@@ -286,6 +309,7 @@ public class LoginController implements Initializable {
         });
     }
 
+    //a circle animation at the scene
     private void spawnNode(Pane container) {
         Circle node = new Circle(0);
         node.setManaged(false);
