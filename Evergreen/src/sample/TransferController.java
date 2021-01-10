@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.mail.*;
@@ -37,9 +35,6 @@ public class TransferController implements Initializable {
 
     @FXML
     private StackPane root;
-
-    @FXML
-    private ToggleGroup category;
 
     @FXML
     private ChoiceBox<String> bank;
@@ -88,6 +83,7 @@ public class TransferController implements Initializable {
 
     public void setOTP(String OTP) { this.OTP = OTP; }
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -102,6 +98,7 @@ public class TransferController implements Initializable {
         y = event.getSceneY();
     }
 
+    //task to deduct balance in account table in database
     Task<Void> deductBalanceTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -118,6 +115,7 @@ public class TransferController implements Initializable {
         }
     };
 
+    //task to add transaction history to the database
     Task<Void> writeTransactionHistoryTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -148,8 +146,10 @@ public class TransferController implements Initializable {
         }
     };
 
+    //action when next button pushed
     @FXML
     public void nextButtonPushed() {
+        //prompt message when OTP input does not match the OTP sent by the application
         if (!OTP.equals(fieldOTP.getText())) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Invalid OTP");
@@ -157,6 +157,7 @@ public class TransferController implements Initializable {
             return;
         }
 
+        //prompt message when the amount input is less than 1
         if (Double.parseDouble(amountTextField.getText()) < 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Invalid Amount");
@@ -222,25 +223,33 @@ public class TransferController implements Initializable {
 
     }
 
+    //load to account scene when account button pressed
     @FXML
     public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to transaction history scene when transaction history button button pressed
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
 
+    //load to loan scene if the users' account has loan taken or load to no loan scene if the user does not have a loan when loan button pressed
     @FXML
     public void loanButtonPushed() {
         loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
     }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
     public void aboutUsButtonPushed() {
         loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;
@@ -253,6 +262,7 @@ public class TransferController implements Initializable {
         }
     }
 
+    //task to send OTP
     public Task<Void> sendOTPTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -295,6 +305,7 @@ public class TransferController implements Initializable {
         }
     };
 
+    //task to send email
     Task<Void> sendEmailTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -337,6 +348,7 @@ public class TransferController implements Initializable {
         }
     };
 
+    //function to generate OTP
     public void generateOTP() {
         char[] password = new char[6];
         String numbers = "0123456789";

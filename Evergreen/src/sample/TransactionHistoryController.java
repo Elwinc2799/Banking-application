@@ -29,6 +29,7 @@ public class TransactionHistoryController implements Initializable {
     double x = 0;
     double y = 0;
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -87,6 +88,7 @@ public class TransactionHistoryController implements Initializable {
 
     ObservableList<String> list = FXCollections.observableArrayList("General", "Deposits", "Payment");
 
+    //initialize and set the choice box and label
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         typeChoiceBox.setItems(list);
@@ -99,21 +101,31 @@ public class TransactionHistoryController implements Initializable {
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
     }
 
+    //load to account scene when account button pressed
     @FXML
     public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to loan scene if the users' account has loan taken or load to no loan scene if the user does not have a loan when loan button pressed
     @FXML
-    public void loanButtonPushed() { loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml"); }
+    public void loanButtonPushed() {
+        loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
+    }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
-    public void aboutUsButtonPushed() { loadNextScene("/sample/Scene/aboutUsScene.fxml"); }
+    public void aboutUsButtonPushed() {
+        loadNextScene("/sample/Scene/aboutUsScene.fxml");
+    }
 
+    //action when proceed button pushed
     @FXML
     public void proceedButtonPushed() {
         double monthlyExpenses = 0, weeklyExpenses, dailyExpenses;
@@ -171,12 +183,14 @@ public class TransactionHistoryController implements Initializable {
                 }
             }
 
+        //set label
         weeklyExpenses = monthlyExpenses / 4;
         dailyExpenses = weeklyExpenses / 7;
         dailyExpenseLabel.setText(String.format("%.2f", dailyExpenses));
         weeklyExpenseLabel.setText(String.format("%.2f", weeklyExpenses));
         monthlyExpenseLabel.setText(String.format("%.2f", monthlyExpenses));
 
+        //set pie chart data
         ObservableList<PieChart.Data> pieChartData
                 = FXCollections.observableArrayList(
                 new PieChart.Data("Food and Beverages", foodAndBeverages),
@@ -189,6 +203,7 @@ public class TransactionHistoryController implements Initializable {
                 new PieChart.Data("Transport", transport)
         );
 
+        //show pie chart
         pieChart.setData(pieChartData);
         pieChart.setStartAngle(90);
 
@@ -226,6 +241,7 @@ public class TransactionHistoryController implements Initializable {
         boolean matches(TransactionHistory transactionHistory);
     }
 
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;

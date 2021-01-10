@@ -35,6 +35,7 @@ public class ReadFile {
         semProducer.release();
     }
 
+    //run all the thread
     public static void put() {
         try {
             semProducer.acquire();
@@ -57,6 +58,7 @@ public class ReadFile {
         }
     };
 
+    //thread for password validation
     static Task<Void> passwordValidationTask = new Task<>() {
         @Override
         protected Void call() {
@@ -80,6 +82,7 @@ public class ReadFile {
         }
     };
 
+    //get information from database and store into dataStorage
     static Task<Void> savingsAccountInfoTask = new Task<>() {
         @Override
         protected Void call() {
@@ -425,6 +428,7 @@ public class ReadFile {
         }
     };
 
+    //DataStorage class
     public static class DataStorage {
 
         public static String username;
