@@ -16,6 +16,7 @@ public class LoadingAnimation {
     private Text text;
     private boolean isRunning;
 
+    //function to create a rectangle with event when user react on it
     public Rectangle createRectangle(Task<Void> task) {
         rectangle = new Rectangle(10,200,100, 30);
         rectangle.setArcHeight(15);
@@ -44,6 +45,7 @@ public class LoadingAnimation {
         return rectangle;
     }
 
+    //function to preload a task
     private void preload(Task <Void> task) {
         try {
             setTaskRunning(true);
@@ -57,6 +59,7 @@ public class LoadingAnimation {
 
     private boolean isTaskRunning() { return isRunning; }
 
+    //function to run the animation
     public void runAnimation(Task<Void> task) throws InterruptedException {
         KeyValue kv = new KeyValue(rectangle.widthProperty(), 30);
         KeyValue kv2 = new KeyValue(rectangle.xProperty(), 10);
@@ -90,6 +93,7 @@ public class LoadingAnimation {
         sequential.play();
     }
 
+    //function to run the result animation and show the text after finish
     private void runResultAnimation(boolean flag) {
         KeyValue kv = new KeyValue(rectangle.widthProperty(), 100);
         KeyValue kv2 = new KeyValue(rectangle.xProperty(), 10);
@@ -119,6 +123,7 @@ public class LoadingAnimation {
         sequential.play();
     }
 
+    //function to set the message when the animation done running
     private void onComplete(String textMessage) {
         text.setText(textMessage);
         text.setVisible(true);
@@ -126,6 +131,7 @@ public class LoadingAnimation {
         setTaskRunning(false);
     }
 
+    //function to create a text
     public Text createText(Task<Void> task) {
         text = new Text();
         text.setText("Generate");

@@ -66,6 +66,7 @@ public class Loan {
 
     public void setLoanOutstandingBalanceUpdated(boolean loanOutstandingBalanceUpdated) { this.loanOutstandingBalanceUpdated = loanOutstandingBalanceUpdated; }
 
+    //boolean function to determine whether the user had paid for the loan for this month or not
     public boolean loanPayment(double amount) {
         if (getLastDatePaid().getMonth().equals(LocalDate.now().getMonth())) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -79,11 +80,12 @@ public class Loan {
         outstandingBalance -= amount;
         setLastDatePaid(newDate);
 
+        //update information to the database
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Statement statement = ReadFile.connect.createStatement();
 
-            statement.executeQuery("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
+            statement.executeUpdate("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
                     " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
 
             new Thread(updateDateTask).start();
@@ -93,6 +95,7 @@ public class Loan {
         return true;
     }
 
+    //task to update the date to database
     Task<Void> updateDateTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -110,6 +113,7 @@ public class Loan {
         }
     };
 
+    //task to update the status to the database
     Task<Void> updateStatusTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -117,7 +121,7 @@ public class Loan {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE LOAN SET LOAN_UPDATE_STATUS = 'Y'" +
+                statement.executeUpdate("UPDATE LOAN SET LOAN_UPDATE_STATUS = 'Y'" +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
@@ -126,6 +130,7 @@ public class Loan {
         }
     };
 
+    //function to update the outstanding balance in loan
     public void updateOutstandingBalance(double[][] interestRate) {
         updateOverdueDays();
         int loanInterestCategory = getLoanInterestCategory((int) getInitialLoanAmount() / 25000);
@@ -139,22 +144,25 @@ public class Loan {
 
         new Thread(updateStatusTask).start();
 
+        //if the loan outstanding balance status is not updated and the month is more than 1
         if (!isLoanOutstandingBalanceUpdated() && months > 0) {
             outstandingBalance += outstandingBalance * (interestRate[0][loanInterestCategory] / 1200);
             if (months > 0)
                 outstandingBalance += (counter > 0) ? (outstandingBalance * (months * (interestRate[1][overdueCategory]) / 1200)) : 0;
 
+            //update information to the database
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
+                statement.executeUpdate("UPDATE LOAN SET LOAN_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
     }
 
+    //function to get the loan interest category
     public int getLoanInterestCategory(double loanLimit) {
         int loanInterestCategory;
 
@@ -168,6 +176,7 @@ public class Loan {
         return loanInterestCategory;
     }
 
+    //function to determine the loan overdue category
     public int getOverdueCategory() {
         int overdueCategory = 0;
         int counter = getOverdueCounter();
@@ -191,6 +200,7 @@ public class Loan {
         return overdueCategory;
     }
 
+    //function to update the overdue days
     public void updateOverdueDays() {
         LocalDate dateBefore = lastDatePaid.with(lastDayOfMonth());
         LocalDate dateAfter = LocalDate.now();
@@ -199,6 +209,7 @@ public class Loan {
         overdueDays = (int) ChronoUnit.DAYS.between(dateBefore, dateAfter);
     }
 
+    //function to calculate and show the approximated date when the user will finish their loan payment
     public int approximatedDate(double[][] interestRate) {
         int monthCounter;
         int counter = getOverdueCounter();

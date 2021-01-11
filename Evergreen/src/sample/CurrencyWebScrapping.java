@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class CurrencyWebScrapping {
 
+    //function to get the data from the website
     public static void webScrapping() {
         final String url = "https://www.maybank2u.com.my/maybank2u/malaysia/en/personal/rates/forex_rates.page";
 
