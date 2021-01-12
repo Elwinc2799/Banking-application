@@ -50,6 +50,7 @@ public class ReadFile {
         semConsumer.release();
     }
 
+    //task for currency webscrapping
     static Task<Void> task = new Task<>() {
         @Override
         protected Void call() {
@@ -58,7 +59,7 @@ public class ReadFile {
         }
     };
 
-    //thread for password validation
+    //task for password validation
     static Task<Void> passwordValidationTask = new Task<>() {
         @Override
         protected Void call() {

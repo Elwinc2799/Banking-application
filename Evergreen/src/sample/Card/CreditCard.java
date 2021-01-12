@@ -19,7 +19,7 @@ public class CreditCard extends Card {
     public double annualRates = 1.2;
     public double[] balanceRecorder;
     public double[][] additionalRates = { { 12, 13, 15 },
-            { 5, 7, 10 }
+                                            { 5, 7, 10 }
     };
 
     public LocalDate cardLastPaidDate;

@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import eu.hansolo.enzo.notification.Notification;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +37,7 @@ public class BusinessLoanController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         LoadingAnimation loadingAnimation = new LoadingAnimation();
-        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generateBpdf), loadingAnimation.createText(generateBpdf));
+        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generateBpdf,true), loadingAnimation.createText(generateBpdf,true));
     }
 
     //allow user to drag and move the application
@@ -154,7 +155,7 @@ public class BusinessLoanController implements Initializable {
 
             //validation for the information filled
             Validation validation = new Validation();
-            if (!validation.intValidation2(ICno.getText(), phoneno.getText(), price.getText(), accNum.getText(), loanAmount.getText())){
+            if (!validation.intValidation2(phoneno.getText(), price.getText(), loanAmount.getText())){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Integer input wrongly");
                 alert.showAndWait();

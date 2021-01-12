@@ -76,7 +76,7 @@ public class TransferController implements Initializable {
         bank.setValue("Central Evergreen Inc.");
         accountLabel.setText(ReadFile.DataStorage.savingsAccount.getAccountNum());
         LoadingAnimation loadingAnimation = new LoadingAnimation();
-        pane2.getChildren().addAll(loadingAnimation.createRectangle(sendOTPTask), loadingAnimation.createText(sendOTPTask));
+        pane2.getChildren().addAll(loadingAnimation.createRectangle(sendOTPTask,false), loadingAnimation.createText(sendOTPTask,false));
     }
 
     public String getOTP() { return OTP; }
@@ -189,6 +189,7 @@ public class TransferController implements Initializable {
             else
                 categoryText = "NULL";
 
+            //Update account balance to cloud database
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();

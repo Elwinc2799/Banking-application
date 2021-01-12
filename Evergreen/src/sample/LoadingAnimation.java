@@ -1,5 +1,6 @@
 package sample;
 
+import eu.hansolo.enzo.notification.Notification;
 import javafx.animation.*;
 import javafx.concurrent.Task;
 import javafx.scene.Cursor;
@@ -17,7 +18,7 @@ public class LoadingAnimation {
     private boolean isRunning;
 
     //function to create a rectangle with event when user react on it
-    public Rectangle createRectangle(Task<Void> task) {
+    public Rectangle createRectangle(Task<Void> task, boolean isPdf) {
         rectangle = new Rectangle(10,200,100, 30);
         rectangle.setArcHeight(15);
         rectangle.setArcWidth(15);
@@ -26,7 +27,7 @@ public class LoadingAnimation {
 
         rectangle.setOnMousePressed(event -> {
             if (!isTaskRunning()){
-                preload(task);
+                preload(task,isPdf);
             }
         });
         rectangle.setOnMouseEntered(event -> {
@@ -46,12 +47,12 @@ public class LoadingAnimation {
     }
 
     //function to preload a task
-    private void preload(Task <Void> task) {
+    private void preload(Task <Void> task, boolean isPdf) {
         try {
             setTaskRunning(true);
             rectangle.setCursor(Cursor.WAIT);
             text.setVisible(false);
-            runAnimation(task);
+            runAnimation(task,isPdf);
         } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
@@ -60,7 +61,7 @@ public class LoadingAnimation {
     private boolean isTaskRunning() { return isRunning; }
 
     //function to run the animation
-    public void runAnimation(Task<Void> task) throws InterruptedException {
+    public void runAnimation(Task<Void> task,boolean isPdf) throws InterruptedException {
         KeyValue kv = new KeyValue(rectangle.widthProperty(), 30);
         KeyValue kv2 = new KeyValue(rectangle.xProperty(), 10);
         KeyValue kv3 = new KeyValue(rectangle.arcHeightProperty(), 50);
@@ -87,14 +88,14 @@ public class LoadingAnimation {
 
         sequential.setOnFinished(event -> {
             new Thread(task).start();
-            task.setOnSucceeded(e -> runResultAnimation(true));
-            task.setOnFailed(e -> runResultAnimation(false));
+            task.setOnSucceeded(e -> runResultAnimation(true,isPdf));
+            task.setOnFailed(e -> runResultAnimation(false,isPdf));
         });
         sequential.play();
     }
 
     //function to run the result animation and show the text after finish
-    private void runResultAnimation(boolean flag) {
+    private void runResultAnimation(boolean flag, boolean isPdf) {
         KeyValue kv = new KeyValue(rectangle.widthProperty(), 100);
         KeyValue kv2 = new KeyValue(rectangle.xProperty(), 10);
         KeyValue kv3 = new KeyValue(rectangle.arcHeightProperty(), 15);
@@ -118,21 +119,25 @@ public class LoadingAnimation {
         ptr.getChildren().addAll(fillTransition, timeline);
 
         SequentialTransition sequential = new SequentialTransition();
-        sequential.setOnFinished(event -> onComplete(flag ? "Success" : "Failed"));
+        sequential.setOnFinished(event -> onComplete(flag ? "Success" : "Failed",isPdf));
         sequential.getChildren().addAll(strokeSuccess, ptr);
         sequential.play();
     }
 
     //function to set the message when the animation done running
-    private void onComplete(String textMessage) {
+    private void onComplete(String textMessage,boolean isPdf) {
         text.setText(textMessage);
         text.setVisible(true);
         rectangle.setCursor(Cursor.HAND);
         setTaskRunning(false);
+        if(isPdf){
+            Notification info = new Notification("Pdf Location","Saved to Evergreen.exe directory");
+            Notification.Notifier.INSTANCE.notify(info);
+        }
     }
 
     //function to create a text
-    public Text createText(Task<Void> task) {
+    public Text createText(Task<Void> task,boolean isPdf) {
         text = new Text();
         text.setText("Generate");
         text.setFont(javafx.scene.text.Font.font("Open Sans"));
@@ -141,7 +146,7 @@ public class LoadingAnimation {
         text.setBoundsType(TextBoundsType.VISUAL);
         text.setOnMousePressed(t -> {
             if (!isTaskRunning()){
-                preload(task);
+                preload(task,isPdf);
             }
         });
         text.setOnMouseEntered(event -> {

@@ -84,51 +84,59 @@ public class CurrencyController implements Initializable {
                 ArrayList<Double> rates = map.getValue();
 
                 switch (key) {
-                    case "1 Brunei Dollar" -> {
+                    case "1 Brunei Dollar":
                         buyBND.setText(Double.toString(rates.get(0)));
                         sellBND.setText(Double.toString(rates.get(1)));
                         BND.setText(String.format("%.2f", (1 / rates.get(1))));
-                    }
-                    case "100 Chinese Renminbi" -> {
+                        break;
+
+                    case "100 Chinese Renminbi":
                         buyCNY.setText(String.format("%.2f", rates.get(0)));
                         sellCNY.setText(String.format("%.2f", rates.get(1)));
                         CNY.setText(String.format("%.2f", (1 / rates.get(1))));
-                    }
-                    case "1 Euro" -> {
+                        break;
+
+                    case "1 Euro":
                         buyEUR.setText(Double.toString(rates.get(0)));
                         sellEUR.setText(Double.toString(rates.get(1)));
                         EUR.setText(String.format("%.2f", (1 / rates.get(1))));
-                    }
-                    case "100 Indian Rupee" -> {
+                        break;
+
+                    case "100 Indian Rupee":
                         buyINR.setText(String.format("%.2f", rates.get(0) * 100));
                         sellINR.setText(String.format("%.2f", rates.get(1) * 100));
                         INR.setText(String.format("%.2f", (1 / rates.get(1)) * 100));
-                    }
-                    case "100 Japanese Yen" -> {
+                        break;
+
+                    case "100 Japanese Yen":
                         buyJPY.setText(String.format("%.2f", rates.get(0) * 100));
                         sellJPY.setText(String.format("%.2f", rates.get(1) * 100));
                         JPY.setText(String.format("%.2f", (1 / rates.get(1) * 100)));
-                    }
-                    case "100 Swedish Krona" -> {
+                        break;
+
+                    case "100 Swedish Krona":
                         buyKRW.setText(String.format("%.2f", rates.get(0) * 100));
                         sellKRW.setText(String.format("%.2f", rates.get(1) * 100));
                         KRW.setText(String.format("%.2f", (1 / rates.get(1)) * 100));
-                    }
-                    case "1 Singapore Dollar" -> {
+                        break;
+
+                    case "1 Singapore Dollar":
                         buySGD.setText(Double.toString(rates.get(0)));
                         sellSGD.setText(Double.toString(rates.get(1)));
                         SGD.setText(String.format("%.2f", (1 / rates.get(1))));
-                    }
-                    case "1 Sterling Pound" -> {
+                        break;
+
+                    case "1 Sterling Pound":
                         buyGBP.setText(Double.toString(rates.get(0)));
                         sellGBP.setText(Double.toString(rates.get(1)));
                         GBP.setText(String.format("%.2f", (1 / rates.get(1))));
-                    }
-                    case "1 US Dollar" -> {
+                        break;
+
+                    case "1 US Dollar":
                         buyUSD.setText(Double.toString(rates.get(0)));
                         sellUSD.setText(Double.toString(rates.get(1)));
                         USD.setText(String.format("%.2f", (1 / rates.get(1))));
-                    }
+                        break;
                 }
             }
         } catch (Exception ignored) { }
