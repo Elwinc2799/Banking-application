@@ -19,11 +19,10 @@ import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 import sample.ReadFile;
 import sample.TransferController;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormatSymbols;
@@ -122,7 +121,7 @@ public class CreditCardController implements Initializable {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeUpdate("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
+                statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.savingsAccount.getBalance() +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
@@ -134,7 +133,7 @@ public class CreditCardController implements Initializable {
     @FXML
     public void creditDetailsPushed() {
         Label creditCardOutstandingBalance = new Label("Outstanding Balance");
-        Label outstandingBalance = new Label("RM " + Math.round(ReadFile.DataStorage.creditCard.getOutstandingBalance() * 100)/100);
+        Label outstandingBalance = new Label("RM " + ReadFile.DataStorage.creditCard.getOutstandingBalance());
         creditCardOutstandingBalance.setFont(new Font("Arial", 14));
         creditCardOutstandingBalance.setTranslateX(10);
         creditCardOutstandingBalance.setTranslateY(10);
@@ -209,17 +208,16 @@ public class CreditCardController implements Initializable {
                         new Thread(updateBalanceTask).start();
 
                         //update the database in credit card
-                        ReadFile.DataStorage.creditCard.setOutstandingBalanceStatusUpdated(false);
                         try {
                             Class.forName("com.mysql.jdbc.Driver");
                             Statement statement = ReadFile.connect.createStatement();
 
-                            statement.executeUpdate("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + ReadFile.DataStorage.creditCard.getOutstandingBalance() +
-                                    ", CARD_BALANCE_PAID='N' WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
+                            statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + ReadFile.DataStorage.creditCard.getOutstandingBalance() +
+                                    " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
                         } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("You have successfully made your payment.");
+                        alert.setContentText("You have successfully change your limit.");
                         alert.showAndWait();
                     }
                 }
@@ -236,20 +234,23 @@ public class CreditCardController implements Initializable {
     //action when refresh button pushed
     @FXML
     public void refreshButtonPushed() {
-        String[] month = new String[7];
-        LocalDate now = LocalDate.now();
-
-        //get and store the last 7 month into month array
-        for (int i = 0, j = 8; i < 7; i++, j--)
-            month[i] = new DateFormatSymbols().getMonths()[now.minusMonths(j).getMonthValue()];
         try {
-            XYChart.Series series = new XYChart.Series();
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement statement = ReadFile.connect.createStatement();
 
-            for (int i = 0, j = 6; i < 7; i++, j--)
-                series.getData().add(new XYChart.Data(month[i], ReadFile.DataStorage.creditCard.getBalanceRecorder(j)));
+            //read and store the data from credit card expenses to array
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM CREDITCARD_EXPENSES WHERE CARD_ID = '" + ReadFile.DataStorage.creditCard.getCardID() + "'");
+            while (resultSet.next()) {
+                double[] tempBalanceRecorder = new double[7];
 
-            expenseChart.getData().addAll(series);
-        } catch (Exception ignored) { }
+                for (int i = 0, j = 6; i < 7; i++, j--)
+                    tempBalanceRecorder[j] = resultSet.getDouble(i + 2);
+
+                ReadFile.DataStorage.creditCard.setBalanceRecorder(tempBalanceRecorder);
+            }
+        } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
+
+        loadNextScene("/sample/Scene/creditCardScene.fxml");
     }
 
     //load to account scene when account button pressed

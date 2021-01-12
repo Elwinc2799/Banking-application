@@ -36,7 +36,7 @@ public class PersonalLoanController implements Initializable {
     @Override
     public void initialize( URL url, ResourceBundle resourceBundle) {
         LoadingAnimation loadingAnimation = new LoadingAnimation();
-        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generatePpdf,true), loadingAnimation.createText(generatePpdf,true));
+        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generatePpdf), loadingAnimation.createText(generatePpdf));
     }
 
     //allow user to drag and move the application
@@ -151,7 +151,7 @@ public class PersonalLoanController implements Initializable {
 
             //validation for the information filled
             Validation validation = new Validation();
-            if (!validation.intValidation(phonenoP.getText(), noOfDependantsP.getText(), homeTelNoP.getText(), incomeP.getText(), loanAmount.getText())){
+            if (!validation.intValidation(ICnoP.getText(), phonenoP.getText(), noOfDependantsP.getText(), homeTelNoP.getText(), accNum.getText(), loanAmount.getText())){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Integer input wrongly");
                 alert.showAndWait();
@@ -180,7 +180,7 @@ public class PersonalLoanController implements Initializable {
                 PdfPTable t1 = new PdfPTable(2); //2 column
                 t1.setWidthPercentage(100);// width 100%
                 t1.setSpacingBefore(10f);//space before table
-                t1.setSpacingAfter(10f);//space after table
+                t1.setSpacingAfter(10f);//sapce after table
 
                 //set column width
                 float[] columnWidths1 = {1f, 1f};

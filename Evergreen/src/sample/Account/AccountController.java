@@ -67,23 +67,21 @@ public class AccountController extends Thread implements Initializable {
         //set the suffix for date
         switch (now.getDayOfMonth()) {
             case 1: case 21: case 31: dateSuffix = "st";
-                break;
+            break;
 
             case 2: case 22: dateSuffix = "nd";
-                break;
+            break;
 
             case 3: case 23: dateSuffix = "rd";
-                break;
+            break;
 
             default: dateSuffix = "th";
         }
 
         //get and store the last 7 month into month array
-        for (int i = 0, j = 8; i < 7; i++, j--) {
+        for (int i = 0, j = 8; i < 7; i++, j--)
             month[i] = new DateFormatSymbols().getMonths()[now.minusMonths(j).getMonthValue()];
-        }
 
-        //set text to the respective label
         dateLabel.setText(new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)] + ", " + calendar.get(Calendar.DATE) + dateSuffix);
         nameLabel.setText(ReadFile.DataStorage.savingsAccount.getName());
         emailLabel.setText(ReadFile.DataStorage.savingsAccount.getEmail());
