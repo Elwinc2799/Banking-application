@@ -1,22 +1,30 @@
 package sample;
 
-import javafx.scene.control.Alert;
-
 public class Validation {
 
-    public void intValidation( String text, String phonenoPText, String noOfDependantsPText, String homeTelNoPText, String accNumText, String loanAmountText ){
+    //int validation in personal loan
+    public boolean intValidation(String phoneNoPText, String noOfDependantsPText, String homeTelNoPText, String incomeText, String loanAmountText ){
         try {
-            Integer.parseInt(text);
-            Integer.parseInt(phonenoPText);
+            Integer.parseInt(phoneNoPText);
             Integer.parseInt(noOfDependantsPText);
             Integer.parseInt(homeTelNoPText);
-            Integer.parseInt(accNumText);
+            Integer.parseInt(incomeText);
             Integer.parseInt(loanAmountText);
+            return true;
         } catch(NumberFormatException e){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Integer input wrongly");
-            alert.showAndWait();
-            return;
+            return false;
+        }
+    }
+
+    //int validation in business loan
+    public boolean intValidation2( String phoneText, String priceText,  String loanAmountText ){
+        try {
+            Integer.parseInt(phoneText);
+            Integer.parseInt(priceText);
+            Integer.parseInt(loanAmountText);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
         }
     }
 }

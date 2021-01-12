@@ -22,6 +22,7 @@ public class AboutUsController {
     double x = 0;
     double y = 0;
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -48,25 +49,31 @@ public class AboutUsController {
     @FXML
     private Button eric;
 
+    //load to account scene when account button pressed
     @FXML
-    public void accountButtonPushed() {
-        loadNextScene("/sample/Scene/accountScene.fxml");
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
+
+    //load to transaction history scene when transaction history button button pressed
+    @FXML
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
     }
 
-    @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
-
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to loan scene if the users' account has loan taken or load to no loan scene if the user does not have a loan when loan button pressed
     @FXML
     public void loanButtonPushed() {
         loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
     }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //when the Facebook button beside eric's photo pushed
     @FXML
     public void ericPushed() {
         eric.setOnAction(actionEvent -> {
@@ -76,6 +83,7 @@ public class AboutUsController {
         });
     }
 
+    //when the Facebook button beside teiksean's photo pushed
     @FXML
     public void teikSeanPushed() {
         teikSean.setOnAction(actionEvent -> {
@@ -85,6 +93,7 @@ public class AboutUsController {
         });
     }
 
+    //when the Facebook button beside elwin's photo pushed
     @FXML
     public void elwinPushed() {
         elwin.setOnAction(actionEvent -> {
@@ -94,6 +103,7 @@ public class AboutUsController {
         });
     }
 
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;

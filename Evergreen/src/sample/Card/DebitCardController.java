@@ -40,6 +40,7 @@ public class DebitCardController implements Initializable {
     double x = 0;
     double y = 0;
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -86,6 +87,7 @@ public class DebitCardController implements Initializable {
         String[] month = new String[7];
         LocalDate now = LocalDate.now();
 
+        //get and store the last 7 month into month array
         for (int i = 0, j = 8; i < 7; i++, j--) {
             month[i] = new DateFormatSymbols().getMonths()[now.minusMonths(j).getMonthValue()];
 
@@ -93,6 +95,7 @@ public class DebitCardController implements Initializable {
                 month[i - 1] = "January";
         }
 
+        //set the text to respective label
         cardNumberLabel.setText(ReadFile.DataStorage.debitCard.getCardID());
         expiryDateLabel.setText(ReadFile.DataStorage.debitCard.getExpiryDate());
         cvvLabel.setText(ReadFile.DataStorage.debitCard.getCvv());
@@ -103,7 +106,7 @@ public class DebitCardController implements Initializable {
 
         ArrayList<TransactionHistory> generalList = TransactionHistoryController.searchIn(ReadFile.DataStorage.transactionHistoryArrayList,
                 transactionHistory -> (transactionHistory.getTransactionDate().equals(start) || transactionHistory.getTransactionDate().equals(end) ||
-                (transactionHistory.getTransactionDate().isAfter(start)) && transactionHistory.getTransactionDate().isBefore(end)));
+                        (transactionHistory.getTransactionDate().isAfter(start)) && transactionHistory.getTransactionDate().isBefore(end)));
 
         if (generalList.size() > 0) {
             statusLabel.setText("Active");
@@ -113,12 +116,14 @@ public class DebitCardController implements Initializable {
             statusLabel.setTextFill(Color.web("#CD5C5C"));
         }
 
+        //create a XYChart to show the balance to the respective month
         for (int i = 0, j = 6; i < 7; i++, j--)
             series.getData().add(new XYChart.Data(month[i], ReadFile.DataStorage.savingsAccount.getBalanceRecorder(j)));
 
         balanceChart.getData().addAll(series);
     }
 
+    //change transaction limit for debit card
     @FXML
     public void changeLimitPushed() {
         TransferController instance = new TransferController();
@@ -171,7 +176,7 @@ public class DebitCardController implements Initializable {
                     Class.forName("com.mysql.jdbc.Driver");
                     Statement statement = ReadFile.connect.createStatement();
 
-                    statement.executeQuery("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + Double.parseDouble(textField.getText()) +
+                    statement.executeUpdate("UPDATE ACCOUNT SET ACCOUNT_DAILY_LIMIT = " + Double.parseDouble(textField.getText()) +
                             " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
                 } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
@@ -188,26 +193,37 @@ public class DebitCardController implements Initializable {
         });
     }
 
+    //load to account scene when account button pressed
     @FXML
     public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to transaction history scene when transaction history button button pressed
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml"); }
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
 
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to loan scene if the users' account has loan taken or load to no loan scene if the user does not have a loan when loan button pressed
     @FXML
     public void loanButtonPushed() {
         loadNextScene((ReadFile.DataStorage.loan) ? "/sample/Scene/loanScene.fxml" : "/sample/Scene/noLoanScene.fxml");
     }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
-    public void aboutUsButtonPushed() { loadNextScene("/sample/Scene/aboutUsScene.fxml"); }
+    public void aboutUsButtonPushed() {
+        loadNextScene("/sample/Scene/aboutUsScene.fxml");
+    }
 
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;

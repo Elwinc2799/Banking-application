@@ -57,14 +57,16 @@ public class CreditCard extends Card {
 
     public void setBalanceRecorder(double[] balanceRecorder) { this.balanceRecorder = balanceRecorder; }
 
+    //function to update outstanding balance
     public void updateOutstandingBalance() {
         updateLatePaymentCounter();
         int lateCategory = 0;
         int overdraftCategory;
         int counter = getLatePaymentCounter();
-        LocalDate dateBefore = getCardLastPaidDate().plusMonths(1);
+        LocalDate dateBefore = getCardLastPaidDate();
         LocalDate dateAfter = LocalDate.now();
 
+        //if the last payment month is not equals to the current month and the outstanding balance status is not true
         if (!dateBefore.getMonth().equals(dateAfter.getMonth()) && !isOutstandingBalanceStatusUpdated()) {
             if (counter >= 4 && counter < 8)
                 lateCategory = 1;
@@ -91,24 +93,26 @@ public class CreditCard extends Card {
             setOutstandingBalanceStatusUpdated(true);
             new Thread(updateStatus).start();
 
+            //update information to the database
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
+                statement.executeUpdate("UPDATE CREDITCARD SET CARD_OUTSTANDING_BALANCE = " + getOutstandingBalance() +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
     }
 
-    Task<Void> updateStatus = new Task<Void>() {
+    //task to update the status to the database
+    Task<Void> updateStatus = new Task<>() {
         @Override
         protected Void call() {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE CREDITCARD SET CARD_BALANCE_PAID = 'Y'" +
+                statement.executeUpdate("UPDATE CREDITCARD SET CARD_BALANCE_PAID = 'Y'" +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
 
@@ -116,6 +120,7 @@ public class CreditCard extends Card {
         }
     };
 
+    //boolean function to determine whether the repayment is successful or not
     public boolean creditRepayment(double amount) {
         if (amount < getMinimumPayment()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -132,7 +137,8 @@ public class CreditCard extends Card {
         return true;
     }
 
-    Task<Void> updateDateTask = new Task<Void>() {
+    //task to update the date to database
+    Task<Void> updateDateTask = new Task<>() {
         @Override
         protected Void call() {
             try {
@@ -149,14 +155,14 @@ public class CreditCard extends Card {
         }
     };
 
-    Task<Void> updateExpenditureTask = new Task<Void>() {
+    Task<Void> updateExpenditureTask = new Task<>() {
         @Override
         protected Void call() {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +
+                statement.executeUpdate("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +
                         " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
@@ -165,6 +171,7 @@ public class CreditCard extends Card {
         }
     };
 
+    //function to update late payment counter
     public void updateLatePaymentCounter() {
         LocalDate dateBefore = getCardLastPaidDate().plusMonths(1);
         LocalDate dateAfter = LocalDate.now();
@@ -172,6 +179,7 @@ public class CreditCard extends Card {
         setLatePaymentCounter((int) ChronoUnit.MONTHS.between(dateBefore, dateAfter));
     }
 
+    //update the outstanding balance and expenditure when user made payment using credit card
     public void creditUsage(double amount) {
         outstandingBalance += amount;
         expenditure += amount;
@@ -179,6 +187,7 @@ public class CreditCard extends Card {
         setOverDraftCounter(getOverDraftCounter() + ((getExpenditure() > getFixedMonthlyLimit()) ? 1 : 0));
     }
 
+    //boolean function to determine whether the user had exceed the monthly transaction limit
     public boolean creditCardUsageValidation(double amount) {
         if (expenditure + amount > getFixedMonthlyLimit()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

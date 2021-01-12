@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import eu.hansolo.enzo.notification.Notification;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +12,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.LoadingAnimation;
+import sample.Validation;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,9 +37,10 @@ public class BusinessLoanController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         LoadingAnimation loadingAnimation = new LoadingAnimation();
-        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generateBpdf), loadingAnimation.createText(generateBpdf));
+        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generateBpdf,true), loadingAnimation.createText(generateBpdf,true));
     }
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -100,23 +104,31 @@ public class BusinessLoanController implements Initializable {
     @FXML
     private StackPane panebutton;
 
+    //load to transaction history scene when transaction history button button pressed
+    @FXML
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
+
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to account scene when account button pressed
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml");}
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
     public void aboutUsButtonPushed() {
         loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
-    @FXML
-    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml");}
-
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;
@@ -129,7 +141,8 @@ public class BusinessLoanController implements Initializable {
         }
     }
 
-    private Task<Void> generateBpdf = new Task<Void>(){
+    //generate a PDF form when execute
+    private final Task<Void> generateBpdf = new Task<>(){
         @Override
         public Void call(){
             Font formTitle = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, Font.BOLD);
@@ -140,9 +153,16 @@ public class BusinessLoanController implements Initializable {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
-            //    if (!isValidSum(loanAmount.getText()) || isValidSum(priceP.getText()) || isValidSum(incomeP.getText())) {
-            //        return null;
-            //    }
+            //validation for the information filled
+            Validation validation = new Validation();
+            if (!validation.intValidation2(phoneno.getText(), price.getText(), loanAmount.getText())){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Integer input wrongly");
+                alert.showAndWait();
+                return null;
+            }
+
+            //create a pdf file with all the information filled in the form previously
             try {
                 String filename = name.getText();
                 PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filename + ".pdf"));
@@ -290,16 +310,5 @@ public class BusinessLoanController implements Initializable {
             return null;
         }
     };
-
-    public boolean isValidSum(String amount) {
-        if (amount == null)
-            return false;
-
-        try {
-            double d = Double.parseDouble(amount);
-        } catch (NumberFormatException nfe) { return false; }
-
-        return true;
-    }
 
 }

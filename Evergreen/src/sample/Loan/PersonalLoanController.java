@@ -11,11 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.LoadingAnimation;
+import sample.Validation;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,9 +36,10 @@ public class PersonalLoanController implements Initializable {
     @Override
     public void initialize( URL url, ResourceBundle resourceBundle) {
         LoadingAnimation loadingAnimation = new LoadingAnimation();
-        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generatePpdf), loadingAnimation.createText(generatePpdf));
+        panebutton.getChildren().addAll(loadingAnimation.createRectangle(generatePpdf,true), loadingAnimation.createText(generatePpdf,true));
     }
 
+    //allow user to drag and move the application
     @FXML
     void dragged(MouseEvent event) {
         Node node = (Node) event.getSource();
@@ -97,23 +100,31 @@ public class PersonalLoanController implements Initializable {
     private TextField loanPurposeP;
     @FXML
     private StackPane panebutton;
+    //load to transaction history scene when transaction history button button pressed
+    @FXML
+    public void transactionHistoryButtonPushed() {
+        loadNextScene("/sample/Scene/transactionHistoryScene.fxml");
+    }
+
+    //load to transfer scene when transfer button pressed
     @FXML
     public void transferButtonPushed() { loadNextScene("/sample/Scene/transferScene.fxml"); }
 
+    //load to account scene when account button pressed
     @FXML
-    public void transactionHistoryButtonPushed() { loadNextScene("/sample/Scene/transactionHistoryScene.fxml");}
+    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml"); }
 
+    //load to currency exchange scene when dashboard button pressed
     @FXML
     public void dashBoardButtonPushed() { loadNextScene("/sample/Scene/currencyExchangeScene.fxml"); }
 
+    //load to about us scene when about us button pressed
     @FXML
     public void aboutUsButtonPushed() {
         loadNextScene("/sample/Scene/aboutUsScene.fxml");
     }
 
-    @FXML
-    public void accountButtonPushed() { loadNextScene("/sample/Scene/accountScene.fxml");}
-
+    //the function to allow the application to change from one scene to another scene
     private void loadNextScene(String fxml) {
         try {
             Parent secondView;
@@ -126,7 +137,8 @@ public class PersonalLoanController implements Initializable {
         }
     }
 
-    private Task<Void> generatePpdf = new Task<Void>() {
+    //generate a PDF form when execute
+    private final Task<Void> generatePpdf = new Task<>() {
         @Override
         public Void call() {
             Font formTitle = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, Font.BOLD);
@@ -137,11 +149,16 @@ public class PersonalLoanController implements Initializable {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
+            //validation for the information filled
+            Validation validation = new Validation();
+            if (!validation.intValidation(phonenoP.getText(), noOfDependantsP.getText(), homeTelNoP.getText(), incomeP.getText(), loanAmount.getText())){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Integer input wrongly");
+                alert.showAndWait();
+                return null;
+            }
 
-            //    if (!isValidSum(loanAmount.getText()) || isValidSum(priceP.getText()) || isValidSum(incomeP.getText())) {
-            //        return null;
-            //    }
-
+            //create a pdf file with all the information filled in the form previously
             try {
                 String filename = nameP.getText()+".pdf";
                 PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( filename,true));
@@ -160,11 +177,12 @@ public class PersonalLoanController implements Initializable {
                 document.add(new Paragraph("Address: " + addressP1.getText() + ", " + addressP2.getText() + ", " + addressP3.getText(), content));
 
                 document.add(new Paragraph("FAMILY INFORMATION", title));
-                PdfPTable t1 = new PdfPTable(2);
-                t1.setWidthPercentage(100);
-                t1.setSpacingBefore(10f);
-                t1.setSpacingAfter(10f);
+                PdfPTable t1 = new PdfPTable(2); //2 column
+                t1.setWidthPercentage(100);// width 100%
+                t1.setSpacingBefore(10f);//space before table
+                t1.setSpacingAfter(10f);//space after table
 
+                //set column width
                 float[] columnWidths1 = {1f, 1f};
                 t1.setWidths(columnWidths1);
                 PdfPCell t1c1 = new PdfPCell(new Paragraph("No of Dependants: \n" + noOfDependantsP.getText() + "\n", content));
@@ -245,6 +263,14 @@ public class PersonalLoanController implements Initializable {
                 float[] columnWidths4 = {1f, 1f, 1f};
                 t4.setWidths(columnWidths4);
 
+                PdfPTable t6 = new PdfPTable(1);
+                t6.setWidthPercentage(100);
+                t6.setSpacingBefore(10f);
+                t6.setSpacingAfter(10f);
+
+                float[] columnWidths6 = {1f};
+                t6.setWidths(columnWidths6);
+
                 PdfPCell t4c1 = new PdfPCell(new Paragraph("Loan Amount: \n" + loanAmount.getText() + "\n", content));
                 t4c1.setPaddingLeft(10);
                 t4c1.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -257,15 +283,16 @@ public class PersonalLoanController implements Initializable {
                 t4c3.setPaddingLeft(10);
                 t4c3.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-                PdfPCell t4c4 = new PdfPCell(new Paragraph("Purpose of Loan: \n" + loanPurposeP.getText() + "\n", content));
-                t4c4.setPaddingLeft(10);
-                t4c4.setHorizontalAlignment(Element.ALIGN_LEFT);
+                PdfPCell t6c1 = new PdfPCell(new Paragraph("Purpose of Loan: \n" + loanPurposeP.getText() + "\n", content));
+                t6c1.setPaddingLeft(10);
+                t6c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 
                 t4.addCell(t4c1);
                 t4.addCell(t4c2);
                 t4.addCell(t4c3);
-                t4.addCell(t4c4);
+                t6.addCell(t6c1);
                 document.add(t4);
+                document.add(t6);
 
                 document.add(new Paragraph("DECLARATION", title));
                 Paragraph dec = new Paragraph("I hereby certify that the information contained herein is complete and accurate." +
@@ -309,15 +336,4 @@ public class PersonalLoanController implements Initializable {
             return null;
         }
     };
-
-    public boolean isValidSum(String amount) {
-        if (amount == null)
-            return false;
-
-        try {
-            double d = Double.parseDouble(amount);
-        } catch (NumberFormatException nfe) { return false; }
-
-        return true;
-    }
 }

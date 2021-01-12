@@ -9,7 +9,6 @@ import javax.mail.internet.MimeMessage;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
@@ -28,6 +27,7 @@ public class DepositAccount extends Account {
 
     public void setDepositType(int depositType) { this.depositType = depositType; }
 
+    //update the balance in deposit account
     public void updateBalance() {
         if (getBalance() >= 50000)
             setDepositType(2);
@@ -36,11 +36,9 @@ public class DepositAccount extends Account {
         else
             setDepositType(0);
 
-        Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH);
-
-        if (month % 3 == 0 && !isBalanceUpdateStatus() && calendar.get(Calendar.DAY_OF_MONTH) == 1) {
-            switch (month - ReadFile.DataStorage.savingsAccount.getAccountDateOpen().getMonthValue()) {
+        //if the month is 3, 6, 9 or 12, the day of month is 1 and the balance update status is not true
+        if (LocalDate.now().getMonthValue() % 3 == 1 && !isBalanceUpdateStatus() && LocalDate.now().getDayOfMonth() == 1) {
+            switch (LocalDate.now().getMonthValue()) {
                 case 3: balance *= Math.pow((1 + (getInterestRate(0, getDepositType()) / 400)), (4 * 3 / 12));
                     break;
 
@@ -50,7 +48,7 @@ public class DepositAccount extends Account {
                 case 9: balance *= Math.pow((1 + (getInterestRate(2, getDepositType()) / 400)), (4 * 9 / 12));
                     break;
 
-                case 11: balance *= Math.pow((1 + (getInterestRate(3, getDepositType()) / 400)), (4 * 12 / 12));
+                case 12: balance *= Math.pow((1 + (getInterestRate(3, getDepositType()) / 400)), (4 * 12 / 12));
                     break;
 
                 default:
@@ -60,33 +58,36 @@ public class DepositAccount extends Account {
             balance = (double) Math.round(balance * 100) / 100;
             setBalanceUpdateStatus(true);
 
+            //update information to the database
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.depositAccount.getBalance() +
+                statement.executeUpdate("UPDATE DEPOSITS SET ACCOUNT_BALANCE = " + ReadFile.DataStorage.depositAccount.getBalance() +
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.depositAccount.getAccountNum() + "'");
                 new Thread(updateDepositStatus).start();
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
 
-        if (calendar.get(Calendar.DAY_OF_MONTH) > 27) {
+        //if the day of month is exceed 27, set the account update status to 'N' in database
+        if (LocalDate.now().getDayOfMonth() > 27) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'N'" +
+                statement.executeUpdate("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'N'" +
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.depositAccount.getAccountNum() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
         }
     }
 
+    //boolean function to determine whether the account is active or inactive
     public boolean renewal() {
         LocalDate renewalDate = LocalDate.now();
 
-        if (getAccountDateOpen().getYear() + 1 < renewalDate.getYear()) {
+        if (getAccountDateOpen().getYear() + 1 < renewalDate.getYear()){
             new Thread(sendRenewal).start();
             return false;
         }
@@ -94,6 +95,7 @@ public class DepositAccount extends Account {
         return true;
     }
 
+    //task to send an email to user to remind them to renew their deposit account
     Task<Void> sendRenewal = new Task<Void>() {
         @Override
         protected Void call() {
@@ -137,6 +139,7 @@ public class DepositAccount extends Account {
         }
     };
 
+    //task to update deposit status
     Task<Void> updateDepositStatus = new Task<Void>() {
         @Override
         protected Void call() {
@@ -144,7 +147,7 @@ public class DepositAccount extends Account {
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement statement = ReadFile.connect.createStatement();
 
-                statement.executeQuery("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'Y'" +
+                statement.executeUpdate("UPDATE DEPOSITS SET ACCOUNT_UPDATE_STATUS = 'Y'" +
                         " WHERE ACCOUNT_ID = '" + ReadFile.DataStorage.depositAccount.getAccountNum() + "'");
 
             } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
