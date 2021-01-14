@@ -155,22 +155,6 @@ public class CreditCard extends Card {
         }
     };
 
-    Task<Void> updateExpenditureTask = new Task<>() {
-        @Override
-        protected Void call() {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                Statement statement = ReadFile.connect.createStatement();
-
-                statement.executeUpdate("UPDATE CREDITCARD SET CARD_EXPENDITURE = " + 0 +
-                        " WHERE USERNAME = '" + ReadFile.DataStorage.getUsername() + "'");
-
-            } catch (SQLException | ClassNotFoundException e) { e.printStackTrace(); }
-
-            return null;
-        }
-    };
-
     //function to update late payment counter
     public void updateLatePaymentCounter() {
         LocalDate dateBefore = getCardLastPaidDate().plusMonths(1);

@@ -28,13 +28,9 @@ public class TransactionHistory {
         this.transactionType = transactionType;
     }
 
-    public String getPaymentRecipient() { return paymentRecipient; }
-
     public void setPaymentRecipient(String paymentRecipient) {
         this.paymentRecipient = paymentRecipient;
     }
-
-    public String getPaymentType() { return paymentType; }
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;

@@ -26,7 +26,7 @@ public class Loan {
     public double monthlyRepayment;
 
     public LocalDate lastDatePaid;
-    public  boolean loanOutstandingBalanceUpdated;
+    public boolean loanOutstandingBalanceUpdated;
 
     public int getOverdueCounter() { return overdueCounter; }
 
