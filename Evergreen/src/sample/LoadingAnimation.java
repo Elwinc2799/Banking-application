@@ -131,7 +131,7 @@ public class LoadingAnimation {
         rectangle.setCursor(Cursor.HAND);
         setTaskRunning(false);
         if(isPdf){
-            Notification info = new Notification("Pdf Location","Saved to Evergreen.exe directory");
+            Notification info = new Notification("Pdf Location","Saved to Evergreen.exe directory\nEmail to centralevergreeninc@gmail.com");
             Notification.Notifier.INSTANCE.notify(info);
         }
     }

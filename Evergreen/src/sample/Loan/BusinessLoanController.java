@@ -4,7 +4,6 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import eu.hansolo.enzo.notification.Notification;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.LoadingAnimation;
+import sample.ReadFile;
 import sample.Validation;
 
 import java.io.FileOutputStream;
@@ -88,10 +88,6 @@ public class BusinessLoanController implements Initializable {
 
     @FXML
     private TextField bankName;
-    @FXML
-    private TextField accType;
-    @FXML
-    private TextField accNum;
     @FXML
     private TextField loanAmount;
     @FXML
@@ -198,12 +194,12 @@ public class BusinessLoanController implements Initializable {
                 cell1.setFixedHeight(50);
                 cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-                PdfPCell cell2 = new PdfPCell(new Paragraph("Account Type: \n" + accType.getText(), content));
+                PdfPCell cell2 = new PdfPCell(new Paragraph("Account Type: \nSavings Account\n", content));
                 cell2.setPaddingLeft(10);
                 cell2.setFixedHeight(50);
                 cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-                PdfPCell cell3 = new PdfPCell(new Paragraph("Account Number: \n" + accNum.getText(), content));
+                PdfPCell cell3 = new PdfPCell(new Paragraph("Account Number: \n" + ReadFile.DataStorage.savingsAccount.getAccountNum(), content));
                 cell3.setPaddingLeft(10);
                 cell3.setFixedHeight(50);
                 cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -300,6 +296,8 @@ public class BusinessLoanController implements Initializable {
                 signatureTable.addCell(signature);
                 signatureTable.addCell(date);
                 document.add(signatureTable);
+
+                document.add(new Paragraph("Note: Send the form to centralevergreeninc@gmail.com for further loan processing",signBoxContent));
 
                 document.close();
                 writer.close();

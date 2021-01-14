@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.LoadingAnimation;
+import sample.ReadFile;
 import sample.Validation;
 
 import java.io.FileOutputStream;
@@ -83,10 +84,6 @@ public class PersonalLoanController implements Initializable {
 
     @FXML
     private TextField bankNameP;
-    @FXML
-    private TextField accNum;
-    @FXML
-    private TextField accType;
     @FXML
     private TextField loanAmount;
 
@@ -216,11 +213,11 @@ public class PersonalLoanController implements Initializable {
                 t2c1.setPaddingLeft(10);
                 t2c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-                PdfPCell t2c2 = new PdfPCell(new Paragraph("Account Number: \n" + accNum.getText() + "\n", content));
+                PdfPCell t2c2 = new PdfPCell(new Paragraph("Account Number: \n" + ReadFile.DataStorage.savingsAccount.getAccountNum() + "\n", content));
                 t2c2.setPaddingLeft(10);
                 t2c2.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-                PdfPCell t2c3 = new PdfPCell(new Paragraph("Account Type: \n" + accType.getText() + "\n", content));
+                PdfPCell t2c3 = new PdfPCell(new Paragraph("Account Type: \nSavings Account\n", content));
                 t2c3.setPaddingLeft(10);
                 t2c3.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -327,6 +324,7 @@ public class PersonalLoanController implements Initializable {
                 signatureTable.addCell(date);
                 document.add(signatureTable);
 
+                document.add(new Paragraph("Note: Send the form to centralevergreeninc@gmail.com for further loan processing",signBoxContent));
 
                 document.close();
                 writer.close();
