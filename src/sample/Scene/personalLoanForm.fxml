@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ImageInput?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Loan.PersonalLoanController">
+    <children>
+        <AnchorPane onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <ImageView fitHeight="700.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@Resources/Background.png" />
+                    </image>
+                </ImageView>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="590.0" layoutX="105.0" layoutY="79.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="828.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="80.0" />
+                <Button layoutX="5.0" layoutY="22.0" mnemonicParsing="false" onAction="#accountButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/cloud-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="112.0" mnemonicParsing="false" onAction="#transactionHistoryButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/pdf-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="202.0" mnemonicParsing="false" onAction="#transferButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/favorite-4-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="292.0" mnemonicParsing="false" onAction="#loanButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/dollar-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="382.0" mnemonicParsing="false" onAction="#dashBoardButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/chart-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="472.0" mnemonicParsing="false" onAction="#aboutUsButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/globe-5-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Label layoutX="119.0" layoutY="38.0" text="Personal Loan" textFill="WHITE">
+                    <font>
+                        <Font name="Candara Light" size="30.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="nameP" focusTraversable="false" layoutX="216.0" layoutY="136.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="125.0" layoutY="139.0" text="Name" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="companynameP" focusTraversable="false" layoutX="285.0" layoutY="405.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="125.0" layoutY="409.0" text="Company Name" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="125.0" layoutY="197.0" text="Email" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="emailP" focusTraversable="false" layoutX="216.0" layoutY="196.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="phonenoP" focusTraversable="false" layoutX="216.0" layoutY="226.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="125.0" layoutY="257.0" text="Address" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="125.0" layoutY="227.0" text="Phone No." textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="464.0" layoutY="257.0" text="Bank Name" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="bankNameP" focusTraversable="false" layoutX="708.0" layoutY="254.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="465.0" layoutY="140.0" text="No. of Dependants " textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="464.0" layoutY="227.0" text="Home Tel No." textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="125.0" layoutY="168.0" text="IC No." textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="ICnoP" focusTraversable="false" layoutX="216.0" layoutY="166.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="noOfDependantsP" focusTraversable="false" layoutX="708.0" layoutY="136.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="educationLevelP" focusTraversable="false" layoutX="708.0" layoutY="165.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="464.0" layoutY="168.0" text="Highest Dependent's Education Level" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="464.0" layoutY="197.0" text="Marital Status" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="maritalP" focusTraversable="false" layoutX="708.0" layoutY="195.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="homeTelNoP" focusTraversable="false" layoutX="708.0" layoutY="224.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="125.0" layoutY="439.0" text="Position / Department" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="posP" layoutX="285.0" layoutY="435.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="125.0" layoutY="469.0" text="Income per month" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Regular" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="incomeP" focusTraversable="false" layoutX="285.0" layoutY="465.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="125.0" layoutY="529.0" text="Purpose of Loan" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="loanPurposeP" focusTraversable="false" layoutX="285.0" layoutY="525.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="addressP1" focusTraversable="false" layoutX="216.0" layoutY="254.0" prefHeight="26.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="addressP2" focusTraversable="false" layoutX="216.0" layoutY="286.0" prefHeight="26.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="addressP3" focusTraversable="false" layoutX="216.0" layoutY="318.0" prefHeight="26.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="loanAmount" focusTraversable="false" layoutX="285.0" layoutY="495.0" prefHeight="23.0" prefWidth="186.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="125.0" layoutY="499.0" text="Loan Amount (in RM)" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Line endX="85.0" layoutX="323.0" layoutY="156.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="323.0" layoutY="186.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="323.0" layoutY="216.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="323.0" layoutY="246.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="323.0" layoutY="276.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="323.0" layoutY="308.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="323.0" layoutY="339.0" startX="-100.0" stroke="WHITE" />
+                <Label layoutX="125.0" layoutY="104.0" prefHeight="22.0" prefWidth="177.0" text="Personal Information" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="465.0" layoutY="104.0" prefHeight="22.0" prefWidth="177.0" text="Background" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Line endX="50.60003662109375" layoutX="815.0" layoutY="155.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="50.60003662109375" layoutX="815.0" layoutY="185.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="50.60003662109375" layoutX="815.0" layoutY="215.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="50.60003662109375" layoutX="815.0" layoutY="244.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="50.60003662109375" layoutX="815.0" layoutY="274.0" startX="-100.0" stroke="WHITE" />
+                <Label layoutX="125.0" layoutY="370.0" prefHeight="22.0" prefWidth="177.0" text="Financial Information" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Line endX="85.0" layoutX="392.0" layoutY="426.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="392.0" layoutY="455.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="392.0" layoutY="516.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="392.0" layoutY="485.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="85.0" layoutX="392.0" layoutY="546.0" startX="-100.0" stroke="WHITE" />
+                <StackPane fx:id="panebutton" layoutX="742.0" layoutY="586.0" prefHeight="50.0" prefWidth="142.0" />
+            <Label layoutX="163.0" layoutY="141.0" text="(as per in IC)" textFill="WHITE">
+               <font>
+                  <Font name="DengXian Light" size="10.0" />
+               </font>
+            </Label>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

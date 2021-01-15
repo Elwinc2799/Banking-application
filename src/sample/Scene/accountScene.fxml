@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ImageInput?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Account.AccountController">
+    <children>
+        <AnchorPane layoutX="10.0" layoutY="10.0" onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="200.0" prefWidth="200.0">
+            <children>
+            <ImageView fitHeight="700.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Resources/Background.png" />
+               </image>
+            </ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="80.0" />
+                <Rectangle fx:id="test" arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="509.0" layoutX="111.0" layoutY="108.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="440.0" />
+                <Button layoutX="5.0" layoutY="22.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/cloud-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="112.0" mnemonicParsing="false" onAction="#transactionHistoryButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/pdf-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="202.0" mnemonicParsing="false" onAction="#transferButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/favorite-4-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="292.0" mnemonicParsing="false" onAction="#loanButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/dollar-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="382.0" mnemonicParsing="false" onAction="#dashBoardButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/chart-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="472.0" mnemonicParsing="false" onAction="#aboutUsButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/globe-5-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Label layoutX="138.0" layoutY="128.0" text="My Account" textFill="WHITE">
+                    <font>
+                        <Font name="Candara Light" size="30.0" />
+                    </font>
+                </Label>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="509.0" layoutX="574.0" layoutY="108.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="396.0" />
+                <ImageView fitHeight="301.0" fitWidth="186.0" layoutX="679.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" rotate="270.0">
+                    <image>
+                        <Image url="@Resources/CreditCard2.PNG" />
+                    </image>
+                </ImageView>
+                <Label fx:id="savingsAmountLabel" layoutX="379.0" layoutY="505.0" text="5000.00" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Regular" size="24.0" />
+                    </font>
+                </Label>
+                <Label fx:id="creditNumLabel" layoutX="701.0" layoutY="312.0" text="**** **** **** 2313" textFill="WHITE">
+                    <font>
+                        <Font name="OCR A Extended" size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="315.0" layoutY="563.0" text="MYR" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="24.0" />
+                    </font>
+                </Label>
+                <Label layoutX="701.0" layoutY="332.0" text="Valid Thru" textFill="WHITE">
+                    <font>
+                        <Font name="OCR A Extended" size="13.0" />
+                    </font>
+                </Label>
+                <Label fx:id="creditDateLabel" layoutX="702.0" layoutY="352.0" text="1/22" textFill="WHITE">
+                    <font>
+                        <Font name="OCR A Extended" size="13.0" />
+                    </font>
+                </Label>
+                <Label fx:id="depositAccountLabel" layoutX="141.0" layoutY="577.0" text="1610243455677" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="663.0" layoutY="457.0" text="Central Evergreen Inc." textFill="WHITE">
+                    <font>
+                        <Font name="Lucida Console" size="14.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="294.0" fitWidth="186.0" layoutX="680.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true" rotate="270.0">
+                    <image>
+                        <Image url="@Resources/CreditCard.PNG" />
+                    </image>
+                </ImageView>
+                <Label fx:id="debitNumLabel" layoutX="693.0" layoutY="518.0" text="**** **** **** 2313" textFill="WHITE">
+                    <font>
+                        <Font name="OCR A Extended" size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="141.0" layoutY="497.0" text="Savings Account" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="694.0" layoutY="537.0" text="Valid Thru" textFill="WHITE">
+                    <font>
+                        <Font name="OCR A Extended" size="13.0" />
+                    </font>
+                </Label>
+                <Label fx:id="debitDateLabel" layoutX="694.0" layoutY="555.0" prefHeight="1.0" prefWidth="32.0" text="1/22" textFill="WHITE">
+                    <font>
+                        <Font name="OCR A Extended" size="13.0" />
+                    </font>
+                </Label>
+                <Label layoutX="141.0" layoutY="555.0" text="Deposit Account" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Label fx:id="savingsAccountLabel" layoutX="141.0" layoutY="520.0" text="1610243455677" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="315.0" layoutY="505.0" text="MYR" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="24.0" />
+                    </font>
+                </Label>
+                <Label fx:id="depositAmountLabel" layoutX="379.0" layoutY="563.0" text="10000.00" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Regular" size="24.0" />
+                    </font>
+                </Label>
+                <Label fx:id="nameLabel" layoutX="141.0" layoutY="212.0" text="Oliver Allen" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="24.0" />
+                    </font>
+                </Label>
+                <Label fx:id="emailLabel" layoutX="143.0" layoutY="242.0" text="oliverallen@gmail.com" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="14.0" />
+                    </font>
+                </Label>
+                <Line endX="270.4000244140625" endY="1.52587890625E-5" layoutX="242.0" layoutY="271.0" startX="-100.0" stroke="WHITE" />
+                <Line endX="271.4000244140625" layoutX="239.0" layoutY="484.0" startX="-100.0" stroke="WHITE" />
+                <Label layoutX="145.0" layoutY="278.0" text="Balance Overview:" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Light" size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="292.0" layoutY="278.0" text="Last 7 months" textFill="WHITE">
+                    <font>
+                        <Font name="DengXian Bold" size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="625.0" layoutY="128.0" text="My Cards" textFill="WHITE">
+                    <font>
+                        <Font name="Candara Light" size="30.0" />
+                    </font>
+                </Label>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="64.0" layoutX="755.0" layoutY="18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="216.0" />
+                <Label fx:id="dateLabel" layoutX="780.0" layoutY="31.0" text="January, 17th" textFill="WHITE">
+                    <font>
+                        <Font name="Candara Light" size="30.0" />
+                    </font>
+                </Label>
+            <LineChart fx:id="balanceChart" layoutX="88.0" layoutY="275.0" prefHeight="234.0" prefWidth="458.0" stylesheets="@../sample.css">
+              <xAxis>
+                <CategoryAxis fx:id="monthAxis" side="BOTTOM">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="7.0" />
+                     </tickLabelFont></CategoryAxis>
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="balanceAxis" side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <JFXButton layoutX="625.0" layoutY="206.0" onMouseReleased="#creditCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
+            <JFXButton layoutX="625.0" layoutY="412.0" onMouseReleased="#debitCardButtonPressed" prefHeight="185.0" prefWidth="296.0" ripplerFill="#ddd2d2" />
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

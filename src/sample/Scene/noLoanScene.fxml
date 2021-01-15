@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ImageInput?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Loan.NoLoanController">
+    <children>
+        <AnchorPane onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <ImageView fitHeight="700.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@Resources/Background.png" />
+                    </image>
+                </ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="700.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="80.0" />
+                <Button layoutX="5.0" layoutY="22.0" mnemonicParsing="false" onAction="#accountButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/cloud-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="112.0" mnemonicParsing="false" onAction="#transactionHistoryButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/pdf-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="202.0" mnemonicParsing="false" onAction="#transferButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/favorite-4-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="292.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/dollar-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Button layoutX="5.0" layoutY="382.0" mnemonicParsing="false" onAction="#dashBoardButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/chart-2-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+            <ImageView fitHeight="213.0" fitWidth="295.0" layoutX="643.0" layoutY="176.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Resources/Personal.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="231.0" fitWidth="301.0" layoutX="153.0" layoutY="383.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Resources/Business.png" />
+               </image>
+            </ImageView>
+                <Button layoutX="5.0" layoutY="472.0" mnemonicParsing="false" onAction="#aboutUsButtonPushed" prefHeight="70.0" prefWidth="70.0" text="Button" textAlignment="CENTER">
+                    <effect>
+                        <ImageInput x="10.0" y="10.0">
+                            <source>
+                                <Image url="@Resources/globe-5-48.png" />
+                            </source>
+                        </ImageInput>
+                    </effect>
+                </Button>
+                <Label layoutX="119.0" layoutY="38.0" text="Loan" textFill="WHITE">
+                    <font>
+                        <Font name="Candara Light" size="30.0" />
+                    </font>
+                </Label>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#000000ad" height="565.0" layoutX="119.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.25" width="837.0" />
+                <Label layoutX="156.0" layoutY="147.0" text="Personal Loan" textFill="WHITE">
+                    <font>
+                        <Font name="Candara Light" size="30.0" />
+                    </font>
+                </Label>
+                <Button ellipsisString=" " layoutX="156.0" layoutY="327.0" mnemonicParsing="false" onAction="#personalLoanButtonPushed" prefHeight="28.0" prefWidth="150.0" styleClass="lion" stylesheets="@../transparent.css" text="Apply for Personal Loan" />
+                <Button layoutX="746.0" layoutY="595.0" mnemonicParsing="false" onAction="#businessLoanButtonPushed" prefHeight="28.0" prefWidth="150.0" styleClass="lion" stylesheets="@../transparent.css" text="Apply for Business Loan" />
+            <Label layoutX="156.0" layoutY="211.0" text="Need a help just to get through this pandemic? Don't worry we got you!" textFill="WHITE">
+               <font>
+                  <Font name="DengXian Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="156.0" layoutY="241.0" text="This loan will provides some funds for you to satisfy all the basic needs." textFill="WHITE">
+               <font>
+                  <Font name="DengXian Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="156.0" layoutY="272.0" text="Of course, the interest rate is better compared to other banks!" textFill="WHITE">
+               <font>
+                  <Font name="DengXian Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="721.0" layoutY="417.0" text="Business Loan" textFill="WHITE">
+               <font>
+                  <Font name="Candara Light" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="503.0" layoutY="484.0" text="Or perhaps you are planning to start up a business? " textFill="WHITE">
+               <font>
+                  <Font name="DengXian Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="528.0" layoutY="507.0" text="Quite adventurous aren't we? However, fret not!" textFill="WHITE">
+               <font>
+                  <Font name="DengXian Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="530.0" layoutY="531.0" text="We like to support our locals however we could. " textFill="WHITE">
+               <font>
+                  <Font name="DengXian Light" size="18.0" />
+               </font>
+            </Label>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>
