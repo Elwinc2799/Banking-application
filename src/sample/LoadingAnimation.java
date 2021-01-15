@@ -3,6 +3,7 @@ package sample;
 import eu.hansolo.enzo.notification.Notification;
 import javafx.animation.*;
 import javafx.concurrent.Task;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -131,12 +132,12 @@ public class LoadingAnimation {
         rectangle.setCursor(Cursor.HAND);
         setTaskRunning(false);
         if(isPdf && textMessage.equals("Success")){
-            Notification info = new Notification("Pdf Location","Saved to Evergreen.exe directory\nEmail to centralevergreeninc@gmail.com");
-            Notification.Notifier.INSTANCE.notify(info);
+            Notification.Notifier.setPopupLocation(null, Pos.BOTTOM_RIGHT);
+            Notification.Notifier.INSTANCE.notifySuccess("Pdf Location","Saved to Evergreen.exe directory\nEmail to centralevergreeninc@gmail.com");
         }
         else if(isPdf && textMessage.equals("Failed")){
-            Notification info = new Notification("Error message","Input error detected");
-            Notification.Notifier.INSTANCE.notify(info);
+            Notification.Notifier.setPopupLocation(null, Pos.BOTTOM_RIGHT);
+            Notification.Notifier.INSTANCE.notifyError("Error message","Input error detected");
         }
     }
 
