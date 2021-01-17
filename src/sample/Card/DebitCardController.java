@@ -130,7 +130,7 @@ public class DebitCardController implements Initializable {
         new Thread(instance.sendOTPTask).start();
 
         Label newLimit = new Label("New Limit");
-        Label otp = new Label("OTP");
+        Label otp = new Label("OTP(sent to email)");
         newLimit.setTranslateX(10);
         newLimit.setTranslateY(10);
         newLimit.setFont(new Font("Arial", 14));

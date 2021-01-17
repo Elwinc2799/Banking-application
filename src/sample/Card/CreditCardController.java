@@ -161,7 +161,7 @@ public class CreditCardController implements Initializable {
             TransferController instance = new TransferController();
             new Thread(instance.sendOTPTask).start();
 
-            Label OTP = new Label("OTP");
+            Label OTP = new Label("OTP(sent to email)");
             Label amountLabel = new Label("Amount");
             Label myr = new Label("MYR");
             OTP.setFont(new Font("Arial", 14));

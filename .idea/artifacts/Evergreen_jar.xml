@@ -1,0 +1,48 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Evergreen:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Evergreen_jar</output-path>
+    <root id="archive" name="Evergreen.jar">
+      <element id="module-output" name="Evergreen" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/dsn.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/src.zip" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/imap.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/mail.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/pop3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/smtp.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/ojdbc6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/mailapi.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/io-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/activation.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/Enzo-0.3.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx.web.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/svg-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/hyph-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/jsoup-1.7.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/pdfa-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/sign-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/forms-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/jsoup-1.13.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/kernel-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/layout-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/jfoenix-9.0.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/pdftest-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/AnimateFX-1.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/barcodes-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/fxsampler-1.0.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/font-asian-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/itextpdf-5.5.13.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/controlsfx-8.40.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/styled-xml-parser-7.1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/controlsfx-samples-8.40.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/lib/mysql-connector-java-5.1.49-bin.jar" path-in-jar="/" />
+      <element id="library" level="project" name="lib" />
+    </root>
+  </artifact>
+</component>

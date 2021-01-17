@@ -241,7 +241,7 @@ public class LoanController implements Initializable {
         otp.setFont(new Font("Arial", 14));
 
         PasswordField otpField = new PasswordField();
-        otpField.setPromptText("OTP");
+        otpField.setPromptText("OTP(sent to email)");
         otpField.setTranslateX(10);
         otpField.setTranslateY(20);
         otpField.setMaxWidth(150);
@@ -365,7 +365,7 @@ public class LoanController implements Initializable {
         cvvField.setTranslateY(80);
         cvvField.setMaxWidth(150);
         cvvField.setFocusTraversable(false);
-        otpField.setPromptText("OTP");
+        otpField.setPromptText("OTP(sent to email)");
         otpField.setTranslateX(10);
         otpField.setTranslateY(110);
         otpField.setMaxWidth(150);

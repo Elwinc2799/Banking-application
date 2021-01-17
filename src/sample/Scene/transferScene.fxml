@@ -175,7 +175,7 @@
                     </font>
                 </TextField>
                 <Line endX="217.20001220703125" layoutX="348.0" layoutY="581.0" startX="-87.79998779296875" stroke="WHITE" strokeWidth="0.25" />
-            <Line endX="13.0" layoutX="347.0" layoutY="628.0" startX="-87.79998779296875" stroke="WHITE" strokeWidth="0.25" />
+            <Line endX="13.0" layoutX="376.0" layoutY="624.0" startX="-87.79998779296875" stroke="WHITE" strokeWidth="0.25" />
                 <Button layoutX="802.0" layoutY="622.0" mnemonicParsing="false" onAction="#nextButtonPushed" styleClass="lion" stylesheets="@../transparent.css" text="Next" />
             <AnchorPane layoutX="151.0" layoutY="382.0" prefHeight="86.0" prefWidth="699.0">
                <children>
@@ -280,12 +280,12 @@
                   <RadioButton fx:id="transportation" layoutX="560.0" layoutY="10.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="59.0" stylesheets="@../sample.css" toggleGroup="$category" />
                </children>
             </AnchorPane>
-            <Label layoutX="171.0" layoutY="608.0" text="OTP" textFill="WHITE">
+            <Label layoutX="171.0" layoutY="608.0" text="OTP(sent to email)" textFill="WHITE">
                <font>
                   <Font name="DengXian Light" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="fieldOTP" focusTraversable="false" layoutX="251.0" layoutY="597.0" prefHeight="38.0" prefWidth="161.0" styleClass="custom-text-field" stylesheets="@../sample.css">
+            <TextField fx:id="fieldOTP" focusTraversable="false" layoutX="287.0" layoutY="597.0" prefHeight="38.0" prefWidth="161.0" styleClass="custom-text-field" stylesheets="@../sample.css">
                <font>
                   <Font name="DengXian Light" size="14.0" />
                </font>
