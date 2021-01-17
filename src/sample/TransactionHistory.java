@@ -32,9 +32,13 @@ public class TransactionHistory {
         this.paymentRecipient = paymentRecipient;
     }
 
+    public String getPaymentRecipient(){return paymentRecipient;}
+
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
     }
+
+    public String getPaymentType(){return paymentType;}
 
     public LocalDate getTransactionDate() {
         return transactionDate;
